@@ -1,0 +1,138 @@
+.slick-prev:before,
+.slick-next:before {
+  font-family: "slick";
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.75;
+  color: rgb(167, 115, 43);
+  -webkit-font-smoothing: antialiased;
+}
+
+.carousel-card {
+  padding: 40px;
+  border: 1px solid rgba(167, 115, 43, 0.61);
+  border-radius: 5px;
+  margin: 0 10px;
+  color: #fff;
+  position: relative;
+  z-index: 10;
+  height: 350px;
+}
+
+.carousel-card::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.8;
+  background-color: #000;
+  left: 0;
+  top: 0;
+}
+
+.carousel-card::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/images/village.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -2;
+  top: 0;
+  left: 0;
+}
+
+.carousel-card h2 {
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 30px;
+  color: #e1b43d;
+}
+
+.carousel-card .total-family {
+  margin: 20px 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.carousel-comeeti-details {
+  display: flex;
+  align-items: end;
+  width: 75%;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 40px;
+}
+
+.carousel-comeeti-details .carousel-comeeti-gender h4 {
+  font-weight: 300;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.carousel-comeeti-details .carousel-comeeti-btn {
+  padding: 8px 20px;
+  background: #e1b43d;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.carousel-committee-card {
+  border: 1px solid rgba(167, 115, 43, 0.61);
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+.carousel-committee-card .committee-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  overflow: hidden;
+  background-color: rgba(167, 115, 43, 0.1);
+}
+
+.carousel-committee-card .committee-img img {
+  width: 100%;
+}
+
+.committee-user-details {
+  padding: 10px;
+  text-align: center;
+}
+
+.carousel-comeeti-info h5 {
+  margin: 5px 0;
+}
+
+.carousel-comeeti-info p {
+  color: rgb(186, 186, 186);
+}
+
+.committee-user-details .member-position {
+  margin: 5px 0;
+  border-radius: 50px;
+  display: inline-block;
+}
+
+.member-info-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px;
+}
+
+.committee-user-details .member-info {
+  line-height: 1.5em;
+}
+
+.committee-user-details .member-name {
+  margin: 10px 0;
+}

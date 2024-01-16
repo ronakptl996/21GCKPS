@@ -1,0 +1,77 @@
+.festival-wrapper {
+  padding: 150px 200px;
+  background: url(../../assets/images/banner_bg.jpg);
+  background-position: top;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.festival-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.festival-wrapper::after {
+  content: "";
+  position: absolute;
+  /* height: 200px; */
+  width: 100%;
+  background: linear-gradient(to bottom, #0000 40%, #fff 90%);
+  bottom: 0px;
+  left: 0;
+  z-index: -1;
+}
+
+.festival-wrapper .festival-header {
+  font-size: 35px;
+  margin: 15px 0;
+  color: #fff;
+}
+
+.festival-wrapper .festival-table {
+  margin: 10px 0;
+  padding: 30px;
+  background: #fff;
+  border-radius: 5px;
+}
+
+.festival-table table {
+  background: rgba(221, 223, 228, 0.15);
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.festival-table table td,
+.festival-table table th {
+  border: 1px solid rgb(190, 190, 190);
+  padding: 10px;
+  margin: 0;
+  text-align: left;
+}
+
+.festival-table table td a {
+  text-decoration: none;
+  color: #fff;
+  background: rgb(233, 135, 0);
+  padding: 7px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.festival-table table td {
+  text-decoration: none;
+  color: #020202ba;
+}
+
+.festival-table table tr > td:nth-child(3) {
+  width: 10rem;
+  text-align: center;
+}

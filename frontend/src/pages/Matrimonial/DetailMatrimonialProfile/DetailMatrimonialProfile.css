@@ -1,0 +1,241 @@
+.DetailMatrimonialProfile .DetailMatrimonialProfile-inner {
+  min-height: 90vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.DetailMatrimonialProfile .DetailMatrimonialProfile-user-img-wrapper {
+  position: relative;
+}
+
+.DetailMatrimonialProfile .DetailMatrimonialProfile-user-img-wrapper img {
+  z-index: -1;
+  position: fixed;
+  width: 50%;
+  object-position: center;
+  object-fit: cover;
+  height: 100%;
+}
+
+.DetailMatrimonialProfile-user-img-wrapper .social-btn {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  position: fixed;
+  bottom: 0;
+  width: 50%;
+  z-index: -1;
+}
+
+.social-btn .social-btn-wrapper {
+  background: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-size: 20px;
+}
+
+.social-btn-wrapper.facebook {
+  background: #0866ff;
+  color: #fff;
+}
+
+.social-btn-wrapper.instagram {
+  background: linear-gradient(85deg, #f9ce34, #ee2a7b, #6228d7);
+  color: #fff;
+}
+
+.social-btn-wrapper.whatsapp {
+  background: #15d65d;
+  color: #fff;
+}
+
+.social-btn .social-btn-wrapper span {
+  display: inline;
+  margin: 0 9px;
+}
+
+.DetailMatrimonialProfile-user-details-inner {
+  padding: 80px 70px;
+  font-family: "Poppins";
+}
+
+.Matrimonial-user-details-header h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.Matrimonial-user-details-header ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 30px 0 10px;
+}
+
+.Matrimonial-user-details-header ul li {
+  margin: 0 10px 10px 0;
+  list-style: none;
+}
+
+.Matrimonial-user-details-header ul li div {
+  border: 1px solid rgb(231, 231, 240);
+  border-radius: 16px;
+  text-align: center;
+  padding: 20px 15px;
+  min-width: 140px;
+}
+
+.Matrimonial-user-details-header ul li img {
+  width: 42px;
+  margin: 0 auto;
+  display: table;
+  margin-bottom: 13px;
+}
+
+.Matrimonial-user-details-header ul li span {
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 400;
+  margin: 8px 0 0;
+  color: #333333;
+}
+
+.Matrimonial-user-details-header ul li span strong {
+  font-weight: 600;
+  display: block;
+  font-size: 17px;
+  margin-top: 5px;
+  color: #1a1a1a;
+}
+
+h3.heading-h3 {
+  margin-bottom: 18px;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+/* About */
+.Matrimonial-user-details-about {
+  padding: 40px 0;
+  border-bottom: 1px solid rgb(216, 220, 225);
+}
+
+.Matrimonial-user-details-about p {
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  font-weight: 100;
+  line-height: 28px;
+  color: #1a1a1a;
+}
+
+/* Matrimonial-user-details-brother-sister */
+.Matrimonial-user-details-brother-sister {
+  padding: 40px 0;
+  border-bottom: 1px solid rgb(216, 220, 225);
+}
+
+/* Matrimonial-user-contact-details */
+.Matrimonial-user-contact-details {
+  padding: 40px 0;
+  border-bottom: 1px solid rgb(216, 220, 225);
+}
+
+.Matrimonial-user-contact-details ul {
+  list-style: none;
+  margin: 20px 0;
+}
+
+.Matrimonial-user-contact-details ul li {
+  position: relative;
+  margin: 30px 0;
+}
+
+.Matrimonial-user-contact-details ul li span {
+  font-weight: 400;
+  position: relative;
+  padding-left: 55px;
+  display: block;
+  text-align: left;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.Matrimonial-user-contact-details ul li span svg {
+  font-size: 18px;
+  display: inline-block;
+  position: absolute;
+  top: -7px;
+  border: 1px solid rgb(219, 204, 187);
+  padding: 8px;
+  border-radius: 10px;
+  vertical-align: initial;
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  margin-right: 8px;
+  left: 0;
+}
+
+.Matrimonial-user-contact-details ul li b {
+  padding-right: 10px;
+}
+
+/* Matrimonial-user-personal-details */
+.Matrimonial-user-personal-details {
+  padding: 40px 0;
+  border-bottom: 1px solid rgb(216, 220, 225);
+}
+
+.Matrimonial-user-personal-details ul li {
+  list-style: none;
+  font-size: 17px;
+  padding: 0px 8px 10px 24px;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: pre;
+  overflow: hidden;
+  color: #1a1a1a;
+}
+
+.Matrimonial-user-personal-details ul li::before {
+  content: "\f105";
+  font-family: "FontAwesome";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  color: #000;
+  line-height: 11px;
+  padding: 0px;
+  border-radius: 25px;
+  font-weight: 600;
+  left: 0px;
+  top: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.Matrimonial-user-personal-details ul li b {
+  font-weight: 500;
+  width: 145px;
+  display: inline-block;
+}
+
+/* Matrimonial-user-hobby-details */
+.Matrimonial-user-hobby-details {
+  padding: 40px 0;
+  border-bottom: 1px solid rgb(216, 220, 225);
+}
+
+.Matrimonial-user-hobby-details ul li {
+  display: inline-block;
+  padding: 0px 12px 12px 0px;
+}
+
+.Matrimonial-user-hobby-details ul li span {
+  background: rgb(239 239 239);
+  font-size: 14px;
+  font-weight: 400;
+  padding: 4px 7px;
+  border-radius: 4px;
+  color: rgb(24, 28, 32);
+  margin: 0;
+}

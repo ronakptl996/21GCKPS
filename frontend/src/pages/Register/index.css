@@ -1,0 +1,104 @@
+.register {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.register-form {
+  width: 700px;
+  padding: 20px;
+  box-shadow: 1px 1px 10px 2px #dddddd67;
+  margin: auto;
+}
+
+.form-header {
+  padding: 30px;
+  text-align: center;
+}
+
+.form-header h2 {
+  color: rgb(185, 128, 48);
+  font-size: 35px;
+  margin-bottom: 3px !important;
+  font-family: "Poppins Bold";
+}
+
+.form-header p {
+  color: #757575;
+  font-size: 17px;
+}
+
+.register-input-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 10px 0;
+}
+
+.input-wrapper > label {
+  display: block;
+  margin-top: 10px;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  margin: 2px !important;
+  width: 30%;
+}
+
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  margin: 2px !important;
+  width: 80%;
+}
+
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+  margin: 2px;
+  width: 90%;
+}
+
+/* Add Item */
+.son-details-wrapper {
+  position: relative;
+}
+
+.add-son-details-wrapper {
+  position: absolute;
+  right: 4px;
+  bottom: 5px;
+}
+
+/* Date picker */
+.register-form .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-error {
+  color: rgba(0, 0, 0, 0.6);
+}
+.register-form
+  .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.23);
+}
+
+@media (min-width: 500px) and (max-width: 750px) {
+  .register-form {
+    width: 98%;
+  }
+}
+
+@media (max-width: 635px) {
+  .son-details-wrapper {
+    margin-bottom: 60px;
+  }
+  .add-son-details-wrapper {
+    bottom: -47px;
+  }
+}
+
+@media (max-width: 499px) {
+  /* .hero-section-header .hero-section-header-inner h2 {
+    font-size: 30px;
+    margin-bottom: 5px;
+  } */
+  .register-form {
+    width: 98%;
+  }
+  .register-input-wrapper {
+    grid-template-columns: 1fr;
+  }
+}

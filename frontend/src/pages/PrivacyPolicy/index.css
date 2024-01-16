@@ -1,0 +1,23 @@
+.privacy-policy {
+  background: #f4f4f4;
+  padding: 40px 0;
+}
+
+.privacy-policy-inner {
+  padding: 60px 40px;
+  width: 60%;
+  border: 1px solid #e7e7e7;
+  border-radius: 5px;
+  background: #fff;
+  margin: auto;
+}
+
+.privacy-policy-inner h2 {
+  margin-bottom: 20px;
+}
+
+.privacy-policy-inner p {
+  line-height: 1.6rem;
+  margin-bottom: 20px;
+  color: #000000c4;
+}

@@ -1,0 +1,96 @@
+.matrimonial-form-input-wrapper:first-child
+  .register-input-wrapper:nth-child(6) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.register-input-wrapper > .css-sghohy-MuiButtonBase-root-MuiButton-root {
+  width: 98%;
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  color: rgba(0, 0, 0, 0.7);
+  height: 96%;
+  margin: 2px;
+  text-transform: capitalize;
+}
+
+.register-input-wrapper
+  .css-sghohy-MuiButtonBase-root-MuiButton-root
+  .css-8je8zh-MuiTouchRipple-root {
+  position: relative;
+}
+
+.register-input-wrapper .css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+/* upload image */
+.register-input-wrapper
+  .css-sghohy-MuiButtonBase-root-MuiButton-root:nth-child(1) {
+  width: 98%;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  box-shadow: none;
+  height: 96%;
+  margin: 2px;
+  text-transform: capitalize;
+}
+
+.createMatrimonialProfile {
+  padding: 50px 200px;
+}
+
+.matrimonial-form {
+  width: 800px;
+  margin: auto;
+}
+
+.createMatrimonialProfile .son-daughter-details {
+  position: relative;
+}
+
+.createMatrimonialProfile
+  .son-daughter-details
+  .add-son-daughter-details-wrapper {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.createMatrimonialProfile .matrimonial-form-input-wrapper {
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+}
+
+/* Date Picker */
+.register-input-wrapper
+  .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-error {
+  color: rgba(0, 0, 0, 0.6);
+}
+.register-input-wrapper
+  .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.23);
+}
+
+.matrimonial-form-input-wrapper > .son-daughter-details span {
+  margin: 0;
+}
+
+@media screen and (max-width: 900px) {
+  .createMatrimonialProfile {
+    padding: 50px 100px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .createMatrimonialProfile {
+    padding: 50px;
+  }
+}

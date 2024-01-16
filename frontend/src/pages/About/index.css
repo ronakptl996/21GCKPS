@@ -1,0 +1,161 @@
+.about-hero-section {
+  position: relative;
+  background-image: url("../../assets/images/about-banner.jpeg");
+  height: 30rem;
+  padding: 150px 200px;
+  display: grid;
+}
+
+.about-hero-section::before {
+  content: "";
+  position: absolute;
+  background: #000;
+  opacity: 0.7;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.about-hero-header {
+  width: 50%;
+  z-index: 1;
+  color: #fff;
+}
+
+.about-hero-header h1 {
+  margin-bottom: 20px;
+  font-size: 50px;
+  font-family: "Poppins 600";
+}
+
+.about-hero-header p {
+  line-height: 1.8rem;
+  font-size: 19px;
+  color: #ffffff96;
+  font-family: "Roboto";
+}
+
+.about-info-section {
+  padding: 100px 200px;
+}
+
+.about-info-section {
+  display: flex;
+  width: 100%;
+}
+
+.about-info-section .about-info-one {
+  width: 50%;
+  margin-right: 5rem;
+}
+
+.about-info-section .about-info-one h2 {
+  font-size: 2.5rem;
+  line-height: 3.5rem;
+  font-family: "Poppins Bold";
+}
+
+.about-info-section .about-info-one > p {
+  font-size: 1.1rem;
+  margin: 2rem 0;
+  line-height: 1.6rem;
+  color: #000000b8;
+}
+
+.about-info-section .about-info-two {
+  width: 50%;
+}
+
+.about-info-section .about-info-two img {
+  width: 100%;
+  border-radius: 40px;
+}
+
+.about-info-mission {
+  display: flex;
+  align-items: center;
+}
+
+.about-info-mission .mission-img {
+  margin: 2rem;
+}
+
+.about-info-mission .mission-img img {
+  width: 2.5rem;
+}
+
+.about-info-mission-inner-desc h3 {
+  margin: 10px 0;
+  font-size: 1.4rem;
+  color: #000000d6;
+}
+
+.about-info-mission-inner-desc p {
+  margin: 20px 0;
+  font-size: 16px;
+  color: #000000c6;
+  line-height: 1.4rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .about-hero-section {
+    padding: 100px;
+    background-position: right;
+  }
+  .about-info-section {
+    padding: 100px;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .about-info-section {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .about-info-section .about-info-two {
+    width: 55%;
+    margin: 30px 0;
+  }
+  .about-info-section .about-info-one {
+    width: 100%;
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .about-hero-section {
+    padding: 50px;
+    background-position: center;
+  }
+  .about-hero-header {
+    margin-top: 50px;
+    width: 90%;
+  }
+  .about-hero-header h1 {
+    font-size: 40px;
+  }
+  .about-hero-header p {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .about-hero-section {
+    padding: 30px;
+    background-position: center;
+  }
+  .about-info-section {
+    padding: 50px;
+  }
+  .about-info-section .about-info-two {
+    width: 100%;
+  }
+  .about-info-section .about-info-one h2 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+  .about-info-mission .mission-img {
+    margin: 0 1rem 0 0;
+  }
+}

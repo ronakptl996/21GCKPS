@@ -1,0 +1,30 @@
+.input-job-wrapper {
+  display: flex;
+  margin: 10px 0;
+}
+
+.login {
+  margin-top: 0;
+  width: 600px;
+  box-shadow: none;
+}
+
+.register-form {
+  box-shadow: none;
+}
+
+.job-details {
+  margin-bottom: 30px;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.job-details > label {
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.input-select-wrapper {
+  display: flex;
+}

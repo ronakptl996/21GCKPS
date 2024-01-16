@@ -1,0 +1,71 @@
+.job-seeker-wrapper {
+  background: #f7f9fb;
+}
+
+.job-seeker {
+  padding: 50px 200px;
+  min-height: 80vh;
+}
+
+/* .job-seeker-filter .job-seeker-filter-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+} */
+
+.job-seeker-card-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.job-seeker-card {
+  margin: 20px 10px;
+  border-radius: 10px;
+  padding: 30px;
+  background: #fff;
+  box-shadow: 9px 11px 14px 0 rgba(0, 0, 0, 0.1);
+}
+
+.job-seeker-card h4 {
+  margin: 5px 0;
+  font-weight: 600;
+  color: #000000d9;
+}
+
+.job-seeker-card h5 {
+  color: rgb(95, 95, 95);
+}
+
+.job-seeker-info .job-seeker-details {
+  display: flex;
+  margin: 10px 0;
+}
+
+.job-seeker-info .job-seeker-details .job-span {
+  margin: 10px 2px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.job-seeker-descriptions p {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 900px) {
+  .job-seeker {
+    padding: 100px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .job-seeker {
+    padding: 100px 40px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .job-seeker {
+    padding: 40px 20px;
+  }
+}

@@ -1,0 +1,88 @@
+/* Matrimonial Profile HOme */
+.matrimonial-profile-wrapper {
+  position: relative;
+  background-image: url("../../../assets/images/landing.png");
+  background-repeat: no-repeat;
+  background-position: top;
+  min-height: 100vh;
+}
+
+.matrimonial-profile-wrapper::before {
+  content: "";
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.matrimonial-profile-description {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  padding: 200px;
+  width: 60%;
+  color: #ffffffbd;
+}
+
+.matrimonial-profile-description h2 {
+  margin-bottom: 30px;
+  font-size: 50px;
+}
+
+.matrimonial-profile-description p {
+  line-height: 1.6em;
+  color: #ffffffbe;
+  font-size: 18px;
+}
+
+.button-wrapper {
+  display: inline-block;
+  padding: 10px 20px;
+  background: rgb(167, 115, 43);
+  margin: 0 10px;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition-duration: 300ms;
+}
+
+.button-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 10px 10px 15px -14px rgb(167, 115, 43);
+}
+
+.button-wrapper:last-child {
+  background: none;
+  border: 1px solid rgb(167, 115, 43);
+}
+
+@media screen and (max-width: 1200px) {
+  .matrimonial-profile-description {
+    padding: 200px 100px;
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .matrimonial-profile-description {
+    width: 100%;
+    padding: 200px 100px;
+  }
+  .matrimonial-profile-description h2 {
+    font-size: 40px;
+  }
+  .button-wrapper {
+    padding: 5px 8px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .matrimonial-profile-description {
+    padding: 150px 30px;
+  }
+  .button-wrapper {
+    padding: 0;
+  }
+}

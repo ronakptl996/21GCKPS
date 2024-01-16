@@ -1,0 +1,108 @@
+.businessPackages-wrapper {
+  padding: 50px 150px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.businessPackages-wrapper .businessPackages-card {
+  padding: 25px;
+  border: 1px solid #e7e7e7;
+  margin: 0 20px;
+  text-align: center;
+}
+
+.businessPackages-card-header h3 {
+  margin-bottom: 10px;
+}
+
+.businessPackages-card-header p {
+  font-size: 15px;
+}
+
+.businessPackages-card-pricing {
+  margin-top: 40px;
+}
+
+.businessPackages-card-pricing .pricing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.pricing .discount-pricing {
+  text-decoration: line-through;
+}
+
+.pricing .save-pricing {
+  padding: 10px 15px;
+  background: #ebe4ff;
+  border-radius: 25px;
+  margin-left: 10px;
+  text-transform: uppercase;
+  color: #5025da;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.businessPackages-card-pricing .package-price {
+  font-size: 40px;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.businessPackages-card-pricing .package-price span {
+  font-size: 18px;
+  display: inline;
+}
+
+.businessPackages-card-pricing .free-month {
+  font-size: 18px;
+  font-weight: 600;
+  color: #673de6;
+  margin-bottom: 20px;
+}
+
+.businessPackages-card-pricing .cart-btn {
+  background: #673de6;
+  padding: 15px;
+  color: #fff;
+  font-size: 17px;
+  border-radius: 10px;
+  width: 70%;
+  margin: 0 auto 20px;
+}
+
+.businessPackages-card-pricing .renew {
+  font-size: 14px;
+}
+
+.businessPackages-card-pricing {
+  padding-bottom: 30px;
+  border-bottom: 2px solid #a3aed2;
+}
+
+.packages-features {
+  text-align: left;
+  margin-left: 40px;
+  padding-top: 30px;
+}
+
+.packages-features h3 {
+  color: #361c6a;
+  margin-bottom: 20px;
+}
+
+.packages-features ul li {
+  list-style: none;
+  margin-left: 20px;
+  position: relative;
+  /* margin: 10px 0; */
+  margin-bottom: 10px;
+}
+
+.packages-features ul li::before {
+  content: ">";
+  position: absolute;
+  left: -20px;
+}

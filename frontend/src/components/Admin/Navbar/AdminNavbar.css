@@ -1,0 +1,49 @@
+.admin-navbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 90px;
+  height: 18vh;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  z-index: 10;
+  background: #fff;
+}
+
+.admin-navbar .admin-navbar-logo img {
+  width: 100px;
+}
+
+.admin-navbar-items ul {
+  display: flex;
+}
+
+.admin-navbar-items ul li {
+  list-style: none;
+  position: relative;
+  padding: 10px 2px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.admin-navbar-items ul li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.admin-navbar-items ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: block;
+  background: rgb(167, 115, 43);
+  width: 0%;
+  height: 2px;
+  transition: all 0.2s;
+}
+
+.admin-navbar-items ul li:hover::before {
+  width: 100%;
+}

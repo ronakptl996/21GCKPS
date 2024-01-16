@@ -1,0 +1,48 @@
+.admin-festival {
+  padding: 20px;
+}
+
+.admin-festival-inner .admin-festival-header {
+  font-size: 25px;
+  margin: 10px 0;
+  margin-bottom: 25px;
+}
+
+.admin-festival-input-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 10px;
+}
+
+.admin-festival .admin-committee-wrapper {
+  margin: 20px 0;
+}
+.admin-festival .admin-committee-header {
+  font-size: 25px;
+  margin-bottom: 25px;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  width: 98%;
+}
+
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  width: 98%;
+}
+
+/* Date picker */
+.modal-date-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 10px 0;
+}
+.admin-festival-form
+  .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-error {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.admin-festival-form
+  .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.23);
+}

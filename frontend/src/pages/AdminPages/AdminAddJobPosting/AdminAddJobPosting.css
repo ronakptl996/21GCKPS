@@ -1,0 +1,9 @@
+.admin-job-posting {
+  padding: 20px;
+}
+
+.admin-job-posting-inner .admin-job-posting-header {
+  font-size: 25px;
+  margin: 10px 0;
+  margin-bottom: 25px;
+}

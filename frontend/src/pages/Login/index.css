@@ -1,0 +1,42 @@
+.login-form {
+  margin-top: 80px !important;
+  padding: 20px;
+}
+
+.login {
+  width: 500px;
+  margin: auto;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 14px;
+}
+
+.form-header p {
+  margin-top: 10px;
+  line-height: 1.5em;
+}
+
+span {
+  display: block;
+  text-align: center;
+  margin: 20px auto;
+}
+
+span > a {
+  color: #a7732b;
+}
+
+@media (min-width: 320px) and (max-width: 625px) {
+  .login {
+    width: 90% !important;
+  }
+  .form-header {
+    padding: 10px !important;
+    margin-bottom: 30px;
+  }
+  .form-header h2 {
+    font-size: 20px !important;
+  }
+  .form-header p {
+    line-height: 1.1rem;
+  }
+}
