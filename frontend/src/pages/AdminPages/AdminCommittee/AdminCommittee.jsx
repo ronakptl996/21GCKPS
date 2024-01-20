@@ -64,12 +64,12 @@ const AdminCommittee = () => {
 
     try {
       dispatch(setLoading(true));
-      let response = await fetch("/api/admin/add-committee", {
+      const response = await fetch("/api/admin/add-committee", {
         method: "POST",
         body: formData,
       });
 
-      let data = await response.json();
+      const data = await response.json();
       if (data.success) {
         toast.success(data.message);
         setName("");

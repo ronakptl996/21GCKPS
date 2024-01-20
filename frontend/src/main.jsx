@@ -191,9 +191,30 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
-        <Route path="job-posting" element={<Job />} />
-        <Route path="job-poster" element={<JobPoster />} />
-        <Route path="job-seeker" element={<JobSeeker />} />
+        <Route
+          path="job-posting"
+          element={
+            <ProtectedRoute>
+              <Job />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="job-poster"
+          element={
+            <ProtectedRoute>
+              <JobPoster />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="job-seeker"
+          element={
+            <ProtectedRoute>
+              <JobSeeker />
+            </ProtectedRoute>
+          }
+        />
         <Route path="donation">
           <Route
             path=""

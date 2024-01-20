@@ -9,7 +9,7 @@ import { verifyJwt } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.route("/").get(getUserDetails);
+router.route("/").get(verifyJwt, getUserDetails);
 router.route("/register").post(registerFamily);
 router.route("/login").post(loginUser);
 

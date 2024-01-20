@@ -22,6 +22,7 @@ import adminRoute from "./routes/admin.routes.js";
 import matrimonialRoute from "./routes/matrimonial.routes.js";
 import donationPaymentRoute from "./routes/donationPayment.routes.js";
 import donorRoute from "./routes/donor.routes.js";
+import jobRoute from "./routes/job.routes.js";
 
 app.use("/api/users", familyRoute);
 app.use("/api", matrimonialRoute);
@@ -30,5 +31,7 @@ app.use("/api/admin", adminRoute);
 // Payment Donation Route
 app.use("/api/donation/payment", donationPaymentRoute);
 app.use("/api/donor", donorRoute);
+// Job Route
+app.use("/api/job", jobRoute);
 
 export { app };
