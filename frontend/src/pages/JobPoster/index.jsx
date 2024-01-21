@@ -21,10 +21,10 @@ const JobPoster = () => {
     maxExperience: "1 Year",
     salary: "",
     opening: "",
+    companyName: "",
     companyContact: "",
     companyEmail: "",
     companyIndustry: "",
-    companyDescription: "",
     companyAddress: "",
     createdBy: "",
   });
@@ -44,10 +44,10 @@ const JobPoster = () => {
       maxExperience,
       salary,
       opening,
+      companyName,
       companyContact,
       companyEmail,
       companyIndustry,
-      companyDescription,
       companyAddress,
       createdBy,
     } = jobDetails;
@@ -60,10 +60,10 @@ const JobPoster = () => {
         maxExperience,
         salary,
         opening,
+        companyName,
         companyContact,
         companyEmail,
         companyIndustry,
-        companyDescription,
         companyAddress,
         createdBy,
       ].some((field) => field == "")
@@ -93,10 +93,10 @@ const JobPoster = () => {
           maxExperience: "1 Year",
           salary: "",
           opening: "",
+          companyName: "",
           companyContact: "",
           companyEmail: "",
           companyIndustry: "",
-          companyDescription: "",
           companyAddress: "",
           createdBy: "",
         });
@@ -299,38 +299,35 @@ const JobPoster = () => {
                 }
               />
             </div>
-            <TextField
-              style={{ margin: "10px 0" }}
-              fullWidth
-              id="outlined-basic"
-              label="Company Industry"
-              variant="outlined"
-              value={jobDetails.companyIndustry}
-              onChange={(e) =>
-                setJobDetails((prevState) => ({
-                  ...prevState,
-                  companyIndustry: e.target.value,
-                }))
-              }
-            />
-            <TextField
-              style={{ margin: "10px 0" }}
-              fullWidth
-              id="outlined-basic"
-              label="Company Description"
-              type="text"
-              variant="outlined"
-              multiline
-              rows={2}
-              maxRows={4}
-              value={jobDetails.companyDescription}
-              onChange={(e) =>
-                setJobDetails((prevState) => ({
-                  ...prevState,
-                  companyDescription: e.target.value,
-                }))
-              }
-            />
+            <div className="input-job-wrapper">
+              <TextField
+                style={{ marginRight: "5px" }}
+                fullWidth
+                id="outlined-basic"
+                label="Company Name"
+                variant="outlined"
+                value={jobDetails.companyName}
+                onChange={(e) =>
+                  setJobDetails((prevState) => ({
+                    ...prevState,
+                    companyName: e.target.value,
+                  }))
+                }
+              />
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Company Industry"
+                variant="outlined"
+                value={jobDetails.companyIndustry}
+                onChange={(e) =>
+                  setJobDetails((prevState) => ({
+                    ...prevState,
+                    companyIndustry: e.target.value,
+                  }))
+                }
+              />
+            </div>
             <TextField
               style={{ margin: "10px 0" }}
               fullWidth

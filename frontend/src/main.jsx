@@ -48,7 +48,7 @@ import MatrimonialProfiles from "./pages/Matrimonial/MatrimonialProfiles/Matrimo
 import DetailMatrimonialProfile from "./pages/Matrimonial/DetailMatrimonialProfile/DetailMatrimonialProfile";
 import Business from "./pages/BusinessPage/Business";
 import BusinessDetail from "./pages/BusinessDetail/BusinessDetail";
-import BusinessPackeages from "./pages/BusinessPackages/BusinessPackeages";
+import BusinessPackages from "./pages/BusinessPackages/BusinessPackages";
 import { DropdownProvider } from "./context/DropdownContext";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
@@ -97,7 +97,7 @@ const router = createBrowserRouter(
           path="business"
           element={
             <ProtectedRoute>
-              <BusinessPackeages />
+              <BusinessPackages />
             </ProtectedRoute>
           }
         />

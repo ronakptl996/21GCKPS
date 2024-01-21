@@ -14,7 +14,7 @@
 
 .job-seeker-card-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 
 .job-seeker-card {
@@ -25,31 +25,79 @@
   box-shadow: 9px 11px 14px 0 rgba(0, 0, 0, 0.1);
 }
 
-.job-seeker-card h4 {
+.job-seeker-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.job-seeker-header button {
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: "Roboto";
+  background: #ffd548;
+}
+
+.job-seeker-header button:hover {
+  background: #fbcc32;
+}
+
+.job-seeker-card .job-seeker-header h4 {
   margin: 5px 0;
   font-weight: 600;
   color: #000000d9;
+  font-family: "Roboto";
 }
 
-.job-seeker-card h5 {
+.job-seeker-card .job-seeker-header h5 {
   color: rgb(95, 95, 95);
+  margin-bottom: 20px;
+  font-family: "Roboto";
 }
 
 .job-seeker-info .job-seeker-details {
   display: flex;
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
 .job-seeker-info .job-seeker-details .job-span {
-  margin: 10px 2px;
-  text-align: left;
-  font-size: 15px;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  border-right: 1px solid #0000006b;
+  padding: 0px 10px 0 5px;
+  color: #5e5e5e;
+  font-family: "Roboto";
 }
 
-.job-seeker-descriptions p {
+.job-seeker-info .job-seeker-details .job-span:last-child {
+  border: none;
+}
+
+.job-seeker-details .job-span .jobLocation {
+  margin: 0 8px 0 0;
+  font-weight: 700;
+}
+
+.job-span svg {
+  font-size: 18px;
+  margin-right: 5px;
+  color: #00000094;
+}
+
+.job-seeker-info .job-seeker-descriptions {
+  margin: 10px 0;
+}
+
+.job-seeker-info .job-seeker-descriptions .job-span {
+  display: flex;
+  align-items: flex-start;
   font-size: 15px;
-  font-weight: 500;
+  padding: 0px 10px 0 5px;
+  color: #494949;
+  font-family: "Roboto";
+  line-height: 1.5em;
 }
 
 @media screen and (max-width: 900px) {

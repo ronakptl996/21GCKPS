@@ -9,10 +9,10 @@ const jobSchema = new Schema(
     maxExperience: { type: String, required: true },
     salary: { type: Number, required: true },
     opening: { type: Number, required: true },
+    companyName: { type: String, required: true },
     companyContact: { type: Number, required: true },
     companyEmail: { type: String, required: true },
     companyIndustry: { type: String, required: true },
-    companyDescription: { type: String, required: true },
     companyAddress: { type: String, required: true },
     createdBy: {
       type: String,
