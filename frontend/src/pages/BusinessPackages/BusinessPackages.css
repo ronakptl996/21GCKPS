@@ -1,7 +1,7 @@
 .businessPackages-wrapper {
   padding: 50px 150px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .businessPackages-wrapper .businessPackages-card {
@@ -9,6 +9,9 @@
   border: 1px solid #e7e7e7;
   margin: 0 20px;
   text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .businessPackages-card-header h3 {
@@ -19,15 +22,15 @@
   font-size: 15px;
 }
 
-.businessPackages-card-pricing {
-  margin-top: 40px;
-}
-
-.businessPackages-card-pricing .pricing {
+.businessPackages-card-header .pricing {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px 0;
+}
+
+.businessPackages-card-header .price-desc {
+  margin: 20px 0;
 }
 
 .pricing .discount-pricing {
@@ -36,19 +39,18 @@
 
 .pricing .save-pricing {
   padding: 10px 15px;
-  background: #ebe4ff;
+  background: #e1b43d59;
   border-radius: 25px;
-  margin-left: 10px;
   text-transform: uppercase;
-  color: #5025da;
+  color: #833b1e;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .businessPackages-card-pricing .package-price {
   font-size: 40px;
   font-weight: 700;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .businessPackages-card-pricing .package-price span {
@@ -56,53 +58,53 @@
   display: inline;
 }
 
-.businessPackages-card-pricing .free-month {
-  font-size: 18px;
-  font-weight: 600;
-  color: #673de6;
-  margin-bottom: 20px;
-}
-
-.businessPackages-card-pricing .cart-btn {
-  background: #673de6;
-  padding: 15px;
+.businessPackages-card .cart-btn {
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: none;
+  background: rgb(167, 115, 43);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: #fff;
-  font-size: 17px;
-  border-radius: 10px;
-  width: 70%;
-  margin: 0 auto 20px;
+  text-transform: uppercase;
+  margin: 20px 0;
+  cursor: pointer;
+  transition: all 0.5s;
 }
 
-.businessPackages-card-pricing .renew {
-  font-size: 14px;
+.businessPackages-card .cart-btn:hover {
+  background: rgb(154, 90, 1);
 }
 
 .businessPackages-card-pricing {
-  padding-bottom: 30px;
-  border-bottom: 2px solid #a3aed2;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #97401e58;
 }
 
 .packages-features {
   text-align: left;
-  margin-left: 40px;
   padding-top: 30px;
 }
 
 .packages-features h3 {
-  color: #361c6a;
-  margin-bottom: 20px;
+  color: #97401e;
+  text-align: center;
+}
+
+.packages-features ul {
+  margin: 20px 0;
 }
 
 .packages-features ul li {
   list-style: none;
-  margin-left: 20px;
+  color: #000000a5;
   position: relative;
-  /* margin: 10px 0; */
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
 }
 
-.packages-features ul li::before {
-  content: ">";
-  position: absolute;
-  left: -20px;
+.packages-features ul li svg {
+  margin-right: 10px;
 }

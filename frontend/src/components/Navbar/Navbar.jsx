@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setIsLoggedIn } from "../../features/auth/authSlice";
 import { useDropdownContext } from "../../context/DropdownContext";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Navbar = () => {
   const { isOpen, toggleDropdown, closeDropdown } = useDropdownContext();
@@ -104,7 +105,7 @@ const Navbar = () => {
         <div className={`nav-elements  ${showNavbar && "active"}`}>
           {showNavbar && (
             <h1 className="close-Nav" onClick={handleShowNavbar}>
-              X
+              <CloseIcon />
             </h1>
           )}
           <div className="navbar-item-wrapper">
@@ -164,8 +165,29 @@ const Navbar = () => {
                   <li className="navbar-item">
                     <NavLink to="/matrimonial">Matrimonial</NavLink>
                   </li>
-                  <li className="navbar-item">
+                  {/* <li className="navbar-item">
                     <NavLink to="/business">Business</NavLink>
+                  </li> */}
+                  <li
+                    className="navbar-item dropdown"
+                    onMouseEnter={toggleDropdown}
+                    onMouseLeave={closeDropdown}
+                  >
+                    <NavLink to="#">Business</NavLink>
+                    {isOpen && (
+                      <div className="dropdown-content">
+                        <ul>
+                          <li className="navbar-item">
+                            <NavLink to="/business">Add Business</NavLink>
+                          </li>
+                          <li className="navbar-item">
+                            <NavLink to="/education-committee">
+                              Businesses
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </li>
                   <li className="navbar-item">
                     <NavLink to="/job-posting">Job</NavLink>

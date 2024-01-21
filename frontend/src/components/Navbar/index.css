@@ -170,6 +170,7 @@ nav {
   position: absolute;
   right: 30px;
   top: 15px;
+  cursor: pointer;
 }
 
 @media (max-width: 1200px) {
@@ -201,8 +202,9 @@ nav {
   }
 
   .nav-elements ul {
-    display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding: 35px;
   }
 }
 
