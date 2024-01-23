@@ -1,0 +1,72 @@
+.adminHome {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 20px 10px;
+}
+
+.admin-home-card {
+  padding: 20px;
+  margin: 0 5px 0 0;
+  border: 1px solid #0000005e;
+  border-radius: 10px;
+}
+
+.admin-home-card-header h3 {
+  font-family: "Roboto";
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #000000c9;
+}
+
+.admin-home-card-body .form .css-1nrlq1o-MuiFormControl-root {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.chart-wrapper .chart-details-one ul li {
+  list-style: none;
+  margin: 8px 0;
+  font-family: "Roboto";
+}
+
+.chart-wrapper .chart-details-one ul li b {
+  font-family: "Roboto";
+  display: inline-block;
+  width: 80px;
+  color: #000000c9;
+}
+
+.chart-wrapper .chart-details-two {
+  height: 300px;
+}
+
+.admin-home-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin: 10px;
+}
+
+.home-details {
+  padding: 20px;
+  margin-right: 5px;
+  border: 1px solid #0000005e;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.home-details p {
+  font-size: 30px;
+  margin-bottom: 5px;
+  color: #000000d1;
+}
+
+.home-details h3 {
+  font-size: 18px;
+  color: #000000d1;
+}

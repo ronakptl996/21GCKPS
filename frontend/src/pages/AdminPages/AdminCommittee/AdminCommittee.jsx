@@ -91,7 +91,7 @@ const AdminCommittee = () => {
 
   // Delete User
   const handleDeleteUser = async (id) => {
-    let result = await Swal.fire({
+    const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",

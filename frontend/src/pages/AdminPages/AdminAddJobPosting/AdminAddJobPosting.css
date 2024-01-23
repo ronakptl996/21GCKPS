@@ -7,3 +7,30 @@
   margin: 10px 0;
   margin-bottom: 25px;
 }
+
+.admin-job-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.admin-job-table tr {
+  border: 1px solid #0008;
+}
+.admin-job-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.admin-job-table tr td {
+  border-right: 1px solid #0008;
+  padding: 2px 10px;
+}
+.admin-job-table tbody tr td.button {
+  width: 30px;
+}
+.admin-job-table thead tr th {
+  padding: 10px;
+  border-right: 1px solid #0008;
+}
+.admin-job-table tr td:nth-child(1) {
+  text-align: center;
+  width: 60px;
+}
