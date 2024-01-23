@@ -15,7 +15,7 @@ const Navbar = () => {
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isAuth } = useSelector((store) => store.auth);
+  const { isAuth, loggedInUserDetails } = useSelector((store) => store.auth);
 
   const [showNavbar, setShowNavbar] = useState(false);
 
@@ -198,6 +198,13 @@ const Navbar = () => {
                   <li className="navbar-item">
                     <NavLink to="/donation">Donation List</NavLink>
                   </li>
+                  {loggedInUserDetails && (
+                    <li className="navbar-item">
+                      <NavLink to={`/profile/${loggedInUserDetails._id}`}>
+                        Profile
+                      </NavLink>
+                    </li>
+                  )}
                   <li>
                     <Button
                       style={{ background: "rgb(233 135 0)" }}

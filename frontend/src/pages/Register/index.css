@@ -57,12 +57,13 @@
 /* Add Item */
 .son-details-wrapper {
   position: relative;
+  margin-bottom: 48px;
 }
 
 .add-son-details-wrapper {
   position: absolute;
   right: 4px;
-  bottom: 5px;
+  bottom: -46px;
 }
 
 /* Date picker */

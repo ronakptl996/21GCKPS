@@ -154,4 +154,20 @@ const getUserDetails = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, decoded, ""));
 });
 
-export { registerFamily, loginUser, logoutUser, getUserDetails };
+const getUser = asyncHandler(async (req, res) => {
+  // console.log(req.params);
+  try {
+    const userDetails = await Family.findById(req.params.id).select(
+      "-password -refreshToken"
+    );
+
+    if (!userDetails) {
+      throw new ApiError(500, "User details not found!");
+    }
+    return res.status(200).json(new ApiResponse(200, userDetails, ""));
+  } catch (error) {
+    throw new ApiError(500, "Error while fetching User details");
+  }
+});
+
+export { registerFamily, loginUser, logoutUser, getUserDetails, getUser };

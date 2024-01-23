@@ -52,6 +52,7 @@ import BusinessPackages from "./pages/BusinessPackages/BusinessPackages";
 import { DropdownProvider } from "./context/DropdownContext";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import Profile from "./pages/Profile/Profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,6 +64,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="profile/:id"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

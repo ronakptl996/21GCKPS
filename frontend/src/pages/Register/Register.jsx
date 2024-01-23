@@ -8,6 +8,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -69,6 +70,35 @@ const Register = () => {
     },
   ]);
 
+  // IMAGES
+  const [headOfFamilyAvatar, setHeadOfFamilyAvatar] = useState(null);
+  const [wifeAvatar, setWifeAvatar] = useState(null);
+  const [sonAvatars, setSonAvatars] = useState([]);
+  const [daughterAvatars, setDaughterAvatars] = useState([]);
+
+  const handleFileChange = (event, setAvatarFunction) => {
+    const file = event.target.files[0];
+    setAvatarFunction(file);
+  };
+
+  const handleSonFileChange = (event, index) => {
+    const file = event.target.files[0];
+    setSonAvatars((prevAvatars) => {
+      const newAvatars = [...prevAvatars];
+      newAvatars[index] = file;
+      return newAvatars;
+    });
+  };
+
+  const handleDaughterFileChange = (event, index) => {
+    const file = event.target.files[0];
+    setDaughterAvatars((prevAvatars) => {
+      const newAvatars = [...prevAvatars];
+      newAvatars[index] = file;
+      return newAvatars;
+    });
+  };
+
   const handleSonDetailChange = (index, field, value) => {
     setSonDetails((prevSonDetails) => {
       const newSonDetails = [...prevSonDetails];
@@ -99,6 +129,7 @@ const Register = () => {
         dob: "",
       },
     ]);
+    setSonAvatars((prevState) => [...prevState, []]);
   };
 
   const addDaughterDetailHandler = () => {
@@ -113,6 +144,7 @@ const Register = () => {
         education: "",
         bloodGroup: "o+",
         dob: "",
+        daughterAvatar: "",
       },
     ]);
   };
@@ -141,6 +173,9 @@ const Register = () => {
     }));
   };
 
+  // Head of family change avatar
+  const changeHeadOfFamilyAvatar = () => {};
+
   // Register Data
   const handleSubmit = async () => {
     try {
@@ -155,29 +190,43 @@ const Register = () => {
         daughterDetails
       );
 
-      const registerData = {
-        password,
-        headOfFamily,
-        wifeDetails,
-        sonDetails,
-        daughterDetails,
-      };
+      // const registerData = {
+      //   password,
+      //   headOfFamily,
+      //   wifeDetails,
+      //   sonDetails,
+      //   daughterDetails,
+      // };
+
+      const formData = new FormData();
+
+      formData.append("headOfFamilyData", JSON.stringify(headOfFamily));
+      formData.append("wifeDetailsData", JSON.stringify(wifeDetails));
+      formData.append("password", JSON.stringify(password));
+
+      sonDetails.forEach((details, index) => {
+        formData.append(`sonDetails[${index}]`, JSON.stringify(details));
+      });
+
+      daughterDetails.forEach((details, index) => {
+        formData.append(`daughterDetails[${index}]`, JSON.stringify(details));
+      });
 
       let response = await fetch("/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(registerData),
+        body: formData,
       });
 
       let data = await response.json();
       console.log(data);
 
-      if (data.success) {
-        toast.success(data.message);
-        <Navigate to="/login" replace />;
-      }
+      // if (data.success) {
+      //   toast.success(data.message);
+      //   <Navigate to="/login" replace />;
+      // }
     } catch (error) {
       console.log(`Error while register user!! ${error}`);
     }
@@ -347,6 +396,40 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <div className="avatar-wrapper donation-image-wrapper">
+                <Button variant="contained" component="label">
+                  <CloudUploadIcon style={{ marginRight: "1px" }} /> Upload
+                  Photo
+                  <input
+                    type="file"
+                    hidden
+                    name="headOfFamilyAvatar"
+                    onChange={(e) =>
+                      setHeadOfFamily((prevState) => ({
+                        ...prevState,
+                        headOfFamilyAvatar: e.target.files[0],
+                      }))
+                    }
+                    // onChange={(e) => setAvatar(e.target.files[0])}
+                  />
+                </Button>
+                {headOfFamily.headOfFamilyAvatar && (
+                  <div
+                    className="donation-image"
+                    onClick={() =>
+                      setHeadOfFamily((prevState) => ({
+                        ...prevState,
+                        headOfFamilyAvatar: "",
+                      }))
+                    }
+                  >
+                    <img
+                      alt="donation image"
+                      src={URL.createObjectURL(headOfFamily.headOfFamilyAvatar)}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -471,6 +554,40 @@ const Register = () => {
                   }}
                 />
               </LocalizationProvider>
+              <div className="avatar-wrapper donation-image-wrapper">
+                <Button variant="contained" component="label">
+                  <CloudUploadIcon style={{ marginRight: "1px" }} /> Upload
+                  Photo
+                  <input
+                    type="file"
+                    hidden
+                    name="wifeAvatar"
+                    onChange={(e) =>
+                      setWifeDetails((prevState) => ({
+                        ...prevState,
+                        wifeAvatar: e.target.files[0],
+                      }))
+                    }
+                    // onChange={(e) => setAvatar(e.target.files[0])}
+                  />
+                </Button>
+                {wifeDetails.wifeAvatar && (
+                  <div
+                    className="donation-image"
+                    onClick={() =>
+                      setWifeDetails((prevState) => ({
+                        ...prevState,
+                        wifeAvatar: "",
+                      }))
+                    }
+                  >
+                    <img
+                      alt="donation image"
+                      src={URL.createObjectURL(wifeDetails.wifeAvatar)}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -479,6 +596,7 @@ const Register = () => {
             <label>Son / Daughter Details*</label>
             <div className="son-details-wrapper">
               {sonDetails.map((son, index) => {
+                console.log(son);
                 return (
                   <div className="son-daughter-details" key={index}>
                     <div className="son-daughter-wrapper">
@@ -623,6 +741,40 @@ const Register = () => {
                             }
                           />
                         </LocalizationProvider>
+                        <div className="avatar-wrapper donation-image-wrapper">
+                          <Button variant="contained" component="label">
+                            <CloudUploadIcon style={{ marginRight: "1px" }} />{" "}
+                            Upload Photo
+                            <input
+                              type="file"
+                              hidden
+                              name="sonAvatar"
+                              onChange={(e) =>
+                                handleSonDetailChange(
+                                  index,
+                                  "sonAvatar",
+                                  e.target.files[0]
+                                )
+                              }
+                              // onChange={(e) => setAvatar(e.target.files[0])}
+                            />
+                          </Button>
+                          {sonDetails[index].sonAvatar && (
+                            <div
+                              className="donation-image"
+                              onClick={() =>
+                                handleSonDetailChange(index, "sonAvatar", "")
+                              }
+                            >
+                              <img
+                                alt="donation image"
+                                src={URL.createObjectURL(
+                                  sonDetails[index].sonAvatar
+                                )}
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -782,6 +934,44 @@ const Register = () => {
                             }
                           />
                         </LocalizationProvider>
+                        <div className="avatar-wrapper donation-image-wrapper">
+                          <Button variant="contained" component="label">
+                            <CloudUploadIcon style={{ marginRight: "1px" }} />{" "}
+                            Upload Photo
+                            <input
+                              type="file"
+                              hidden
+                              name="sonAvatar"
+                              onChange={(e) =>
+                                handleDaughterDetailChange(
+                                  index,
+                                  "daughterAvatar",
+                                  e.target.files[0]
+                                )
+                              }
+                              // onChange={(e) => setAvatar(e.target.files[0])}
+                            />
+                          </Button>
+                          {daughterDetails[index].daughterAvatar && (
+                            <div
+                              className="donation-image"
+                              onClick={() =>
+                                handleDaughterDetailChange(
+                                  index,
+                                  "daughterAvatar",
+                                  ""
+                                )
+                              }
+                            >
+                              <img
+                                alt="donation image"
+                                src={URL.createObjectURL(
+                                  daughterDetails[index].daughterAvatar
+                                )}
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

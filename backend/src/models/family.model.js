@@ -19,6 +19,7 @@ const familySchema = new Schema(
       bloodGroup: { type: String },
       dob: { type: String },
       address: { type: String },
+      headOfFamilyAvatar: { type: String, required: true },
     },
     wifeDetails: {
       surname: { type: String, required: true },
@@ -30,6 +31,7 @@ const familySchema = new Schema(
       bloodGroup: { type: String },
       dob: { type: String },
       address: { type: String },
+      wifeAvatar: { type: String, required: true },
     },
     sonDetails: [
       {
@@ -90,7 +92,7 @@ familySchema.methods.generateAccessToken = function () {
     }
   );
 };
- 
+
 familySchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
