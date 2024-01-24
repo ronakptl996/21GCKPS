@@ -1,3 +1,92 @@
 .profile {
   padding: 100px 150px;
 }
+
+/* headOfFamily */
+.family-details {
+  padding: 20px;
+  border: 1px solid #0000003b;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.family-details h3 {
+  font-size: 20px;
+  text-align: center;
+}
+
+.headOfFamily-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  margin: 15px 0;
+}
+
+.headOfFamily-avatar {
+  width: 100%;
+  height: 250px;
+  padding: 0 10px;
+  display: grid;
+  place-items: center;
+}
+
+.headOfFamily-avatar img {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  height: 100%;
+  width: 12rem;
+  border-radius: 50%;
+}
+
+.headOfFamily-input-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 10px 0;
+}
+
+.changeAvatar button {
+  padding: 10px 20px;
+  border: none;
+  background: rgb(233, 135, 0);
+  color: #fff;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.changeAvatar button:hover {
+  background: rgb(200, 117, 0);
+}
+
+@media (min-width: 850px) and (max-width: 1000px) {
+  .profile {
+    padding: 100px 100px;
+  }
+}
+
+@media (min-width: 550px) and (max-width: 850px) {
+  .profile {
+    padding: 100px 50px;
+  }
+  .headOfFamily-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 550px) {
+  .profile {
+    padding: 100px 20px;
+  }
+  .headOfFamily-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .headOfFamily-input-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .headOfFamily-input-wrapper
+    .css-1u3bzj6-MuiFormControl-root-MuiTextField-root,
+  .css-1nrlq1o-MuiFormControl-root {
+    margin: 10px 0 !important;
+  }
+}
