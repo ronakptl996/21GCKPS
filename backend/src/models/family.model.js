@@ -44,6 +44,7 @@ const familySchema = new Schema(
         bloodGroup: { type: String },
         dob: { type: String },
         address: { type: String },
+        sonAvatar: { type: String },
       },
     ],
     daughterDetails: [
@@ -57,6 +58,7 @@ const familySchema = new Schema(
         bloodGroup: { type: String },
         dob: { type: String },
         address: { type: String },
+        daughterAvatar: { type: String },
       },
     ],
     password: { type: String, required: true },

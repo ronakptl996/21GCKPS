@@ -13,10 +13,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
 
 const Register = () => {
+  const navigate = useNavigate();
   // Head of family
   const [password, setPassword] = useState("");
   const [headOfFamily, setHeadOfFamily] = useState({
@@ -30,6 +31,7 @@ const Register = () => {
     bloodGroup: "o+",
     dob: "",
     address: "",
+    headOfFamilyAvatar: "",
   });
 
   const [wifeDetails, setWifeDetails] = useState({
@@ -41,6 +43,7 @@ const Register = () => {
     education: "",
     bloodGroup: "o+",
     dob: "",
+    wifeAvatar: "",
   });
 
   // Add Multiple Son Details
@@ -54,6 +57,7 @@ const Register = () => {
       education: "",
       bloodGroup: "o+",
       dob: "",
+      sonAvatar: "",
     },
   ]);
 
@@ -67,14 +71,9 @@ const Register = () => {
       education: "",
       bloodGroup: "o+",
       dob: "",
+      daughterAvatar: "",
     },
   ]);
-
-  // IMAGES
-  const [headOfFamilyAvatar, setHeadOfFamilyAvatar] = useState(null);
-  const [wifeAvatar, setWifeAvatar] = useState(null);
-  const [sonAvatars, setSonAvatars] = useState([]);
-  const [daughterAvatars, setDaughterAvatars] = useState([]);
 
   const handleFileChange = (event, setAvatarFunction) => {
     const file = event.target.files[0];
@@ -83,19 +82,19 @@ const Register = () => {
 
   const handleSonFileChange = (event, index) => {
     const file = event.target.files[0];
-    setSonAvatars((prevAvatars) => {
-      const newAvatars = [...prevAvatars];
-      newAvatars[index] = file;
-      return newAvatars;
+    setSonDetails((prevDetails) => {
+      const newDetails = [...prevDetails];
+      newDetails[index].sonAvatar = file;
+      return newDetails;
     });
   };
 
   const handleDaughterFileChange = (event, index) => {
     const file = event.target.files[0];
-    setDaughterAvatars((prevAvatars) => {
-      const newAvatars = [...prevAvatars];
-      newAvatars[index] = file;
-      return newAvatars;
+    setDaughterDetails((prevDetails) => {
+      const newDetails = [...prevDetails];
+      newDetails[index].daughterAvatar = file;
+      return newDetails;
     });
   };
 
@@ -127,9 +126,9 @@ const Register = () => {
         education: "",
         bloodGroup: "o+",
         dob: "",
+        sonAvatar: "",
       },
     ]);
-    setSonAvatars((prevState) => [...prevState, []]);
   };
 
   const addDaughterDetailHandler = () => {
@@ -173,9 +172,6 @@ const Register = () => {
     }));
   };
 
-  // Head of family change avatar
-  const changeHeadOfFamilyAvatar = () => {};
-
   // Register Data
   const handleSubmit = async () => {
     try {
@@ -190,45 +186,74 @@ const Register = () => {
         daughterDetails
       );
 
-      // const registerData = {
-      //   password,
-      //   headOfFamily,
-      //   wifeDetails,
-      //   sonDetails,
-      //   daughterDetails,
-      // };
-
+      // Use FormData to append all avatars
       const formData = new FormData();
 
-      formData.append("headOfFamilyData", JSON.stringify(headOfFamily));
-      formData.append("wifeDetailsData", JSON.stringify(wifeDetails));
-      formData.append("password", JSON.stringify(password));
+      // Append headOfFamily avatar
+      formData.append("headOfFamilyAvatar", headOfFamily.headOfFamilyAvatar);
+
+      // Append wifeDetails avatar
+      formData.append("wifeAvatar", wifeDetails.wifeAvatar);
+
+      // Append sonDetails avatars
+      sonDetails.forEach((details, index) => {
+        formData.append(`sonAvatars[${index}]`, details.sonAvatar);
+      });
+
+      // Append daughterDetails avatars
+      daughterDetails.forEach((details, index) => {
+        formData.append(`daughterAvatars[${index}]`, details.daughterAvatar);
+      });
+
+      formData.append(`password`, password);
+      // Append other non-avatar data
+      Object.entries(headOfFamily).forEach(([key, value]) => {
+        if (key !== "headOfFamilyAvatar") {
+          formData.append(`headOfFamily[${key}]`, value);
+        }
+      });
+
+      Object.entries(wifeDetails).forEach(([key, value]) => {
+        if (key !== "wifeAvatar") {
+          formData.append(`wifeDetails[${key}]`, value);
+        }
+      });
 
       sonDetails.forEach((details, index) => {
-        formData.append(`sonDetails[${index}]`, JSON.stringify(details));
+        Object.entries(details).forEach(([key, value]) => {
+          if (key !== "sonAvatar") {
+            formData.append(`sonDetails[${index}][${key}]`, value);
+          }
+        });
       });
 
       daughterDetails.forEach((details, index) => {
-        formData.append(`daughterDetails[${index}]`, JSON.stringify(details));
+        Object.entries(details).forEach(([key, value]) => {
+          if (key !== "daughterAvatar") {
+            formData.append(`daughterDetails[${index}][${key}]`, value);
+          }
+        });
       });
 
       let response = await fetch("/api/users/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: formData,
       });
 
       let data = await response.json();
       console.log(data);
 
-      // if (data.success) {
-      //   toast.success(data.message);
-      //   <Navigate to="/login" replace />;
-      // }
+      if (data.statusCode == 401) {
+        toast.error(data.message);
+        return;
+      }
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/login");
+      }
     } catch (error) {
       console.log(`Error while register user!! ${error}`);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -405,10 +430,12 @@ const Register = () => {
                     hidden
                     name="headOfFamilyAvatar"
                     onChange={(e) =>
-                      setHeadOfFamily((prevState) => ({
-                        ...prevState,
-                        headOfFamilyAvatar: e.target.files[0],
-                      }))
+                      handleFileChange(e, (file) =>
+                        setHeadOfFamily({
+                          ...headOfFamily,
+                          headOfFamilyAvatar: file,
+                        })
+                      )
                     }
                     // onChange={(e) => setAvatar(e.target.files[0])}
                   />
@@ -563,10 +590,9 @@ const Register = () => {
                     hidden
                     name="wifeAvatar"
                     onChange={(e) =>
-                      setWifeDetails((prevState) => ({
-                        ...prevState,
-                        wifeAvatar: e.target.files[0],
-                      }))
+                      handleFileChange(e, (file) =>
+                        setWifeDetails({ ...wifeDetails, wifeAvatar: file })
+                      )
                     }
                     // onChange={(e) => setAvatar(e.target.files[0])}
                   />
@@ -596,7 +622,6 @@ const Register = () => {
             <label>Son / Daughter Details*</label>
             <div className="son-details-wrapper">
               {sonDetails.map((son, index) => {
-                console.log(son);
                 return (
                   <div className="son-daughter-details" key={index}>
                     <div className="son-daughter-wrapper">
@@ -749,13 +774,7 @@ const Register = () => {
                               type="file"
                               hidden
                               name="sonAvatar"
-                              onChange={(e) =>
-                                handleSonDetailChange(
-                                  index,
-                                  "sonAvatar",
-                                  e.target.files[0]
-                                )
-                              }
+                              onChange={(e) => handleSonFileChange(e, index)}
                               // onChange={(e) => setAvatar(e.target.files[0])}
                             />
                           </Button>
@@ -943,11 +962,7 @@ const Register = () => {
                               hidden
                               name="sonAvatar"
                               onChange={(e) =>
-                                handleDaughterDetailChange(
-                                  index,
-                                  "daughterAvatar",
-                                  e.target.files[0]
-                                )
+                                handleDaughterFileChange(e, index)
                               }
                               // onChange={(e) => setAvatar(e.target.files[0])}
                             />
