@@ -23,7 +23,7 @@
 
 .headOfFamily-avatar {
   width: 100%;
-  height: 250px;
+  height: 230px;
   padding: 0 10px;
   display: grid;
   place-items: center;
@@ -33,9 +33,10 @@
   display: block;
   object-fit: cover;
   object-position: center;
-  height: 100%;
+  height: 12rem;
   width: 12rem;
   border-radius: 50%;
+  margin-bottom: 10px;
 }
 
 .headOfFamily-input-wrapper {
