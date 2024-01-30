@@ -229,4 +229,32 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerFamily, loginUser, logoutUser, getUserDetails, getUser };
+const findUserWithPhoneNumber = asyncHandler(async (req, res) => {
+  try {
+    const { phone } = req.params;
+    const userDetails = await Family.findOne({
+      "headOfFamily.contact": phone,
+    }).select("-password -refreshToken");
+
+    if (!userDetails) {
+      return res
+        .status(500)
+        .json(new ApiResponse(500, "", "User details not found!"));
+    }
+    
+    return res
+      .status(200)
+      .json(new ApiResponse(200, { userId: userDetails._id }, ""));
+  } catch (error) {
+    throw new ApiError(500, "Error while fetching User details");
+  }
+});
+
+export {
+  registerFamily,
+  loginUser,
+  logoutUser,
+  getUserDetails,
+  getUser,
+  findUserWithPhoneNumber,
+};

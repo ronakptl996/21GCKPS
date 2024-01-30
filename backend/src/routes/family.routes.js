@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  findUserWithPhoneNumber,
   getUser,
   getUserDetails,
   loginUser,
@@ -15,7 +16,7 @@ router.route("/").get(verifyJwt, getUserDetails);
 router.route("/profile/:id").get(verifyJwt, getUser);
 router.route("/register").post(upload.any(), registerFamily);
 router.route("/login").post(loginUser);
-
+router.route("/:phone").post(findUserWithPhoneNumber);
 router.route("/logout").post(verifyJwt, logoutUser);
 
 export default router;
