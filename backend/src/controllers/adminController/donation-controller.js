@@ -2,42 +2,52 @@ import { Donation } from "../../models/donation.model.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
+import { uploadImageToAWS } from "../../utils/awsService.js";
 import { uploadOnCloudinary } from "../../utils/cloudinary.js";
 
 const addDonation = asyncHandler(async (req, res) => {
   const { name, totalQty, contact, description, price } = req.body;
-  const donationImage = req.file?.path;
+  const donationImage = req.file;
+
+  console.log("DONATION IMAGE", donationImage);
 
   if (!donationImage) {
     throw new ApiError(400, "Donation image file is required");
   }
-
-  const uploadImage = await uploadOnCloudinary(donationImage);
-
-  if (!uploadImage) {
-    throw new ApiError(400, "Error, while uploading image");
+  try {
+    const result = await uploadImageToAWS(req.file);
+    console.log(result);
+  } catch (error) {
+    console.log("=====addDonation Error", error);
   }
 
-  const donationData = await Donation.create({
-    name,
-    totalQty,
-    contact,
-    description,
-    price,
-    image: uploadImage.url,
-  });
+  // const uploadImage = await s3UploadV2(donationImage);
 
-  const createdData = await Donation.findById(donationData._id);
+  // console.log(uploadImage);
+  // if (!uploadImage) {
+  //   throw new ApiError(400, "Error, while uploading image");
+  // }
 
-  if (!createdData) {
-    throw new ApiError(500, "Something went wrong while add donation details");
-  }
+  // const donationData = await Donation.create({
+  //   name,
+  //   totalQty,
+  //   contact,
+  //   description,
+  //   price,
+  //   image: uploadImage.url,
+  // });
 
-  return res
-    .status(201)
-    .json(
-      new ApiResponse(201, createdData, "Donation detail add successfully")
-    );
+  // const createdData = await Donation.findById(donationData._id);
+
+  // if (!createdData) {
+  //   throw new ApiError(500, "Something went wrong while add donation details");
+  // }
+
+  // return res
+  //   .status(201)
+  //   .json(
+  //     new ApiResponse(201, createdData, "Donation detail add successfully")
+  //   );
 });
 
 const getDonationDetails = asyncHandler(async (req, res) => {

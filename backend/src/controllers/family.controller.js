@@ -168,7 +168,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  // console.log("req.user._id ::>>", req.user._id);
+  console.log("req.user._id ::>>", req.user._id);
   await Family.findByIdAndUpdate(
     req.user._id,
     {
@@ -241,7 +241,7 @@ const findUserWithPhoneNumber = asyncHandler(async (req, res) => {
         .status(500)
         .json(new ApiResponse(500, "", "User details not found!"));
     }
-    
+
     return res
       .status(200)
       .json(new ApiResponse(200, { userId: userDetails._id }, ""));

@@ -9,4 +9,8 @@ const storage = multer.diskStorage({
   },
 });
 
+// const storageMemory = multer.memoryStorage();
+const awsUploadMulter = multer({ dest: "public/upload" });
 export const upload = multer({ storage });
+
+export { awsUploadMulter };

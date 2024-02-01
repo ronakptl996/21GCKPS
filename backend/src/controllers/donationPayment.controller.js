@@ -8,7 +8,6 @@ import { generatePdfAndMail } from "../utils/generatePdf.js";
 import { ApiError } from "../utils/ApiError.js";
 
 const checkout = asyncHandler(async (req, res) => {
-  //   console.log(req.body);
   const { headOfFamily } = req.user;
 
   const userName = `${headOfFamily.surname} ${headOfFamily.firstname} ${headOfFamily.secondname}`;
@@ -16,31 +15,35 @@ const checkout = asyncHandler(async (req, res) => {
   const userContact = headOfFamily.contact;
 
   const options = {
-    amount: Number(req.body.amount * 100),
+    amount: Math.round(req.body.amount * 100),
     currency: "INR",
   };
 
-  const order = await razorPayInstance.orders.create(options);
+  try {
+    const order = await razorPayInstance.orders.create(options);
 
-  const donor = await Donor.create({
-    amount: req.body.amount,
-    donateQty: req.body.donateQty,
-    donateName: req.body.donationName,
-    orderId: order.id,
-    donorName: userName,
-    donorEmail: userEmail,
-    donorContact: userContact,
-  });
+    const donor = await Donor.create({
+      amount: req.body.amount,
+      donateQty: req.body.donateQty,
+      donateName: req.body.donationName,
+      orderId: order.id,
+      donorName: userName,
+      donorEmail: userEmail,
+      donorContact: userContact,
+    });
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { userName, userEmail, userContact, order, donorId: donor._id },
-        ""
-      )
-    );
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { userName, userEmail, userContact, order, donorId: donor._id },
+          ""
+        )
+      );
+  } catch (error) {
+    console.log("Donation catch route ERROR :", error);
+  }
 });
 
 const verifyPayment = asyncHandler(async (req, res) => {
