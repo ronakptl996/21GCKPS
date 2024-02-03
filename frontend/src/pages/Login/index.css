@@ -25,6 +25,11 @@ span > a {
   color: #a7732b;
 }
 
+span.register-link {
+  display: block;
+  margin: 15px 0 10px 0;
+}
+
 @media (min-width: 320px) and (max-width: 625px) {
   .login {
     width: 90% !important;

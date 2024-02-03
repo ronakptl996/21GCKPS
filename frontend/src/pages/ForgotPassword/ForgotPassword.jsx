@@ -107,7 +107,7 @@ const ForgotPassword = () => {
                 <Button onClick={onOTPVerify}>Verify OTP</Button>
               </div>
             ) : (
-              <div className="job-details">
+              <div className="job-details forgot-mobile">
                 <TextField
                   style={{ margin: "10px 0" }}
                   fullWidth

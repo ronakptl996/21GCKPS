@@ -72,7 +72,7 @@ const Navbar = () => {
         },
       });
 
-      let data = await response.json();
+      const data = await response.json();
 
       if (data.success) {
         toast.success(response.message);

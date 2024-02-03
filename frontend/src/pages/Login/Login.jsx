@@ -94,7 +94,7 @@ const Login = () => {
                   Login
                 </Button>
 
-                <span>
+                <span className="register-link">
                   Haven't any account? <Link to="/register">Sign Up</Link>{" "}
                 </span>
               </div>
