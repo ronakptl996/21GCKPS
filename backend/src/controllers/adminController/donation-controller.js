@@ -1,25 +1,91 @@
+import fs from "fs";
+import { Readable } from "stream";
 import { Donation } from "../../models/donation.model.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { uploadImageToAWS } from "../../utils/awsService.js";
+import { generateURLToUpload } from "../../utils/awsService.js";
 import { uploadOnCloudinary } from "../../utils/cloudinary.js";
+import { v4 as uuidv4 } from "uuid";
 
 const addDonation = asyncHandler(async (req, res) => {
   const { name, totalQty, contact, description, price } = req.body;
   const donationImage = req.file;
 
+  // console.log("==================BUFFER DATA============", req.file.buffer);
   console.log("DONATION IMAGE", donationImage);
 
   if (!donationImage) {
     throw new ApiError(400, "Donation image file is required");
   }
-  try {
-    const result = await uploadImageToAWS(req.file);
-    console.log(result);
-  } catch (error) {
-    console.log("=====addDonation Error", error);
+
+  // let binaryData;
+  // // Binary Data for Image
+  // fs.readFile(donationImage.path, "binary", (err, data) => {
+  //   if (err) {
+  //     throw new ApiError(500, "Unable to read file data");
+  //     return;
+  //   }
+  //   binaryData = data;
+  // });
+
+  // try {
+  //   const result = await generateURLToUpload(donationImage);
+  //   console.log("UPLOADED FILE >>>", result);
+  // } catch (error) {
+  //   console.log("ERROR >>>", error);
+  // }
+
+  const fileName = `${uuidv4()}-${donationImage.originalname}`;
+
+  console.log("==================fileName============", fileName);
+
+  // Generate URL for upload image to AWS
+  async function init() {
+    return await generateURLToUpload(
+      fileName,
+      donationImage.mimetype,
+      donationImage.buffer
+    );
   }
+  const uploadEndpoint = await init();
+
+  // const fileStream = new Readable();
+  // fileStream.push(donationImage.buffer);
+  // fileStream.push(null);
+
+  // const fileBlob = new Blob([donationImage.buffer], {
+  //   type: donationImage.mimetype,
+  // });
+
+  const response = await fetch(uploadEndpoint, {
+    method: "PUT",
+    headers: {
+      "Content-Type": donationImage.mimetype,
+    },
+    body: donationImage.buffer,
+  });
+
+  console.log("UPLOADED >>>>", response);
+  // +++++++++++++++++++++++++++++++++++++++++++++++
+
+  // Create a Blob from the binary data
+  // const blobData = new Blob([binaryData], { type: donationImage.mimetype });
+  // const formData = new FormData();
+  // formData.append("file", blobData, { filename: donationImage.filename });
+
+  // axios
+  //   .post(uploadEndpoint, formData, {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   })
+  //   .then((response) => {
+  //     console.log("Upload successful:", response.data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error uploading file:", error);
+  //   });
 
   // const uploadImage = await s3UploadV2(donationImage);
 

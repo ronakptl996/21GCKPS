@@ -9,8 +9,20 @@ const storage = multer.diskStorage({
   },
 });
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.split("/")[0] === "image") {
+    cb(null, true);
+  } else {
+    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
+  }
+};
+
 // const storageMemory = multer.memoryStorage();
-const awsUploadMulter = multer({ dest: "public/upload" });
+const awsUploadMulter = multer({
+  dest: "public/upload",
+  storage: multer.memoryStorage(),
+  fileFilter,
+});
 export const upload = multer({ storage });
 
 export { awsUploadMulter };
