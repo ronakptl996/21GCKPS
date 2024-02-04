@@ -1,27 +1,32 @@
-import AWS from "aws-sdk";
+import {
+  S3Client,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from "dotenv";
-import fs from "fs";
 
 dotenv.config({
   path: ".env",
 });
 
-const s3 = new AWS.S3({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+const s3Client = new S3Client({
+  region: process.env.AWS_S3_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_S3_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+  },
 });
 
-const uploadImageToAWS = (file) => {
-  const fileStream = fs.createReadStream(file.path);
+async function generateURLToUpload(filename, contentType, buffer) {
+  const command = new PutObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: `uploads/${filename}`,
+    ContentType: contentType,
+    Body: buffer,
+  });
 
-  const uploadParam = {
-    Bucket: process.env.AWS_REGION,
-    Body: fileStream,
-    Key: file.filename,
-  };
+  const url = await getSignedUrl(s3Client, command);
+  return url;
+}
 
-  return s3.upload(uploadParam).promise();
-};
-
-export { uploadImageToAWS };
+export { generateURLToUpload };
