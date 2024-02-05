@@ -3,9 +3,11 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { generateURLToUpload } from "../utils/awsService.js";
+import { v4 as uuidv4 } from "uuid";
 
 const addMatrimonial = asyncHandler(async (req, res) => {
-  const matrimonialImage = req.file?.path;
+  const matrimonialImage = req.file;
   if (!matrimonialImage) {
     throw new ApiError(400, "Matrimonial image is required");
   }
@@ -13,11 +15,41 @@ const addMatrimonial = asyncHandler(async (req, res) => {
   let { data } = req.body;
   let { profileDetail, sonDetails } = JSON.parse(data);
 
-  // const uploadImage = await uploadOnCloudinary(matrimonialImage);
+  const existedProfile = await Matrimonial.findOne({
+    contact: profileDetail.contact,
+  });
 
-  // if (!uploadImage) {
-  //   throw new ApiError(400, "Error, while uploading image");
-  // }
+  if (existedProfile) {
+    return res
+      .status(401)
+      .json(new ApiResponse(401, [], "Profile with contact already exists"));
+  }
+
+  const fileName = `${uuidv4()}-${matrimonialImage.originalname}`;
+
+  // Generate URL for upload image to AWS
+  async function init() {
+    return await generateURLToUpload(
+      fileName,
+      matrimonialImage.mimetype,
+      matrimonialImage.buffer
+    );
+  }
+  const uploadEndpoint = await init();
+
+  const response = await fetch(uploadEndpoint, {
+    method: "PUT",
+    headers: {
+      "Content-Type": matrimonialImage.mimetype,
+    },
+    body: matrimonialImage.buffer,
+  });
+
+  if (response && response.status != 200) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, "", "Error while uploading image"));
+  }
 
   const matrimonialData = await Matrimonial.create({
     fullName: profileDetail.fullName,
@@ -38,22 +70,19 @@ const addMatrimonial = asyncHandler(async (req, res) => {
     hobby: profileDetail.hobby,
     yourSelf: profileDetail.yourSelf,
     brotherSisterDetails: sonDetails,
-    photo: "uploadImage.url",
+    photo: process.env.AWS_S3_URL + fileName,
   });
   // console.log("matrimonialData ::", matrimonialData);
 
   const createdData = await Matrimonial.findById(matrimonialData._id);
 
   if (!createdData) {
-    throw new ApiError(
-      500,
-      "Something went wrong while add matrimonial details"
-    );
+    throw new ApiError(500, "Error while add matrimonial details");
   }
 
   return res
     .status(201)
-    .json(new ApiResponse(201, createdData, "Matrimonial profile created"));
+    .json(new ApiResponse(201, createdData, "Matrimonial profile created!"));
 });
 
 const getMatrimonial = asyncHandler(async (req, res) => {

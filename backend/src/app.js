@@ -36,13 +36,13 @@ app.use("/api/donor", donorRoute);
 // Job Route
 app.use("/api/job", jobRoute);
 
-// Handle Multer Error
-app.use((error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
-    if (error.code === "LIMIT_UNEXPECTED_FILE") {
-      throw new ApiError(400, "File must be an image");
-    }
-  }
-});
+// // Handle Multer Error
+// app.use((error, req, res, next) => {
+//   if (error instanceof multer.MulterError) {
+//     if (error.code === "LIMIT_UNEXPECTED_FILE") {
+//       throw new ApiError(400, "File must be an image");
+//     }
+//   }
+// });
 
 export { app };

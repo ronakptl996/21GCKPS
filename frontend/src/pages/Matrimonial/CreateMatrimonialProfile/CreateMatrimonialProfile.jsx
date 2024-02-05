@@ -144,7 +144,7 @@ const CreateMatrimonialProfile = () => {
       });
 
       let data = await response.json();
-      console.log(data.success);
+      console.log(data);
       if (data.success) {
         toast.success(data.message);
         setProfileDetail({
@@ -176,6 +176,8 @@ const CreateMatrimonialProfile = () => {
           },
         ]);
         setMatrimonialImage("");
+      } else if (!data.success && data.statusCode >= 400) {
+        toast.error(data.message);
       } else {
         toast.error("Error, while creating profile");
       }

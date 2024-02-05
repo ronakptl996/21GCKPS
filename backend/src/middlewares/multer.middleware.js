@@ -1,4 +1,5 @@
 import multer from "multer";
+import { ApiError } from "../utils/ApiError.js";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -13,7 +14,7 @@ const fileFilter = (req, file, cb) => {
   if (file.mimetype.split("/")[0] === "image") {
     cb(null, true);
   } else {
-    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
+    throw new ApiError(400, "File must be an image");
   }
 };
 
