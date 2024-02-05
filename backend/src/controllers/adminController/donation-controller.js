@@ -3,7 +3,6 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { generateURLToUpload } from "../../utils/awsService.js";
-import { uploadOnCloudinary } from "../../utils/cloudinary.js";
 import { v4 as uuidv4 } from "uuid";
 
 const addDonation = asyncHandler(async (req, res) => {

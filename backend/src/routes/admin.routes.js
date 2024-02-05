@@ -31,10 +31,14 @@ const router = Router();
 // Committee Route
 router
   .route("/add-committee")
-  .post(verifyJwtAdmin, upload.single("avatar"), addCommittee);
+  .post(verifyJwtAdmin, awsUploadMulter.single("avatar"), addCommittee);
 router
   .route("/edit-committee-avatar")
-  .post(verifyJwtAdmin, upload.single("avatar"), editCommitteeUserAvatar);
+  .post(
+    verifyJwtAdmin,
+    awsUploadMulter.single("avatar"),
+    editCommitteeUserAvatar
+  );
 router.route("/committee").get(verifyJwt, getCommittee);
 router.route("/committee/:committeeName").get(verifyJwt, getSpecificCommittee);
 router.route("/edit-committee").patch(verifyJwtAdmin, editCommitteeDetail);

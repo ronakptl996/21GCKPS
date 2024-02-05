@@ -3,19 +3,41 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { Committee } from "../../models/committee.model.js";
 import { uploadOnCloudinary } from "../../utils/cloudinary.js";
+import { generateURLToUpload } from "../../utils/awsService.js";
+import { v4 as uuidv4 } from "uuid";
 
 const addCommittee = asyncHandler(async (req, res) => {
   const { name, address, mobile, committeeName } = req.body;
-  const avatarLocalPath = req.file?.path;
+  const avatarLocalImage = req.file;
 
-  if (!avatarLocalPath) {
+  if (!avatarLocalImage) {
     throw new ApiError(400, "Avatar file is required");
   }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  const fileName = `${uuidv4()}-${avatarLocalImage.originalname}`;
 
-  if (!avatar) {
-    throw new ApiError(400, "Avatar file is required");
+  // Generate URL for upload image to AWS
+  async function init() {
+    return await generateURLToUpload(
+      fileName,
+      avatarLocalImage.mimetype,
+      avatarLocalImage.buffer
+    );
+  }
+  const uploadEndpoint = await init();
+
+  const response = await fetch(uploadEndpoint, {
+    method: "PUT",
+    headers: {
+      "Content-Type": avatarLocalImage.mimetype,
+    },
+    body: avatarLocalImage.buffer,
+  });
+
+  if (response && response.status != 200) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, "", "Error while uploading image"));
   }
 
   const committeeDetails = await Committee.create({
@@ -23,7 +45,7 @@ const addCommittee = asyncHandler(async (req, res) => {
     address,
     mobile,
     committeeName,
-    avatar: avatar.url,
+    avatar: process.env.AWS_S3_URL + fileName,
   });
 
   const createdData = await Committee.findById(committeeDetails._id);
@@ -41,10 +63,9 @@ const addCommittee = asyncHandler(async (req, res) => {
 
 const editCommitteeUserAvatar = asyncHandler(async (req, res) => {
   const { userId } = req.body;
-  const avatarLocalPath = req.file?.path;
+  const avatarLocalImage = req.file;
 
-  console.log("avatarLocalPath ::", avatarLocalPath);
-  if (!avatarLocalPath) {
+  if (!avatarLocalImage) {
     throw new ApiError(400, "Avatar file is required");
   }
 
@@ -54,17 +75,37 @@ const editCommitteeUserAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User not found");
   }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  const fileName = `${uuidv4()}-${avatarLocalImage.originalname}`;
 
-  if (!avatar) {
-    throw new ApiError(400, "Avatar file is required");
+  // Generate URL for upload image to AWS
+  async function init() {
+    return await generateURLToUpload(
+      fileName,
+      avatarLocalImage.mimetype,
+      avatarLocalImage.buffer
+    );
+  }
+  const uploadEndpoint = await init();
+
+  const response = await fetch(uploadEndpoint, {
+    method: "PUT",
+    headers: {
+      "Content-Type": avatarLocalImage.mimetype,
+    },
+    body: avatarLocalImage.buffer,
+  });
+
+  if (response && response.status != 200) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, "", "Error while uploading image"));
   }
 
   const updatedData = await Committee.findByIdAndUpdate(
     userId,
     {
       $set: {
-        avatar: avatar.url,
+        avatar: process.env.AWS_S3_URL + fileName,
       },
     },
     { new: true }
