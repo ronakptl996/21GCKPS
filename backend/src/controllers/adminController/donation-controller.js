@@ -1,5 +1,3 @@
-import fs from "fs";
-import { Readable } from "stream";
 import { Donation } from "../../models/donation.model.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
@@ -12,33 +10,11 @@ const addDonation = asyncHandler(async (req, res) => {
   const { name, totalQty, contact, description, price } = req.body;
   const donationImage = req.file;
 
-  // console.log("==================BUFFER DATA============", req.file.buffer);
-  console.log("DONATION IMAGE", donationImage);
-
   if (!donationImage) {
     throw new ApiError(400, "Donation image file is required");
   }
 
-  // let binaryData;
-  // // Binary Data for Image
-  // fs.readFile(donationImage.path, "binary", (err, data) => {
-  //   if (err) {
-  //     throw new ApiError(500, "Unable to read file data");
-  //     return;
-  //   }
-  //   binaryData = data;
-  // });
-
-  // try {
-  //   const result = await generateURLToUpload(donationImage);
-  //   console.log("UPLOADED FILE >>>", result);
-  // } catch (error) {
-  //   console.log("ERROR >>>", error);
-  // }
-
   const fileName = `${uuidv4()}-${donationImage.originalname}`;
-
-  console.log("==================fileName============", fileName);
 
   // Generate URL for upload image to AWS
   async function init() {
@@ -50,14 +26,6 @@ const addDonation = asyncHandler(async (req, res) => {
   }
   const uploadEndpoint = await init();
 
-  // const fileStream = new Readable();
-  // fileStream.push(donationImage.buffer);
-  // fileStream.push(null);
-
-  // const fileBlob = new Blob([donationImage.buffer], {
-  //   type: donationImage.mimetype,
-  // });
-
   const response = await fetch(uploadEndpoint, {
     method: "PUT",
     headers: {
@@ -66,54 +34,32 @@ const addDonation = asyncHandler(async (req, res) => {
     body: donationImage.buffer,
   });
 
-  console.log("UPLOADED >>>>", response);
-  // +++++++++++++++++++++++++++++++++++++++++++++++
+  if (response && response.status != 200) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, "", "Error while uploading image"));
+  }
 
-  // Create a Blob from the binary data
-  // const blobData = new Blob([binaryData], { type: donationImage.mimetype });
-  // const formData = new FormData();
-  // formData.append("file", blobData, { filename: donationImage.filename });
+  const donationData = await Donation.create({
+    name,
+    totalQty,
+    contact,
+    description,
+    price,
+    image: process.env.AWS_S3_URL + fileName,
+  });
 
-  // axios
-  //   .post(uploadEndpoint, formData, {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //   })
-  //   .then((response) => {
-  //     console.log("Upload successful:", response.data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error uploading file:", error);
-  //   });
+  const createdData = await Donation.findById(donationData._id);
 
-  // const uploadImage = await s3UploadV2(donationImage);
+  if (!createdData) {
+    throw new ApiError(500, "Something went wrong while add donation details");
+  }
 
-  // console.log(uploadImage);
-  // if (!uploadImage) {
-  //   throw new ApiError(400, "Error, while uploading image");
-  // }
-
-  // const donationData = await Donation.create({
-  //   name,
-  //   totalQty,
-  //   contact,
-  //   description,
-  //   price,
-  //   image: uploadImage.url,
-  // });
-
-  // const createdData = await Donation.findById(donationData._id);
-
-  // if (!createdData) {
-  //   throw new ApiError(500, "Something went wrong while add donation details");
-  // }
-
-  // return res
-  //   .status(201)
-  //   .json(
-  //     new ApiResponse(201, createdData, "Donation detail add successfully")
-  //   );
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(201, createdData, "Donation detail add successfully")
+    );
 });
 
 const getDonationDetails = asyncHandler(async (req, res) => {
@@ -128,10 +74,9 @@ const getDonationDetails = asyncHandler(async (req, res) => {
 
 const editDonationImage = asyncHandler(async (req, res) => {
   const { donationId } = req.body;
-  const donationImgPath = req.file?.path;
+  const donationImg = req.file;
 
-  console.log("avatarLocalPath ::", donationImgPath);
-  if (!donationImgPath) {
+  if (!donationImg) {
     throw new ApiError(400, "Donation image is required");
   }
 
@@ -141,17 +86,37 @@ const editDonationImage = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Donation data not found");
   }
 
-  const avatar = await uploadOnCloudinary(donationImgPath);
+  const fileName = `${uuidv4()}-${donationImg.originalname}`;
 
-  if (!avatar) {
-    throw new ApiError(400, "Donation image is required");
+  // Generate URL for upload image to AWS
+  async function init() {
+    return await generateURLToUpload(
+      fileName,
+      donationImg.mimetype,
+      donationImg.buffer
+    );
+  }
+  const uploadEndpoint = await init();
+
+  const response = await fetch(uploadEndpoint, {
+    method: "PUT",
+    headers: {
+      "Content-Type": donationImg.mimetype,
+    },
+    body: donationImg.buffer,
+  });
+
+  if (response && response.status != 200) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, "", "Error while uploading image"));
   }
 
   const updatedData = await Donation.findByIdAndUpdate(
     donationId,
     {
       $set: {
-        image: avatar.url,
+        image: process.env.AWS_S3_URL + fileName,
       },
     },
     { new: true }

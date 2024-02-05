@@ -55,7 +55,11 @@ router.route("/donation").get(verifyJwt, getDonationDetails);
 router.route("/donation/:id").get(verifyJwt, getSpecificDonationDetail);
 router
   .route("/edit-donation-image")
-  .patch(verifyJwtAdmin, upload.single("donationImage"), editDonationImage);
+  .patch(
+    verifyJwtAdmin,
+    awsUploadMulter.single("donationImage"),
+    editDonationImage
+  );
 router.route("/edit-donation").patch(verifyJwtAdmin, editDonationDetail);
 router.route("/delete-donation").delete(verifyJwtAdmin, deleteDonationData);
 
