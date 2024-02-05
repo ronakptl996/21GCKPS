@@ -8,7 +8,7 @@ import {
   editCommitteeUserAvatar,
   getSpecificCommittee,
 } from "../controllers/adminController/committee.controller.js";
-import { upload, awsUploadMulter } from "../middlewares/multer.middleware.js";
+import { awsUploadMulter } from "../middlewares/multer.middleware.js";
 import {
   addFestival,
   deleteFestivalDetail,

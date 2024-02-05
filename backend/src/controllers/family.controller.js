@@ -4,6 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Family } from "../models/family.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+import uploadFilesToS3 from "../utils/uploadFilesToS3.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -26,9 +28,6 @@ const generateAccessAndRefereshTokens = async (userId) => {
 const registerFamily = asyncHandler(async (req, res) => {
   const { password, headOfFamily, wifeDetails, sonDetails, daughterDetails } =
     req.body;
-  // console.log("FILES >>>", req.files);
-
-  // console.log(password, headOfFamily, wifeDetails, sonDetails, daughterDetails);
 
   const existedUser = await Family.findOne({
     "headOfFamily.email": headOfFamily.email,
@@ -57,62 +56,73 @@ const registerFamily = asyncHandler(async (req, res) => {
     }
   });
 
-  // Upload avatars to Cloudinary
-  const headOfFamilyAvatarResult = await uploadOnCloudinary(
-    headOfFamilyAvatar.path
-  );
+  const filesToUpload = [
+    {
+      file: headOfFamilyAvatar,
+      fieldName: "headOfFamilyAvatar",
+      fileName: `${uuidv4()}-${headOfFamilyAvatar.originalname}`,
+    },
+    {
+      file: wifeAvatar,
+      fieldName: "wifeAvatar",
+      fileName: `${uuidv4()}-${headOfFamilyAvatar.originalname}`,
+    },
+    ...sonAvatars.map((file, index) => ({
+      file,
+      fieldName: `sonAvatars-${index}`,
+      fileName: `${uuidv4()}-${file.originalname}`,
+    })),
+    ...daughterAvatars.map((file, index) => ({
+      file,
+      fieldName: `daughterAvatars-${index}`,
+      fileName: `${uuidv4()}-${file.originalname}`,
+    })),
+  ];
 
-  const wifeAvatarResult = await uploadOnCloudinary(wifeAvatar.path);
+  try {
+    const uploadedFiles = await uploadFilesToS3(filesToUpload);
+    // console.log(uploadedFiles);
+    if (uploadedFiles) {
+      filesToUpload.map((file) => {
+        if (file.fieldName.includes("headOfFamilyAvatar")) {
+          headOfFamily.headOfFamilyAvatar =
+            process.env.AWS_S3_URL + file.fileName;
+        } else if (file.fieldName.includes("wifeAvatar")) {
+          wifeDetails.wifeAvatar = process.env.AWS_S3_URL + file.fileName;
+        } else if (file.fieldName.includes("sonAvatars")) {
+          sonDetails[Number(file.fieldName.split("-")[1])].sonAvatar =
+            process.env.AWS_S3_URL + file.fileName;
+        } else if (file.fieldName.includes("daughterAvatars")) {
+          daughterDetails[Number(file.fieldName.split("-")[1])].daughterAvatar =
+            process.env.AWS_S3_URL + file.fileName;
+        }
+      });
 
-  const sonAvatarsResults = await Promise.all(
-    sonAvatars.map((file) => uploadOnCloudinary(file.path))
-  );
-  const daughterAvatarsResults = await Promise.all(
-    daughterAvatars.map((file) => uploadOnCloudinary(file.path))
-  );
+      const familyData = await Family.create({
+        password,
+        headOfFamily,
+        wifeDetails,
+        sonDetails,
+        daughterDetails,
+      });
 
-  // console.log("headOfFamilyAvatarResult >>", headOfFamilyAvatarResult);
-  // console.log("Head of Family Avatar URL:", headOfFamilyAvatarResult.url);
-  // console.log("Wife Avatar URL:", wifeAvatarResult.url);
-  // console.log(
-  //   "Son Avatars URLs:",
-  //   sonAvatarsResults.map((result) => result.url)
-  // );
-  // console.log(
-  //   "Daughter Avatars URLs:",
-  //   daughterAvatarsResults.map((result) => result.url)
-  // );
+      const createdData = await Family.findById(familyData._id).select(
+        "-password -refreshToken"
+      );
 
-  // console.log(req.body);
+      if (!createdData) {
+        throw new ApiError(500, "Something went wrong while registering");
+      }
 
-  headOfFamily.headOfFamilyAvatar = headOfFamilyAvatarResult.secure_url;
-  wifeDetails.wifeAvatar = wifeAvatarResult.secure_url;
-  sonAvatarsResults.map(
-    (image, i) => (sonDetails[i].sonAvatar = image.secure_url)
-  );
-  daughterAvatarsResults.map(
-    (image, i) => (daughterDetails[i].daughterAvatar = image.secure_url)
-  );
-
-  const familyData = await Family.create({
-    password,
-    headOfFamily,
-    wifeDetails,
-    sonDetails,
-    daughterDetails,
-  });
-
-  const createdData = await Family.findById(familyData._id).select(
-    "-password -refreshToken"
-  );
-
-  if (!createdData) {
-    throw new ApiError(500, "Something went wrong while registering");
+      return res
+        .status(201)
+        .json(
+          new ApiResponse(200, createdData, "User registered Successfully")
+        );
+    }
+  } catch (error) {
+    throw new ApiError(500, "Error while uploading file");
   }
-
-  return res
-    .status(201)
-    .json(new ApiResponse(200, createdData, "User registered Successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
