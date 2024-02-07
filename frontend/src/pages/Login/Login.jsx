@@ -85,6 +85,9 @@ const Login = () => {
               />
 
               <div>
+                <p className="forgot-password">
+                  <Link to="/forgot-password">Forgot Password</Link>
+                </p>
                 <Button
                   fullWidth
                   style={{ background: "#a7732b", marginTop: "10px" }}

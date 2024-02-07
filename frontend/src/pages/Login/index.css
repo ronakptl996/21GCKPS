@@ -21,8 +21,14 @@ span {
   margin: 20px auto;
 }
 
-span > a {
+span > a,
+p.forgot-password > a {
   color: #a7732b;
+}
+
+p.forgot-password {
+  text-align: right;
+  margin: 10px 0 0px;
 }
 
 span.register-link {

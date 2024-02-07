@@ -1,10 +1,13 @@
+import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
+import fast2sms from "fast-two-sms";
+import { Family } from "../models/family.model.js";
+import { Forgot } from "../models/forgot.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { Family } from "../models/family.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
 import uploadFilesToS3 from "../utils/uploadFilesToS3.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
@@ -251,11 +254,97 @@ const findUserWithPhoneNumber = asyncHandler(async (req, res) => {
         .json(new ApiResponse(500, "", "User details not found!"));
     }
 
+    function generateOTP() {
+      let digits = "0123456789";
+      let otpLength = 6;
+      let otp = "";
+
+      for (let i = 1; i <= otpLength; i++) {
+        let index = Math.floor(Math.random() * digits.length);
+        otp = otp + digits[index];
+      }
+      return otp;
+    }
+
+    const OTP = generateOTP();
+    console.log("OTP is >>", OTP);
+    const request_id = "1qsw34rfe3wdre4";
+    // const response = await fetch(
+    //   `https://www.fast2sms.com/dev/bulkV2?authorization=apUwx428gMiJDqkvhVorX3mFzYKB9lnRPu5A1Oj0CHfNyL6TsINMKZp4GlTJ1Rmd8YPHxsuS2Fo6giQj&route=otp&variables_values=${OTP}&flash=0&numbers=${phone}`
+    // );
+
+    // console.log("RESPONSE >>", await response.json());
+
+    const forgotData = await Forgot.create({
+      phone: phone,
+      requestId: request_id,
+      otp: OTP,
+    });
+
+    if (forgotData) {
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            { forgotId: forgotData._id, phone: forgotData.phone },
+            "OTP Sent Successfully"
+          )
+        );
+    } else {
+      throw new ApiError(500, "Something went wrong");
+    }
+  } catch (error) {
+    console.log("ERROR", error);
+    throw new ApiError(500, "Something went wrong");
+  }
+});
+
+const verifyOtp = asyncHandler(async (req, res) => {
+  const { forgotId, otp } = req.body;
+  try {
+    const forgotData = await Forgot.findById(forgotId);
+    console.log("forgotData >>", forgotData);
+
+    if (!forgotData) {
+      throw new ApiError(500, "Data not found");
+    }
+
+    const verifyOTP = forgotData.otp == otp;
+
+    if (verifyOTP) {
+      await Forgot.deleteOne({ _id: forgotData._id });
+      return res
+        .status(200)
+        .json(new ApiResponse(200, "", "OTP Verified Successfully"));
+    }
+    return res.status(400).json(new ApiResponse(400, "", "Invalid OTP"));
+  } catch (error) {
+    console.log(error);
+    throw new ApiError(500, "Error while verify otp");
+  }
+});
+
+const changePassword = asyncHandler(async (req, res) => {
+  const { newPassword, contact } = req.body;
+  try {
+    const userDetails = await Family.findOne({
+      "headOfFamily.contact": contact,
+    });
+
+    if (!userDetails) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, "", "Please try again!"));
+    }
+
+    userDetails.password = newPassword;
+    await userDetails.save();
     return res
       .status(200)
-      .json(new ApiResponse(200, { userId: userDetails._id }, ""));
+      .json(new ApiResponse(200, "", "Password changed successfully"));
   } catch (error) {
-    throw new ApiError(500, "Error while fetching User details");
+    throw new ApiError(500, "Something went wrong");
   }
 });
 
@@ -266,4 +355,6 @@ export {
   getUserDetails,
   getUser,
   findUserWithPhoneNumber,
+  verifyOtp,
+  changePassword,
 };

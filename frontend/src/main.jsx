@@ -69,7 +69,8 @@ const router = createBrowserRouter(
         />
         <Route
           path="profile/:id"
-          element={///////////////////
+          element={
+            ///////////////////
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
@@ -84,7 +85,7 @@ const router = createBrowserRouter(
           }
         />
         <Route path="about" element={<About />} />
-        <Route path="forgotpassword" element={<ForgotPassword />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="contact" element={<Contact />} />
         <Route
           path="main-loby"
