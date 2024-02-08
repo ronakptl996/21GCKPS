@@ -38,22 +38,22 @@
   font-size: 18px;
 }
 
-.button-wrapper {
+.matrimonial.button-wrapper {
   display: inline-block;
   padding: 10px 20px;
   background: rgb(167, 115, 43);
-  margin: 0 10px;
+  margin: 10px 10px;
   border-radius: 0.4rem;
   cursor: pointer;
   transition-duration: 300ms;
 }
 
-.button-wrapper:hover {
+.matrimonial.button-wrapper:hover {
   transform: translateY(-5px);
   box-shadow: 10px 10px 15px -14px rgb(167, 115, 43);
 }
 
-.button-wrapper:last-child {
+.matrimonial.button-wrapper:last-child {
   background: none;
   border: 1px solid rgb(167, 115, 43);
 }
@@ -73,7 +73,7 @@
   .matrimonial-profile-description h2 {
     font-size: 40px;
   }
-  .button-wrapper {
+  .matrimonial.button-wrapper {
     padding: 5px 8px;
   }
 }
@@ -82,7 +82,7 @@
   .matrimonial-profile-description {
     padding: 150px 30px;
   }
-  .button-wrapper {
+  .matrimonial.button-wrapper {
     padding: 0;
   }
 }

@@ -7,13 +7,25 @@
   position: relative;
 }
 
-.DetailMatrimonialProfile .DetailMatrimonialProfile-user-img-wrapper img {
+.DetailMatrimonialProfile
+  .DetailMatrimonialProfile-user-img-wrapper
+  .user-profile-image {
   z-index: -1;
   position: fixed;
   width: 50%;
+  height: 100%;
+}
+
+.user-profile-image img {
+  position: relative;
+  left: 30%;
+  top: 10%;
+  width: 50%;
+  height: 50%;
   object-position: center;
   object-fit: cover;
-  height: 100%;
+  border-radius: 10px;
+  position: relative;
 }
 
 .DetailMatrimonialProfile-user-img-wrapper .social-btn {

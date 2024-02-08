@@ -6,7 +6,7 @@ import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { setIsLoggedIn } from "../../features/auth/authSlice";
+import { setIsLoggedIn, setShowNavbar } from "../../features/auth/authSlice";
 import { useDropdownContext } from "../../context/DropdownContext";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -15,12 +15,12 @@ const Navbar = () => {
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isAuth, loggedInUserDetails } = useSelector((store) => store.auth);
-
-  const [showNavbar, setShowNavbar] = useState(false);
+  const { isAuth, loggedInUserDetails, showNavbar } = useSelector(
+    (store) => store.auth
+  );
 
   const handleShowNavbar = () => {
-    setShowNavbar(!showNavbar);
+    dispatch(setShowNavbar(!showNavbar));
   };
 
   const Hamburger = () => (
@@ -85,7 +85,7 @@ const Navbar = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      setShowNavbar(false);
+      dispatch(setShowNavbar(false));
     });
   }, []);
 

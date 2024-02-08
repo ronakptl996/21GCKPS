@@ -36,13 +36,13 @@ const MatrimonialUserCard = ({ user }) => {
             <div className="icons">
               <InstagramIcon />
             </div>
-            <p>{user.instagramUserName}</p>
+            <p>{user.instagramUserName ? user.instagramUserName : "-"}</p>
           </div>
           <div className="social-info">
             <div className="icons">
               <FacebookOutlinedIcon />
             </div>{" "}
-            <p>{user.facebookUserName}</p>
+            <p>{user.instagramUserName ? user.instagramUserName : "-"} </p>
           </div>
           <div className="social-info">
             <div className="icons">

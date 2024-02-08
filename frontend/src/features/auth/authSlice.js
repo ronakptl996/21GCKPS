@@ -5,6 +5,7 @@ const initialState = {
   isAuth: false,
   loggedInUserDetails: {},
   isLoading: true,
+  showNavbar: false,
 };
 
 export const authSlice = createSlice({
@@ -21,11 +22,18 @@ export const authSlice = createSlice({
     setLoading: (state, action) => {
       state.isLoading = action.payload;
     },
+    setShowNavbar: (state, action) => {
+      state.showNavbar = Boolean(action.payload);
+    },
   },
 });
 
-export const { setIsLoggedIn, setLoggedInUserDetails, setLoading } =
-  authSlice.actions;
+export const {
+  setIsLoggedIn,
+  setLoggedInUserDetails,
+  setLoading,
+  setShowNavbar,
+} = authSlice.actions;
 export default authSlice.reducer;
 
 export function fetchLoggedInUserDetails() {

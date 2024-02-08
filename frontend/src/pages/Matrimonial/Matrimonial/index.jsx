@@ -21,7 +21,7 @@ const Matrimonial = () => {
                 <Button style={{ color: "#fff" }}>Create your profile</Button>
               </Link>
             </div>
-            <div className="button-wrapper">
+            <div className="button-wrapper matrimonial">
               <Link to="/matrimonial-profile">
                 <Button style={{ color: "#fff", fontWeight: "500" }}>
                   I already have profile

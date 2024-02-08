@@ -108,7 +108,7 @@
 
 .search-user-box-wrapper .search-userName {
   margin: 10px;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .search-user-box-wrapper .search-box-description {
@@ -124,7 +124,7 @@
 
 .search-user-username-button-wrapper .viewFullProfileBtn {
   background: none;
-  padding: 5px 20px;
+  padding: 5px 10px;
   height: 33px;
   box-shadow: none;
   color: rgb(233, 135, 0);
