@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Button } from "@mui/material";
 
 const DonationInfo = () => {
   const [donationData, setDonationData] = useState();
   const [donateQty, setDonateQty] = useState(1);
+  const [donationLoading, setDonationLoading] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,54 +30,58 @@ const DonationInfo = () => {
   };
 
   const handleDonate = async () => {
-    const amount = (donationData?.price / donationData?.totalQty) * donateQty;
+    try {
+      setDonationLoading(true);
+      const amount = (donationData?.price / donationData?.totalQty) * donateQty;
+      // const data = { amount: amount };
 
-    console.log(import.meta.env.VITE_RAZORPAY_API_KEY);
-    console.log("amount >>", amount);
-    // const data = { amount: amount };
-
-    const response = await fetch("/api/donation/payment/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        donationId: id,
-        amount,
-        donateQty,
-        donationName: donationData?.name,
-      }),
-    });
-
-    const data = await response.json();
-    console.log(data);
-
-    if (data.success) {
-      // const { data } = data;
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_API_KEY, // Enter the Key ID generated from the Dashboard
-        amount: data.data.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        currency: "INR",
-        name: "21GCKPS",
-        description: "Test Transaction",
-        image: "https://example.com/your_logo",
-        order_id: data.data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        callback_url: `http://localhost:8000/api/donation/payment/verifyPayment/${donationData._id}/${donateQty}`,
-        prefill: {
-          name: data.data.userName,
-          email: data.data.userEmail,
-          contact: data.data.userContact,
+      const response = await fetch("/api/donation/payment/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#3399cc",
-        },
-      };
+        body: JSON.stringify({
+          donationId: id,
+          amount,
+          donateQty,
+          donationName: donationData?.name,
+        }),
+      });
 
-      const razor = new window.Razorpay(options);
-      razor.open();
+      const data = await response.json();
+      setDonationLoading(false);
+
+      console.log("RES >>", data);
+      if (data.success) {
+        // const { data } = data;
+        const options = {
+          key: import.meta.env.VITE_RAZORPAY_API_KEY, // Enter the Key ID generated from the Dashboard
+          amount: data.data.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: "INR",
+          name: "21GCKPS",
+          description: "Test Transaction",
+          image: "https://example.com/your_logo",
+          order_id: data.data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+          callback_url: `http://localhost:8000/api/donation/payment/verifyPayment/${donationData._id}/${donateQty}`,
+          prefill: {
+            name: data.data.userName,
+            email: data.data.userEmail,
+            contact: data.data.userContact,
+          },
+          notes: {
+            address: "Razorpay Corporate Office",
+          },
+          theme: {
+            color: "#3399cc",
+          },
+        };
+
+        const razor = new window.Razorpay(options);
+        razor.open();
+      }
+    } catch (error) {
+      setDonationLoading(false);
+      toast.error("Something went wrong");
     }
   };
 
@@ -138,7 +145,9 @@ const DonationInfo = () => {
               </div>
 
               <div className="donation-btn">
-                <button onClick={handleDonate}>Donate Now</button>
+                <Button onClick={handleDonate} variant="contained">
+                  {donationLoading && <CircularProgress />}Donate Now
+                </Button>
               </div>
             </div>
           </div>

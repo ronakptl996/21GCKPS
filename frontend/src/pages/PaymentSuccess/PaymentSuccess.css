@@ -1,0 +1,82 @@
+.donation-successfull-wrapper {
+  padding: 50px 150px;
+  display: grid;
+  place-items: center;
+}
+
+.donation-successfull-card {
+  padding: 30px;
+  border: 1px solid #0000003b;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 600px;
+}
+
+.donation-successfull-card .success-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins 600";
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000bf;
+}
+
+.success-msg svg {
+  color: red;
+  margin-right: 10px;
+  font-size: 40px;
+}
+
+.donation-successfull-card ul li::before {
+  content: "\f105";
+  font-family: "FontAwesome";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  color: #000;
+  line-height: 11px;
+  padding: 0px;
+  border-radius: 25px;
+  font-weight: 600;
+  left: 0px;
+  top: 6px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.donation-successfull-card ul {
+  margin: 30px 0;
+}
+
+.donation-successfull-card ul li {
+  list-style: none;
+  font-size: 17px;
+  padding: 0px 8px 15px 24px;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: pre;
+  overflow: hidden;
+  color: #1a1a1a;
+  font-family: "Roboto";
+}
+
+.donation-successfull-card ul li b {
+  font-weight: 500;
+  font-family: "Roboto";
+  width: 145px;
+  display: inline-block;
+}
+
+.donation-successfull-card .email-msg {
+  color: rgba(0, 128, 0, 0.8);
+  font-size: 15px;
+  font-family: "Poppins";
+  display: flex;
+  justify-content: center;
+  letter-spacing: 0.3px;
+}
+
+.donation-successfull-card .email-msg svg {
+  margin-right: 10px;
+}

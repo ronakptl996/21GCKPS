@@ -45,9 +45,9 @@ const DetailMatrimonialProfile = () => {
       {user && (
         <section className="DetailMatrimonialProfile-inner">
           <div className="DetailMatrimonialProfile-user-img-wrapper">
-          <div className="user-profile-image">
-            <img src={user?.photo} alt={user?.fullName} srcset="" />
-          </div>
+            <div className="user-profile-image">
+              <img src={user?.photo} alt={user?.fullName} srcset="" />
+            </div>
             <div className="social-btn">
               <div className="social-btn-wrapper facebook">
                 <FacebookOutlined /> <span>Facebook</span>
@@ -172,6 +172,20 @@ const DetailMatrimonialProfile = () => {
                   <li>
                     <b>Blood Group:</b>
                     {user?.bloodGroup}
+                  </li>
+                </ul>
+              </div>
+
+              <div className="Matrimonial-user-personal-details">
+                <h3 className="heading-h3">Mosal Details</h3>
+                <ul>
+                  <li>
+                    <b>Mama's Name:</b>
+                    {user?.maternalUncle}
+                  </li>
+                  <li>
+                    <b>Village Name:</b>
+                    {user?.mamaVillageName}
                   </li>
                 </ul>
               </div>

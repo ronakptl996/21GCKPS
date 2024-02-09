@@ -13,6 +13,7 @@ const addMatrimonial = asyncHandler(async (req, res) => {
   }
 
   let { data } = req.body;
+
   let { profileDetail, sonDetails } = JSON.parse(data);
 
   const existedProfile = await Matrimonial.findOne({
@@ -63,7 +64,8 @@ const addMatrimonial = asyncHandler(async (req, res) => {
     instagramUserName: profileDetail.instagramUserName,
     contact: profileDetail.contact,
     bloodGroup: profileDetail.bloodGroup,
-    mosalDetails: profileDetail.mosalDetails,
+    maternalUncle: profileDetail.maternalUncle,
+    mamaVillageName: profileDetail.mamaVillageName,
     address: profileDetail.address,
     dob: profileDetail.dob,
     interest: profileDetail.interest,

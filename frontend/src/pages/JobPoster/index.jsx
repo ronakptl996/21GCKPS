@@ -36,6 +36,7 @@ const JobPoster = () => {
       ...prevState,
       createdBy: loggedInUserDetails._id,
     }));
+
     const {
       jobTitle,
       jobLocation,

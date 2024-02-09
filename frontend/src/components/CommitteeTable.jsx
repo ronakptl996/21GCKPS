@@ -56,15 +56,15 @@ const CommitteeTable = () => {
               {rows &&
                 rows
                   .slice(page * rowperpage, page * rowperpage + rowperpage)
-                  .map((row, i) => {
+                  .map((row, index) => {
                     return (
-                      <TableRow key={i}>
+                      <TableRow key={index}>
                         {columns &&
                           columns.map((column, i) => {
                             let value = row[column.id];
 
                             return column.name == "Sr.No." ? (
-                              <TableCell key={value}>{i + 1}</TableCell>
+                              <TableCell key={value}>{index + 1}</TableCell>
                             ) : column.name == "Image" ? (
                               <TableCell key={value}>
                                 <img

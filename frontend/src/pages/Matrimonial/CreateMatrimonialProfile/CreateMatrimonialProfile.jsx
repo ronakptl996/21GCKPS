@@ -38,12 +38,13 @@ const CreateMatrimonialProfile = () => {
     instagramUserName: "",
     contact: "",
     bloodGroup: "o+",
-    mosalDetails: "",
     address: "",
     interest: [],
     hobby: [],
     dob: "",
     yourSelf: "",
+    maternalUncle: "",
+    mamaVillageName: "",
   });
 
   const [sonDetails, setSonDetails] = useState([
@@ -126,11 +127,21 @@ const CreateMatrimonialProfile = () => {
     }));
   };
 
+  // Delete More Details
+  const deleteSonDetailHandler = (index) => {
+    setSonDetails((prevSonDetails) => {
+      const newSonDetails = [...prevSonDetails];
+      newSonDetails.splice(index, 1);
+      return newSonDetails;
+    });
+  };
+
   const handleSubmit = async () => {
     const data = {
       profileDetail,
       sonDetails,
     };
+
     const formData = new FormData();
 
     formData.append("data", JSON.stringify(data));
@@ -159,12 +170,13 @@ const CreateMatrimonialProfile = () => {
           instagramUserName: "",
           contact: "",
           bloodGroup: "o+",
-          mosalDetails: "",
           address: "",
           interest: [],
           hobby: [],
           dob: "",
           yourSelf: "",
+          maternalUncle: "",
+          mamaVillageName: "",
         });
         setSonDetails([
           {
@@ -397,19 +409,8 @@ const CreateMatrimonialProfile = () => {
               </div>
               <div className="register-input-wrapper">
                 <TextField
-                  id={`outlined-basic`}
-                  label="Mosal Details"
-                  value={profileDetail.mosalDetails}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      mosalDetails: e.target.value,
-                    }))
-                  }
-                />
-                <TextField
                   id="outlined-basic"
-                  label="Village Name"
+                  label="Your Village Name"
                   type="text"
                   variant="outlined"
                   value={profileDetail.address}
@@ -433,6 +434,17 @@ const CreateMatrimonialProfile = () => {
                     } // Pass the handleDateChange function
                   />
                 </LocalizationProvider>
+                <TextField
+                  id={`outlined-basic`}
+                  label="Write about your self (min 250 word)"
+                  value={profileDetail.yourSelf}
+                  onChange={(e) =>
+                    setProfileDetail((prevState) => ({
+                      ...prevState,
+                      yourSelf: e.target.value,
+                    }))
+                  }
+                />
               </div>
               <div className="register-input-wrapper">
                 <div>
@@ -498,12 +510,23 @@ const CreateMatrimonialProfile = () => {
               <div className="register-input-wrapper">
                 <TextField
                   id={`outlined-basic`}
-                  label="Write about your self (min 250 word)"
-                  value={profileDetail.yourSelf}
+                  label="Maternal Uncle Name"
+                  value={profileDetail.maternalUncle}
                   onChange={(e) =>
                     setProfileDetail((prevState) => ({
                       ...prevState,
-                      yourSelf: e.target.value,
+                      maternalUncle: e.target.value,
+                    }))
+                  }
+                />
+                <TextField
+                  id={`outlined-basic`}
+                  label="Mama's Village Name"
+                  value={profileDetail.mamaVillageName}
+                  onChange={(e) =>
+                    setProfileDetail((prevState) => ({
+                      ...prevState,
+                      mamaVillageName: e.target.value,
                     }))
                   }
                 />
@@ -541,7 +564,19 @@ const CreateMatrimonialProfile = () => {
                     {sonDetails.map((detail, index) => {
                       return (
                         <div className="son-daughter-wrapper" key={index}>
-                          <label>Son Details {index > 0 ? index : ""}</label>
+                          <div className="brother-sister-details">
+                            <label>
+                              Brother/Sister Details {index > 0 ? index : ""}
+                            </label>
+                            {index > 0 && (
+                              <Button
+                                onClick={() => deleteSonDetailHandler(index)}
+                                variant="outlined"
+                              >
+                                Delete Details
+                              </Button>
+                            )}
+                          </div>
                           <div className="register-input-wrapper">
                             <TextField
                               id={`outlined-basic-${index}`}
@@ -617,7 +652,7 @@ const CreateMatrimonialProfile = () => {
                     })}
                     <div className="add-son-daughter-details-wrapper">
                       <Button variant="outlined" onClick={addSonDetailHandler}>
-                        + Add Son Details
+                        + Add More Details
                       </Button>
                     </div>
                   </>
