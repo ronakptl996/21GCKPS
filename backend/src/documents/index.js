@@ -122,11 +122,11 @@ export default ({ donorName, donateName, amount, donateQty, paymentId }) => {
                 <tr class="item">
                    <td>Item:</td>
                    <td>${amount}₹</td>
-                   <td>${donateQty}₹</td>
+                   <td>${donateQty}</td>
                 </tr>
              </table>
              <br />
-             <h1 class="justify-center">Total price: ${parseInt(amount)}$</h1>
+             <h1 class="justify-center">Total price: ${parseInt(amount)}₹</h1>
           </div>
        </body>
     </html>

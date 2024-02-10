@@ -268,31 +268,34 @@ const findUserWithPhoneNumber = asyncHandler(async (req, res) => {
 
     const OTP = generateOTP();
     console.log("OTP is >>", OTP);
-    const request_id = "1qsw34rfe3wdre4";
-    // const response = await fetch(
-    //   `https://www.fast2sms.com/dev/bulkV2?authorization=apUwx428gMiJDqkvhVorX3mFzYKB9lnRPu5A1Oj0CHfNyL6TsINMKZp4GlTJ1Rmd8YPHxsuS2Fo6giQj&route=otp&variables_values=${OTP}&flash=0&numbers=${phone}`
-    // );
+    // const request_id = "1qsw34rfe3wdre4";
+    const response = await fetch(
+      `https://www.fast2sms.com/dev/bulkV2?authorization=apUwx428gMiJDqkvhVorX3mFzYKB9lnRPu5A1Oj0CHfNyL6TsINMKZp4GlTJ1Rmd8YPHxsuS2Fo6giQj&route=otp&variables_values=${OTP}&flash=0&numbers=${phone}`
+    );
 
-    // console.log("RESPONSE >>", await response.json());
+    const otpData = await response.json();
+    console.log("findUserWithPhoneNumber OTP RESPONSE >>", otpData);
 
-    const forgotData = await Forgot.create({
-      phone: phone,
-      requestId: request_id,
-      otp: OTP,
-    });
+    if (otpData && otpData.return) {
+      const forgotData = await Forgot.create({
+        phone: phone,
+        requestId: otpData.request_id,
+        otp: OTP,
+      });
 
-    if (forgotData) {
-      return res
-        .status(200)
-        .json(
-          new ApiResponse(
-            200,
-            { forgotId: forgotData._id, phone: forgotData.phone },
-            "OTP Sent Successfully"
-          )
-        );
-    } else {
-      throw new ApiError(500, "Something went wrong");
+      if (forgotData) {
+        return res
+          .status(200)
+          .json(
+            new ApiResponse(
+              200,
+              { forgotId: forgotData._id, phone: forgotData.phone },
+              "OTP Sent Successfully"
+            )
+          );
+      } else {
+        throw new ApiError(500, "Something went wrong");
+      }
     }
   } catch (error) {
     console.log("ERROR", error);
