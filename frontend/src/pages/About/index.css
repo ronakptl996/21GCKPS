@@ -89,6 +89,7 @@
   margin: 10px 0;
   font-size: 1.4rem;
   color: #000000d6;
+  font-family: "Roboto";
 }
 
 .about-info-mission-inner-desc p {
@@ -125,22 +126,36 @@
 
 @media screen and (max-width: 800px) {
   .about-hero-section {
-    padding: 50px;
+    padding: 30px;
     background-position: center;
+    height: fit-content;
   }
   .about-hero-header {
-    margin-top: 50px;
+    margin: 50px 0;
     width: 90%;
   }
   .about-hero-header h1 {
     font-size: 40px;
   }
   .about-hero-header p {
-    font-size: 15px;
+    font-size: 16px;
+  }
+  .about-info-section {
+    padding: 50px;
+  }
+  .about-info-section .about-info-two {
+    width: 100%;
+  }
+  .about-info-section .about-info-one h2 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+  .about-info-mission .mission-img {
+    margin: 0 1rem 0 0;
   }
 }
 
-@media screen and (max-width: 800px) {
+/* @media screen and (max-width: 800px) {
   .about-hero-section {
     padding: 30px;
     background-position: center;
@@ -158,4 +173,4 @@
   .about-info-mission .mission-img {
     margin: 0 1rem 0 0;
   }
-}
+} */

@@ -21,3 +21,16 @@
   margin-bottom: 20px;
   color: #000000c4;
 }
+
+@media screen and (max-width: 1000px) {
+  .privacy-policy-inner {
+    width: 86%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .privacy-policy-inner {
+    width: 96%;
+    padding: 37px 27px;
+  }
+}

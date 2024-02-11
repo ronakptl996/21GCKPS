@@ -28,3 +28,15 @@
 .input-select-wrapper {
   display: flex;
 }
+
+@media screen and (max-width: 600px) {
+  .jobposter-header h2 {
+    font-size: 30px !important;
+  }
+  .job-poster-form {
+    padding: 20px 10px;
+  }
+  .job-details {
+    padding: 20px;
+  }
+}

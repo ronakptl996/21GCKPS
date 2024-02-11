@@ -311,7 +311,7 @@
   }
 }
 
-@media (min-width: 310px) and (max-width: 499px) {
+@media (min-width: 310px) and (max-width: 500px) {
   .home-hero-section {
     height: 614px;
     padding: 0 20px;
@@ -324,7 +324,7 @@
     line-height: 25px;
   }
   .home-hero-button button {
-    margin: 5px 0 !important;
+    margin: 5px 3px !important;
   }
   .home-hero-section-inner .home-hero-button button {
     padding: 17px 40px;

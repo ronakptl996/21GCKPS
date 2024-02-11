@@ -15,7 +15,7 @@ const MatrimonialUserCard = ({ user }) => {
       <div className="search-box-description">
         <div className="search-user-username-button-wrapper">
           <h3 className="search-userName">{user.fullName}</h3>
-          <Link to={user._id}>
+          <Link to={user._id} className="view-profile">
             <Button
               className="viewFullProfileBtn"
               size="small"

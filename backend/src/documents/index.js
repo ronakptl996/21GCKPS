@@ -120,7 +120,7 @@ export default ({ donorName, donateName, amount, donateQty, paymentId }) => {
                    <td>Qty</td>
                 </tr>
                 <tr class="item">
-                   <td>Item:</td>
+                   <td>${donateName}</td>
                    <td>${amount}₹</td>
                    <td>${donateQty}</td>
                 </tr>

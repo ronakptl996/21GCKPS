@@ -619,7 +619,7 @@ const Register = () => {
 
           {/* Son / Daughter Details */}
           <div className="job-details">
-            <label>Son / Daughter Details*</label>
+            <label>Son / Daughter Details</label>
             <div className="son-details-wrapper">
               {sonDetails.map((son, index) => {
                 return (

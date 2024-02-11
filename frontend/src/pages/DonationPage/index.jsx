@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import "./index.css";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
 import DonationCard from "../../components/DonationCard";
+import { Link } from "react-router-dom";
 
 const DonationPage = () => {
   const [donationDetails, setDonationDetails] = useState([]);
@@ -36,21 +37,6 @@ const DonationPage = () => {
           ) : (
             <h2>No Donation Required</h2>
           )}
-          {/* <div className="donation-card">
-            <div className="donation-img-section">
-              <img
-                className="donation-img"
-                src="https://i.pinimg.com/originals/8e/ca/bc/8ecabc10954b0f136b2dd5bf509d0ef6.jpg"
-              />
-            </div>
-            <div className="donation-info">
-              <h4>Kevin beeftongue</h4>
-              <p>
-                Total Qty: <span>40</span>
-              </p>
-              <button>Donate Now</button>
-            </div>
-          </div> */}
         </div>
       </section>
     </>

@@ -53,6 +53,7 @@ import { DropdownProvider } from "./context/DropdownContext";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Profile from "./pages/Profile/Profile";
+import VillageWiseFamilyDetails from "./pages/Village/VillageWiseFamilyDetails/VillageWiseFamilyDetails";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -81,6 +82,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute>
               <PaymentSuccess />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="village"
+          element={
+            <ProtectedRoute>
+              <VillageWiseFamilyDetails />
             </ProtectedRoute>
           }
         />

@@ -58,6 +58,7 @@
 
 .job-seeker-info .job-seeker-details {
   display: flex;
+  flex-wrap: wrap;
   margin: 5px 0;
 }
 
@@ -100,20 +101,29 @@
   line-height: 1.5em;
 }
 
+@media screen and (max-width: 1190px) {
+  .job-seeker {
+    padding: 50px 100px;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .job-seeker {
-    padding: 100px;
+    padding: 50px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .job-seeker-card {
+    padding: 20px;
+  }
+  .job-seeker-info .job-seeker-details .job-span {
+    margin: 5px 0;
   }
 }
 
 @media screen and (max-width: 550px) {
   .job-seeker {
-    padding: 100px 40px;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .job-seeker {
-    padding: 40px 20px;
+    padding: 40px 10px;
   }
 }

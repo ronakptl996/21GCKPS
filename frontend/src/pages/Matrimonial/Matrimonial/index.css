@@ -38,22 +38,25 @@
   font-size: 18px;
 }
 
-.matrimonial.button-wrapper {
+.matrimonial-profile-button-wrapper {
   display: inline-block;
-  padding: 10px 20px;
-  background: rgb(167, 115, 43);
   margin: 10px 10px;
-  border-radius: 0.4rem;
   cursor: pointer;
   transition-duration: 300ms;
 }
 
-.matrimonial.button-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 10px 10px 15px -14px rgb(167, 115, 43);
+.matrimonial-profile-button-wrapper a {
+  border-radius: 0.4rem;
+  padding: 15px 10px;
+  background: rgb(167, 115, 43);
 }
 
-.matrimonial.button-wrapper:last-child {
+.matrimonial-profile-button-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 10px 10px 20px -14px rgb(167, 115, 43);
+}
+
+.matrimonial-profile-button-wrapper:last-child a {
   background: none;
   border: 1px solid rgb(167, 115, 43);
 }
@@ -73,7 +76,7 @@
   .matrimonial-profile-description h2 {
     font-size: 40px;
   }
-  .matrimonial.button-wrapper {
+  .matrimonial-profile-button-wrapper {
     padding: 5px 8px;
   }
 }
@@ -82,7 +85,7 @@
   .matrimonial-profile-description {
     padding: 150px 30px;
   }
-  .matrimonial.button-wrapper {
+  .matrimonial-profile-button-wrapper {
     padding: 0;
   }
 }

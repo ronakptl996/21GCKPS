@@ -1,5 +1,5 @@
 .donation-page {
-  padding: 100px 180px;
+  padding: 30px 180px;
 }
 
 .donation-page h3 {
@@ -40,16 +40,20 @@
 }
 
 .donation-card .donation-info h4 {
-  margin-bottom: 10px;
+  font-family: "Poppins";
   font-size: 20px;
 }
 
+.donation-card .donation-info p {
+  font-family: "Poppins";
+}
 .donation-card .donation-info p span {
   display: inline;
 }
 
 .donation-card .donation-info button {
-  padding: 10px;
+  padding: 8px;
+  font-family: "Poppins";
   border: none;
   margin: 10px 0;
   font-size: 15px;
@@ -68,26 +72,48 @@
   transform: scale(1.05);
 }
 
-@media (min-width: 790px) and (max-width: 1250px) {
-  .donation-page {
-    padding: 100px;
+@media screen and (max-width: 1050px) {
+  .donation-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .donation-inner .donation-card {
+    width: auto;
   }
 }
 
-@media (min-width: 580px) and (max-width: 789px) {
-  .donation-page {
-    padding: 10px;
-  }
-  .donation-inner .donation-card {
-    width: 250px;
+@media screen and (max-width: 850px) {
+  .donation-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-@media screen and (max-width: 579px) {
+@media screen and (max-width: 1250px) {
   .donation-page {
-    padding: 10px;
+    padding: 100px 50px;
   }
-  .donation-inner .donation-card {
-    width: 300px;
+}
+
+@media screen and (max-width: 650px) {
+  .donation-page {
+    padding: 100px 5px;
+  }
+}
+@media screen and (max-width: 550px) {
+  .donation-page {
+    padding: 100px 5px;
+  }
+  .donation-inner {
+    grid-template-columns: 1fr;
+  }
+  .donation-page {
+    padding: 100px 80px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .donation-page {
+    padding: 30px 50px;
   }
 }

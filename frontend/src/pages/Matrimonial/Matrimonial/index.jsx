@@ -16,12 +16,12 @@ const Matrimonial = () => {
             maiores, facere aliquid. Obcaecati?
           </p>
           <div style={{ marginTop: "2rem" }}>
-            <div className="button-wrapper">
+            <div className="matrimonial-profile-button-wrapper">
               <Link to="/create-matrimonial-profile">
                 <Button style={{ color: "#fff" }}>Create your profile</Button>
               </Link>
             </div>
-            <div className="button-wrapper matrimonial">
+            <div className="matrimonial-profile-button-wrapper matrimonial">
               <Link to="/matrimonial-profile">
                 <Button style={{ color: "#fff", fontWeight: "500" }}>
                   I already have profile

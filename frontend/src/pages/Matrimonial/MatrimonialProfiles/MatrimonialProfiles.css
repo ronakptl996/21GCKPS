@@ -81,6 +81,7 @@
 
 .search-user-box-wrapper .search-user-more-info {
   display: flex;
+  flex-wrap: wrap;
   padding: 5px;
   padding-bottom: 20px;
   border-bottom: 1px solid rgb(218, 218, 218);
@@ -142,6 +143,7 @@
   color: #ffffffd8;
   margin: 0 3px;
   padding: 4px 7px;
+  margin: 0 5px 5px 0;
   border-radius: 5px;
   font-size: 13px;
 }
@@ -199,12 +201,16 @@
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 1000px) {
   .matrimonialProfile-inner {
     padding: 50px 80px;
   }
+  .matrimonialProfile-inner .matrimonialProfile-wrapper {
+    grid-template-columns: 1fr;
+  }
   .matrimonialProfile-wrapper .matrimonialProfile-sidebar {
     height: fit-content;
+    margin: 0;
   }
   .matrimonialProfile-sidebar .matrimonialProfile-sidebar-wrapper {
     display: grid;
@@ -213,26 +219,80 @@
   .matrimonialProfile-wrapper .matrimonialProfile-sidebar .search-section {
     margin: 5px 0;
   }
-  .matrimonialProfile-inner .matrimonialProfile-wrapper {
-    grid-template-columns: 1fr;
+  .search-user-box-wrapper .search-user-social .social-info {
+    margin: 3px;
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 850px) {
   .matrimonialProfile-inner {
     padding: 50px 30px;
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 720px) {
   .matrimonialProfile-inner {
     padding: 50px 10px;
   }
+  .matrimonialProfile-profile-box .search-user-box-wrapper {
+    padding: 12px 10px;
+    margin: 19px 0px;
+  }
+  .search-user-box-wrapper .search-box-description {
+    padding: 0px 6px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .search-box-description .search-user-username-button-wrapper {
+    margin-bottom: 2px;
+  }
+  .search-user-box-wrapper .search-userName {
+    font-size: 16px;
+  }
   .search-user-box-wrapper .search-user-more-info {
-    flex-wrap: wrap;
+    padding-bottom: 15px;
+  }
+  .search-user-box-wrapper .search-user-social .social-info {
+    padding: 5px 7px;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .matrimonialProfile-sidebar .matrimonialProfile-sidebar-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .search-box-description .search-user-username-button-wrapper {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  .search-user-box-wrapper .search-userName {
+    font-size: 18px;
+    margin: 6px;
+  }
+  .search-user-box-wrapper .view-profile {
+    margin-left: auto;
+  }
+  .search-user-box-wrapper .search-box-img {
+    width: 164px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .matrimonialProfile-profile-box .search-user-box-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .search-user-box-wrapper .search-box-img {
+    margin: auto;
+    height: 200px;
+    margin-bottom: 10px;
+  }
+  .matrimonialProfile-sidebar .matrimonialProfile-sidebar-wrapper {
+    grid-template-columns: 1fr;
   }
   .search-user-box-wrapper .search-user-more-info .user-info {
-    margin: 3px;
-    font-size: 12px;
+    font-size: 11px;
   }
 }

@@ -75,3 +75,40 @@
   width: 10rem;
   text-align: center;
 }
+
+@media screen and (max-width: 1200px) {
+  .festival-wrapper {
+    padding: 150px 100px;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .festival-wrapper {
+    padding: 150px 30px;
+  }
+  .festival-wrapper .festival-table {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .festival-wrapper {
+    padding: 150px 10px;
+  }
+  .festival-wrapper .festival-table {
+    padding: 20px;
+  }
+  .festival-table table tr > td:nth-child(3) {
+    width: 6rem;
+  }
+  .festival-table table td a {
+    font-size: 11px;
+    padding: 6px;
+  }
+  .festival-table table td,
+  .festival-table table th {
+    padding: 8px;
+  }
+}
+
+

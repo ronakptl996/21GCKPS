@@ -89,14 +89,51 @@
   align-items: center;
 }
 
+@media screen and (max-width: 1150px) {
+  .matrimonial-form {
+    width: 100%;
+  }
+  .createMatrimonialProfile {
+    padding: 50px 100px;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .createMatrimonialProfile {
     padding: 50px 100px;
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 750px) {
   .createMatrimonialProfile {
     padding: 50px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .createMatrimonialProfile .son-daughter-details {
+    padding-bottom: 35px;
+  }
+  .createMatrimonialProfile
+    .son-daughter-details
+    .add-son-daughter-details-wrapper {
+    right: 10px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .createMatrimonialProfile {
+    padding: 50px 20px;
+  }
+
+  .matrimonial-form-input-wrapper .register-input-wrapper {
+    grid-template-columns: 1fr;
+    margin: 5px 0;
+  }
+
+  .matrimonial-form-input-wrapper
+    .register-input-wrapper
+    .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    margin: 4px 0 !important;
   }
 }
