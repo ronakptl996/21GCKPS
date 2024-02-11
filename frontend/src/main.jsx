@@ -54,6 +54,7 @@ import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Profile from "./pages/Profile/Profile";
 import VillageWiseFamilyDetails from "./pages/Village/VillageWiseFamilyDetails/VillageWiseFamilyDetails";
+import FamilyProfile from "./pages/Village/FamilyProfile/FamilyProfile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -85,14 +86,26 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
-        <Route
-          path="village"
-          element={
-            <ProtectedRoute>
-              <VillageWiseFamilyDetails />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="village">
+          <Route path=":villageName">
+            <Route
+              path=""
+              element={
+                <ProtectedRoute>
+                  <VillageWiseFamilyDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path=":id"
+              element={
+                <ProtectedRoute>
+                  <FamilyProfile />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+        </Route>
         <Route path="about" element={<About />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="contact" element={<Contact />} />
