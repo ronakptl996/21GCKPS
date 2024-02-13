@@ -8,16 +8,30 @@ import Village1 from "../../assets/images/village.jpg";
 import { fetchLoggedInUserDetails } from "../../features/auth/authSlice";
 import CommitteeTable from "../../components/CommitteeTable";
 import { Link } from "react-router-dom";
+import ImageCarousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 const Home = () => {
   const dispatch = useDispatch();
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
   };
 
   const villages = [
@@ -76,6 +90,7 @@ const Home = () => {
           </div>
         </div>
         <div className="carousel">
+          {/* Village Carousel */}
           <Carousel
             data={villages}
             heading="21 Gam Charotar Kadva Patidar Samaj"
@@ -98,7 +113,7 @@ const Home = () => {
             </p>
           </div>
           <div className="village-wise-comeeti-member-carousel">
-            <Slider {...settings}>
+            {/* <Slider {...settings}>
               {villages &&
                 villages.map((d, index) => (
                   <div key={index}>
@@ -114,7 +129,28 @@ const Home = () => {
                     </div>
                   </div>
                 ))}
-            </Slider>
+            </Slider> */}
+            <ImageCarousel
+              responsive={responsive}
+              // showDots
+              // dotListClass="custom-dot-list-style"
+            >
+              {villages &&
+                villages.map((d, index) => (
+                  <div key={index}>
+                    <div className="village-wise-comeeti-carousel-card">
+                      <div className="comeeti-carousel-img">
+                        <img src={Userdemo} alt="" />
+                      </div>
+                      <div className="village-wise-comeeti-carousel-info">
+                        <h1>Kartik B. Prajapati</h1>
+                        <p>Call: +91 1234567890</p>
+                        <p>Whatsapp: +91 1234567890</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </ImageCarousel>
           </div>
         </div>
 
