@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const matrimonialSchema = new Schema({
+const matrimonialSchema = Schema({
   fullName: { type: String, required: true },
   fatherName: { type: String, required: true },
   motherName: { type: String, required: true },
@@ -29,6 +29,9 @@ const matrimonialSchema = new Schema({
       education: { type: String },
     },
   ],
+  createdBy: {
+    type: String,
+  },
 });
 
 export const Matrimonial = mongoose.model("Matrimonial", matrimonialSchema);

@@ -5,6 +5,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { generateURLToUpload } from "../utils/awsService.js";
 import { v4 as uuidv4 } from "uuid";
+import { Family } from "../models/family.model.js";
+import mongoose from "mongoose";
 
 const addMatrimonial = asyncHandler(async (req, res) => {
   const matrimonialImage = req.file;
@@ -73,6 +75,7 @@ const addMatrimonial = asyncHandler(async (req, res) => {
     yourSelf: profileDetail.yourSelf,
     brotherSisterDetails: sonDetails,
     photo: process.env.AWS_S3_URL + fileName,
+    createdBy: req.user._id,
   });
   // console.log("matrimonialData ::", matrimonialData);
 
@@ -81,6 +84,21 @@ const addMatrimonial = asyncHandler(async (req, res) => {
   if (!createdData) {
     throw new ApiError(500, "Error while add matrimonial details");
   }
+
+  // Add Matrimonial Profile Id to Family Model
+  const matrimonialId = new mongoose.Types.ObjectId(createdData._id);
+  await Family.findByIdAndUpdate(
+    req.user._id,
+    {
+      $push: {
+        matrimonialProfiles: matrimonialId,
+      },
+    },
+    {
+      new: true,
+      upsert: false,
+    }
+  );
 
   return res
     .status(201)

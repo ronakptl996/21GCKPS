@@ -1,5 +1,6 @@
 .villageWiseFamilyDetails {
   padding: 100px 150px;
+  background: #e2e3e7;
 }
 
 .villageWiseFamilyDetails-wrapper {
@@ -9,11 +10,13 @@
 
 .villageWiseFamilyDetails-card {
   display: flex;
-  box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 11%);
+  box-shadow: 0 0.1rem 0.8rem rgb(0 0 0 / 11%);
   padding: 20px;
-  margin: 5px;
-  border-radius: 10px;
+  padding-bottom: 25px;
+  margin: 10px;
+  border-radius: 15px;
   position: relative;
+  background: #fff;
 }
 
 .villageWiseFamilyDetails-image-wrapper {
@@ -57,8 +60,8 @@
 }
 
 .info-contact-icon .css-i4bv87-MuiSvgIcon-root {
-  font-size: 15px;
-  color: #ffffffc2;
+  font-size: 12px;
+  color: #fff;
 }
 
 .villageWiseFamilyDetails-info-contact-wrapper:nth-child(2) {
@@ -68,14 +71,15 @@
 .villageWiseFamilyDetails-info-contact-wrapper p {
   margin-top: 1px;
   margin-left: 5px;
-  font-size: 14px;
-  color: #000000d7;
+  font-size: 13px;
+  color: #1e1e1ed7;
+  font-family: "Poppins";
 }
 
 .villageWiseFamilyDetails-info .more-info-link {
   position: absolute;
   right: 18px;
-  bottom: 8px;
+  bottom: 13px;
 }
 
 .villageWiseFamilyDetails-info .more-info-link a {

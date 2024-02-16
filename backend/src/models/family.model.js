@@ -64,6 +64,7 @@ const familySchema = new Schema(
     password: { type: String, required: true },
     isAdmin: { type: String, default: false },
     refreshToken: { type: String },
+    matrimonialProfiles: [{ type: Schema.Types.ObjectId, ref: "Matrimonial" }],
   },
   { timestamps: true }
 );
