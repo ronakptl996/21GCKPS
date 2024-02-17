@@ -207,11 +207,43 @@ const Navbar = () => {
                     <NavLink to="/donation">Donation List</NavLink>
                   </li>
                   {loggedInUserDetails && (
-                    <li className="navbar-item">
-                      <NavLink to={`/profile/${loggedInUserDetails._id}`}>
-                        Profile
-                      </NavLink>
-                    </li>
+                    <>
+                      <li
+                        className="navbar-item dropdown"
+                        onMouseEnter={toggleDropdown}
+                        onMouseLeave={closeDropdown}
+                      >
+                        <NavLink to="#">Profiles</NavLink>
+                        {isOpen && (
+                          <div className="dropdown-content">
+                            <ul>
+                              <li className="navbar-item">
+                                <NavLink
+                                  to={`/profile/${loggedInUserDetails.decoded._id}`}
+                                >
+                                  My Profile
+                                </NavLink>
+                              </li>
+                              <li className="matrimonialProfile-navbar">Matrimonial Profile</li>
+                              {loggedInUserDetails?.matrimonialProfiles &&
+                                loggedInUserDetails?.matrimonialProfiles
+                                  ?.length > 0 &&
+                                loggedInUserDetails?.matrimonialProfiles.map(
+                                  (matrimonialProfileUser) => (
+                                    <li className="navbar-item">
+                                      <NavLink
+                                        to={`matrimonial-profile/${matrimonialProfileUser._id}`}
+                                      >
+                                        {matrimonialProfileUser.fullName}
+                                      </NavLink>
+                                    </li>
+                                  )
+                                )}
+                            </ul>
+                          </div>
+                        )}
+                      </li>
+                    </>
                   )}
                   <li>
                     <Button

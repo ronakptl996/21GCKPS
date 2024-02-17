@@ -222,7 +222,15 @@ const getUserDetails = asyncHandler(async (req, res) => {
       .json(new ApiResponse(401, {}, "Unauthorized - Invalid User"));
   }
 
-  return res.status(200).json(new ApiResponse(200, {decoded, matrimonialProfiles: req.user.matrimonialProfiles}, ""));
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { decoded, matrimonialProfiles: req.user.matrimonialProfiles },
+        ""
+      )
+    );
 });
 
 const getUser = asyncHandler(async (req, res) => {

@@ -34,6 +34,7 @@ nav {
   position: relative;
   cursor: pointer;
   list-style: none;
+  font-family: "Poppins";
 }
 
 .navbar-item-wrapper ul li:last-child {
@@ -46,6 +47,7 @@ nav {
   color: #000;
   text-decoration: none;
   transition: all 0.2s;
+  font-family: "Roboto";
 }
 
 .navbar-item-wrapper li > a::before {
@@ -146,6 +148,13 @@ nav {
 
 .dropdown-content ul li {
   margin: 5px 0;
+}
+
+.dropdown-content ul li.matrimonialProfile-navbar {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #000000d6;
+  margin-bottom: -2px;
 }
 
 .dropdown-content ul li:last-child {
