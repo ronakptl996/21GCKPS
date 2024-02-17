@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setIsLoggedIn, setShowNavbar } from "../../features/auth/authSlice";
 import { useDropdownContext } from "../../context/DropdownContext";
@@ -14,6 +14,7 @@ const Navbar = () => {
   const { isOpen, toggleDropdown, closeDropdown } = useDropdownContext();
 
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuth, loggedInUserDetails, showNavbar } = useSelector(
     (store) => store.auth
@@ -84,14 +85,21 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    const handleScroll = () => {
       dispatch(setShowNavbar(false));
-    });
-  }, []);
+    };
+    window.addEventListener("scroll", handleScroll);
 
-  useEffect(() => {
+    // Close Drop Down
     closeDropdown();
-  }, [location]);
+
+    // Close Navbar
+    dispatch(setShowNavbar(false));
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [navigate, location]);
 
   return (
     <nav>
