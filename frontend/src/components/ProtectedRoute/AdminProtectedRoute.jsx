@@ -16,7 +16,7 @@ const AdminProtectedRoute = ({ children }) => {
 
   //   useEffect(() => {
   if (!isLoading) {
-    if (loggedInUserDetails?.isAdmin != "true") {
+    if (loggedInUserDetails?.decoded?.isAdmin != "true") {
       return <Navigate to="/home" replace />;
     }
   }

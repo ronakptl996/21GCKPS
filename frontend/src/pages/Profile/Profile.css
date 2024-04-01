@@ -60,6 +60,26 @@
   background: rgb(200, 117, 0);
 }
 
+.profile-inner {
+  position: relative;
+}
+
+.profile-inner > .css-sghohy-MuiButtonBase-root-MuiButton-root {
+  position: absolute;
+  background-color: rgb(233, 135, 0);
+  right: 0;
+}
+
+.profile-son-details {
+  position: relative;
+}
+
+.profile-son-details .prfoile-add-son-details-wrapper {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+
 @media (min-width: 850px) and (max-width: 1000px) {
   .profile {
     padding: 100px 100px;

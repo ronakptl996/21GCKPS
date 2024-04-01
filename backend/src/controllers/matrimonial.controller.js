@@ -106,11 +106,34 @@ const addMatrimonial = asyncHandler(async (req, res) => {
 });
 
 const getMatrimonial = asyncHandler(async (req, res) => {
-  const matrimonialDetails = await Matrimonial.find().sort({ _id: -1 });
-  if (!matrimonialDetails) {
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    let profiles = await Matrimonial.find().sort({ _id: -1 });
+
+    const matrimonialDetails = await Matrimonial.find()
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    if (!matrimonialDetails) {
+      throw new ApiError(500, "Error while fetching matrimonial details");
+    }
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { matrimonialDetails, totalProfiles: profiles.length },
+          ""
+        )
+      );
+  } catch (error) {
+    console.log(error);
     throw new ApiError(500, "Error while fetching matrimonial details");
   }
-  return res.status(200).json(new ApiResponse(200, matrimonialDetails, ""));
 });
 
 const getUserMatrimonial = asyncHandler(async (req, res) => {

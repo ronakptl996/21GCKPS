@@ -224,19 +224,23 @@ const Navbar = () => {
                                   My Profile
                                 </NavLink>
                               </li>
-                              <li className="matrimonialProfile-navbar">Matrimonial Profile</li>
                               {loggedInUserDetails?.matrimonialProfiles &&
                                 loggedInUserDetails?.matrimonialProfiles
                                   ?.length > 0 &&
                                 loggedInUserDetails?.matrimonialProfiles.map(
                                   (matrimonialProfileUser) => (
-                                    <li className="navbar-item">
-                                      <NavLink
-                                        to={`matrimonial-profile/${matrimonialProfileUser._id}`}
-                                      >
-                                        {matrimonialProfileUser.fullName}
-                                      </NavLink>
-                                    </li>
+                                    <>
+                                      <li className="matrimonialProfile-navbar">
+                                        Matrimonial Profile
+                                      </li>
+                                      <li className="navbar-item">
+                                        <NavLink
+                                          to={`matrimonial-profile/${matrimonialProfileUser._id}`}
+                                        >
+                                          {matrimonialProfileUser.fullName}
+                                        </NavLink>
+                                      </li>
+                                    </>
                                   )
                                 )}
                             </ul>

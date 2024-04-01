@@ -9,6 +9,8 @@ import {
   MenuItem,
   Select,
   TextField,
+  Pagination,
+  Stack,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
@@ -20,7 +22,9 @@ import { setLoading } from "../../../features/auth/authSlice";
 import Loading from "../../../components/Loading/Loading";
 
 const MatrimonialProfile = () => {
+  const [page, setPage] = useState(1);
   const [profiles, setProfiles] = useState([]);
+  const [totalProfile, setTotalProfile] = useState();
   const [searchOption, setSearchOption] = useState({
     gender: "Select Gender",
     age: "Select Age",
@@ -32,9 +36,14 @@ const MatrimonialProfile = () => {
   const dispatch = useDispatch();
 
   const fetchMatrimonialProfiles = async () => {
-    const data = await fetch("/api/matrimonial");
-    const response = await data.json();
-    setProfiles(response.data);
+    try {
+      const data = await fetch(`/api/matrimonial?page=${page}&limit=10`);
+      const response = await data.json();
+      setProfiles(response.data.matrimonialDetails);
+      setTotalProfile(response.data.totalProfiles);
+    } catch (error) {
+      toast.error("Error while fetching profile");
+    }
   };
 
   // Clear Search
@@ -83,7 +92,7 @@ const MatrimonialProfile = () => {
 
   useEffect(() => {
     fetchMatrimonialProfiles();
-  }, []);
+  }, [page]);
 
   return (
     <section className="matrimonialProfile">
@@ -214,11 +223,22 @@ const MatrimonialProfile = () => {
             </div>
             <div className="matrimonialProfile-profile-box">
               {profiles && profiles.length > 0 ? (
-                profiles.map((user) => (
-                  <div key={user._id}>
-                    <MatrimonialUserCard user={user} />
-                  </div>
-                ))
+                <>
+                  {profiles.map((user) => (
+                    <MatrimonialUserCard user={user} key={user._id} />
+                  ))}
+                  <Stack
+                    spacing={2}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Pagination
+                      count={Math.ceil(totalProfile / 10)}
+                      color="primary"
+                      onChange={(e, value) => setPage(value)}
+                    />
+                  </Stack>
+                </>
               ) : (
                 <h2>No Profile found</h2>
               )}

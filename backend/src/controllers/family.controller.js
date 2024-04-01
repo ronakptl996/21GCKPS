@@ -359,6 +359,30 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 });
 
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const { headOfFamily, wifeDetails, sonDetails, daughterDetails } = req.body;
+
+  const updatedData = await Family.findByIdAndUpdate(
+    req.params.id,
+    { headOfFamily, wifeDetails, sonDetails, daughterDetails },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedData) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, "", "Error, while updating user details!"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "", "User details updated!"));
+
+  // console.log(updatedData);
+});
+
 export {
   registerFamily,
   loginUser,
@@ -368,4 +392,5 @@ export {
   findUserWithPhoneNumber,
   verifyOtp,
   changePassword,
+  updateUserProfile,
 };
