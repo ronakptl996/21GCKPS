@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -9,10 +10,22 @@ const addCommittee = asyncHandler(async (req, res) => {
   const { name, address, mobile, committeeName } = req.body;
   const avatarLocalImage = req.file;
 
+  console.log("avatarLocalImage >>", req.file.buffer);
+
   if (!avatarLocalImage) {
     throw new ApiError(400, "Avatar file is required");
   }
 
+  // Optimize the uploaded image using sharp
+  const optimizedImageBuffer = await sharp(req.file.buffer)
+    .resize({ width: 300 }) // Adjust the width as needed for optimization
+    .toBuffer();
+
+  // Save the optimized image to disk
+  const imagePath = `./public/temp/${req.file.originalname}`; // Adjust the path as needed
+  await sharp(optimizedImageBuffer).toFile(imagePath);
+
+  return;
   const fileName = `${uuidv4()}-${avatarLocalImage.originalname}`;
 
   // Generate URL for upload image to AWS

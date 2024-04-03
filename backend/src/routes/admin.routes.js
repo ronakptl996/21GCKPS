@@ -8,7 +8,7 @@ import {
   editCommitteeUserAvatar,
   getSpecificCommittee,
 } from "../controllers/adminController/committee.controller.js";
-import { awsUploadMulter } from "../middlewares/multer.middleware.js";
+import { awsUploadMulter, upload } from "../middlewares/multer.middleware.js";
 import {
   addFestival,
   deleteFestivalDetail,
@@ -29,9 +29,7 @@ const router = Router();
 // router.route("/").get(verifyJwtAdmin);
 
 // Committee Route
-router
-  .route("/add-committee")
-  .post(verifyJwtAdmin, awsUploadMulter.single("avatar"), addCommittee);
+router.route("/add-committee").post(upload.single("avatar"), addCommittee); // verifyJwtAdmin (IMPLEMENT for authorizarion admin)
 router
   .route("/edit-committee-avatar")
   .post(

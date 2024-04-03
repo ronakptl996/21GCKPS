@@ -1,8 +1,11 @@
 import multer from "multer";
+import sharp from "sharp";
 import { ApiError } from "../utils/ApiError.js";
 
-const storage = multer.diskStorage({
+// const storage = multer.diskStorage({
+const storage = multer.memoryStorage({
   destination: function (req, file, cb) {
+    console.log("FILE>>> ", file);
     cb(null, "./public/temp");
   },
   filename: function (req, file, cb) {
@@ -10,6 +13,9 @@ const storage = multer.diskStorage({
   },
 });
 
+export const upload = multer({ storage });
+
+// AWS file upload
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.split("/")[0] === "image") {
     cb(null, true);
@@ -24,6 +30,5 @@ const awsUploadMulter = multer({
   storage: multer.memoryStorage(),
   fileFilter,
 });
-export const upload = multer({ storage });
 
 export { awsUploadMulter };
