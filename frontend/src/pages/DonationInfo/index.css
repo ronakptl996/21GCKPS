@@ -107,6 +107,10 @@
   color: #ffffffd2;
 }
 
+.donation-details .donation-btn button:disabled {
+  background: rgba(235, 53, 53, 0.901);
+}
+
 @media (min-width: 990px) and (max-width: 1200px) {
   .donation-info {
     padding: 100px;

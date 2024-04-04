@@ -145,9 +145,21 @@ const DonationInfo = () => {
               </div>
 
               <div className="donation-btn">
-                <Button onClick={handleDonate} variant="contained">
-                  {donationLoading && <CircularProgress />}Donate Now
-                </Button>
+                {
+                  <Button
+                    disabled={
+                      (
+                        (donationData?.price / donationData?.totalQty) *
+                        donateQty
+                      ).toFixed(2) < 1
+                    }
+                    onClick={handleDonate}
+                    variant="contained"
+                  >
+                    {donationLoading && <CircularProgress size={20} />}
+                    Donate Now
+                  </Button>
+                }
               </div>
             </div>
           </div>

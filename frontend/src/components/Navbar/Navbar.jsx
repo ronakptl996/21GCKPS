@@ -224,6 +224,12 @@ const Navbar = () => {
                                   My Profile
                                 </NavLink>
                               </li>
+                              {loggedInUserDetails?.decoded?.isAdmin ==
+                                "true" && (
+                                <li className="navbar-item">
+                                  <NavLink to={`/admin`}>Admin</NavLink>
+                                </li>
+                              )}
                               {loggedInUserDetails?.matrimonialProfiles &&
                                 loggedInUserDetails?.matrimonialProfiles
                                   ?.length > 0 &&
