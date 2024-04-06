@@ -8,7 +8,7 @@ import {
   editCommitteeUserAvatar,
   getSpecificCommittee,
 } from "../controllers/adminController/committee.controller.js";
-import { awsUploadMulter, upload } from "../middlewares/multer.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
 import {
   addFestival,
   deleteFestivalDetail,
@@ -50,16 +50,12 @@ router.route("/delete-festival").delete(verifyJwtAdmin, deleteFestivalDetail);
 // Donation Route
 router
   .route("/add-donation")
-  .post(verifyJwtAdmin, awsUploadMulter.single("donationImage"), addDonation);
+  .post(verifyJwtAdmin, upload.single("donationImage"), addDonation);
 router.route("/donation").get(verifyJwt, getDonationDetails);
 router.route("/donation/:id").get(verifyJwt, getSpecificDonationDetail);
 router
   .route("/edit-donation-image")
-  .patch(
-    verifyJwtAdmin,
-    awsUploadMulter.single("donationImage"),
-    editDonationImage
-  );
+  .patch(verifyJwtAdmin, upload.single("donationImage"), editDonationImage);
 router.route("/edit-donation").patch(verifyJwtAdmin, editDonationDetail);
 router.route("/delete-donation").delete(verifyJwtAdmin, deleteDonationData);
 

@@ -89,6 +89,11 @@
   border: 1px solid #0008;
 }
 
+.admin-details-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
 .admin-details-table thead tr th {
   padding: 10px;
   border-right: 1px solid #0008;
@@ -107,7 +112,8 @@
 
 .admin-details-table tr td > .detailImage {
   width: 40px;
-  text-align: center;
+  height: 40px;
+  display: flex;
   border-radius: 20%;
 }
 

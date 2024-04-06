@@ -331,8 +331,9 @@ const AdminDonation = () => {
               <div className="modal-committee-image-wrapper">
                 <img
                   alt={modalForm.name}
-                  width={"250px"}
-                  src={modalForm.donationImage}
+                  src={`${import.meta.env.VITE_BACKEND_URL}${
+                    modalForm.donationImage
+                  }`}
                 />
               </div>
             ) : (
@@ -488,7 +489,9 @@ const AdminDonation = () => {
                       {data.image ? (
                         <img
                           className="detailImage"
-                          src={data.image}
+                          src={`${import.meta.env.VITE_BACKEND_URL}${
+                            data.image
+                          }`}
                           alt={data.name}
                         />
                       ) : (

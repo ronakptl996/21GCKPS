@@ -1,9 +1,11 @@
+import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 import { Donation } from "../../models/donation.model.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { generateURLToUpload } from "../../utils/awsService.js";
-import { v4 as uuidv4 } from "uuid";
+import optimzeImage from "../../utils/optimizeImage.js";
 
 const addDonation = asyncHandler(async (req, res) => {
   const { name, totalQty, contact, description, price } = req.body;
@@ -15,28 +17,11 @@ const addDonation = asyncHandler(async (req, res) => {
 
   const fileName = `${uuidv4()}-${donationImage.originalname}`;
 
-  // Generate URL for upload image to AWS
-  async function init() {
-    return await generateURLToUpload(
-      fileName,
-      donationImage.mimetype,
-      donationImage.buffer
-    );
-  }
-  const uploadEndpoint = await init();
+  const isOptimzeImage = await optimzeImage(req.file.buffer, fileName);
+  console.log("isOptimzeImage >", isOptimzeImage);
 
-  const response = await fetch(uploadEndpoint, {
-    method: "PUT",
-    headers: {
-      "Content-Type": donationImage.mimetype,
-    },
-    body: donationImage.buffer,
-  });
-
-  if (response && response.status != 200) {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, "", "Error while uploading image"));
+  if (!isOptimzeImage) {
+    throw new ApiError(500, "Error while OptimzeImage add donation avatar");
   }
 
   const donationData = await Donation.create({
@@ -45,7 +30,7 @@ const addDonation = asyncHandler(async (req, res) => {
     contact,
     description,
     price,
-    image: process.env.AWS_S3_URL + fileName,
+    image: fileName,
   });
 
   const createdData = await Donation.findById(donationData._id);
@@ -85,37 +70,43 @@ const editDonationImage = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Donation data not found");
   }
 
-  const fileName = `${uuidv4()}-${donationImg.originalname}`;
+  console.log("AVATAR >", donationsData.image);
+  const imagePath = `./temp/${donationsData.image}`;
 
-  // Generate URL for upload image to AWS
-  async function init() {
-    return await generateURLToUpload(
-      fileName,
-      donationImg.mimetype,
-      donationImg.buffer
-    );
-  }
-  const uploadEndpoint = await init();
+  // Remove File from folder
+  fs.access(imagePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`${imagePath} does not exist`);
+      return;
+    }
 
-  const response = await fetch(uploadEndpoint, {
-    method: "PUT",
-    headers: {
-      "Content-Type": donationImg.mimetype,
-    },
-    body: donationImg.buffer,
+    // File exists, so proceed with deletion
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(`Error deleting ${imagePath}: ${err}`);
+        return;
+      }
+      console.log(`${imagePath} has been deleted successfully`);
+    });
   });
 
-  if (response && response.status != 200) {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, "", "Error while uploading image"));
+  const newImagePath = `${uuidv4()}-${donationImg.originalname}`;
+
+  const isOptimzeImage = await optimzeImage(req.file.buffer, newImagePath);
+  console.log("isOptimzeImage >", isOptimzeImage);
+
+  if (!isOptimzeImage) {
+    throw new ApiError(
+      500,
+      "Error while OptimzeImage edit committee user avatar"
+    );
   }
 
   const updatedData = await Donation.findByIdAndUpdate(
     donationId,
     {
       $set: {
-        image: process.env.AWS_S3_URL + fileName,
+        image: newImagePath,
       },
     },
     { new: true }
