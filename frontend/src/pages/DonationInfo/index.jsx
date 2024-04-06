@@ -92,7 +92,10 @@ const DonationInfo = () => {
     <section className="donation-info">
       <div className="donation-info-inner">
         <div className="donation-info-img">
-          <img src={donationData?.image} alt={donationData?.name} />
+          <img
+            src={`${import.meta.env.VITE_BACKEND_URL}${donationData?.image}`}
+            alt={donationData?.name}
+          />
         </div>
         <div className="donation-info-details">
           <div className="donation-details">

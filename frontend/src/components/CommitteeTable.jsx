@@ -68,7 +68,9 @@ const CommitteeTable = () => {
                             ) : column.name == "Image" ? (
                               <TableCell key={value}>
                                 <img
-                                  src={value}
+                                  src={`${
+                                    import.meta.env.VITE_BACKEND_URL
+                                  }${value}`}
                                   alt={value}
                                   className="committeeAvatar"
                                 />
