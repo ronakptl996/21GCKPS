@@ -43,4 +43,4 @@ const optimzeImage = async (buffer, imageName) => {
   });
 };
 
-export default optimzeImage;
+export { optimzeImage };

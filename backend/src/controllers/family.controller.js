@@ -9,6 +9,10 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import uploadFilesToS3 from "../utils/uploadFilesToS3.js";
+import {
+  optimizeImagesRegister,
+  optimzeImage,
+} from "../utils/optimizeImage.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -82,49 +86,68 @@ const registerFamily = asyncHandler(async (req, res) => {
     })),
   ];
 
+  // const optimizedResults = await optimizeImagesRegister(filesToUpload);
+  // console.log("optimizedResults >", optimizedResults);
+
   try {
-    const uploadedFiles = await uploadFilesToS3(filesToUpload);
-    // console.log(uploadedFiles);
-    if (uploadedFiles) {
-      filesToUpload.map((file) => {
-        if (file.fieldName.includes("headOfFamilyAvatar")) {
-          headOfFamily.headOfFamilyAvatar =
-            process.env.AWS_S3_URL + file.fileName;
-        } else if (file.fieldName.includes("wifeAvatar")) {
-          wifeDetails.wifeAvatar = process.env.AWS_S3_URL + file.fileName;
-        } else if (file.fieldName.includes("sonAvatars")) {
-          sonDetails[Number(file.fieldName.split("-")[1])].sonAvatar =
-            process.env.AWS_S3_URL + file.fileName;
-        } else if (file.fieldName.includes("daughterAvatars")) {
-          daughterDetails[Number(file.fieldName.split("-")[1])].daughterAvatar =
-            process.env.AWS_S3_URL + file.fileName;
-        }
-      });
-
-      const familyData = await Family.create({
-        password,
-        headOfFamily,
-        wifeDetails,
-        sonDetails,
-        daughterDetails,
-      });
-
-      const createdData = await Family.findById(familyData._id).select(
-        "-password -refreshToken"
-      );
-
-      if (!createdData) {
-        throw new ApiError(500, "Something went wrong while registering");
-      }
-
-      return res
-        .status(201)
-        .json(
-          new ApiResponse(200, createdData, "User registered Successfully")
+    await Promise.all(
+      filesToUpload.map(async (file) => {
+        const optimzedImage = await optimzeImage(
+          file.file.buffer,
+          `family/${file.fileName}`
         );
+
+        if (!optimzedImage) {
+          throw new ApiError(
+            500,
+            "Error while OptimzeImage add donation avatar"
+          );
+        } else {
+          if (file.fieldName.includes("headOfFamilyAvatar")) {
+            headOfFamily.headOfFamilyAvatar = file.fileName;
+          } else if (file.fieldName.includes("wifeAvatar")) {
+            wifeDetails.wifeAvatar = file.fileName;
+          } else if (file.fieldName.includes("sonAvatars")) {
+            sonDetails[Number(file.fieldName.split("-")[1])].sonAvatar =
+              file.fileName;
+          } else if (file.fieldName.includes("daughterAvatars")) {
+            daughterDetails[
+              Number(file.fieldName.split("-")[1])
+            ].daughterAvatar = file.fileName;
+          }
+        }
+      })
+    );
+
+    console.log({
+      password,
+      headOfFamily,
+      wifeDetails,
+      sonDetails,
+      daughterDetails,
+    });
+
+    const familyData = await Family.create({
+      password,
+      headOfFamily,
+      wifeDetails,
+      sonDetails,
+      daughterDetails,
+    });
+
+    const createdData = await Family.findById(familyData._id).select(
+      "-password -refreshToken"
+    );
+    
+    if (!createdData) {
+      throw new ApiError(500, "Something went wrong while registering");
     }
+
+    return res
+      .status(201)
+      .json(new ApiResponse(200, createdData, "User registered Successfully"));
   } catch (error) {
-    throw new ApiError(500, "Error while uploading file");
+    throw new ApiError(500, "Error while register user");
   }
 });
 

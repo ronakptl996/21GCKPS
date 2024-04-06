@@ -325,7 +325,9 @@ const Profile = () => {
               <div className="headOfFamily-avatar changeAvatar">
                 {headOfFamily.headOfFamilyAvatar && (
                   <img
-                    src={headOfFamily.headOfFamilyAvatar}
+                    src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                      headOfFamily.headOfFamilyAvatar
+                    }`}
                     alt={headOfFamily.firstname}
                   />
                 )}
@@ -480,7 +482,12 @@ const Profile = () => {
             <h3>Wife Details</h3>
             <div className="headOfFamily-wrapper">
               <div className="headOfFamily-avatar changeAvatar">
-                <img src={wifeDetails.wifeAvatar} alt={wifeDetails.firstname} />
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                    wifeDetails.wifeAvatar
+                  }`}
+                  alt={wifeDetails.firstname}
+                />
                 <button>Change Image</button>
               </div>
               <div>
@@ -614,11 +621,11 @@ const Profile = () => {
           </div>
         )}
 
-        <div className="family-details profile-son-details">
+        <div className="family-details profile-son-details" key="Son Details">
           <h3>Son Details</h3>
           {sonDetails &&
             sonDetails.map((son, index) => (
-              <>
+              <section key={son._id}>
                 <div
                   style={{
                     display: "flex",
@@ -636,7 +643,12 @@ const Profile = () => {
                 </div>
                 <div className="headOfFamily-wrapper" key={son.firstname}>
                   <div className="headOfFamily-avatar changeAvatar">
-                    <img src={son.sonAvatar} alt={son.firstname} />
+                    <img
+                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                        son.sonAvatar
+                      }`}
+                      alt={son.firstname}
+                    />
                     <button>Change Image</button>
                   </div>
                   <div>
@@ -770,7 +782,7 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-              </>
+              </section>
             ))}
           <div className="prfoile-add-son-details-wrapper">
             <Button
@@ -787,12 +799,13 @@ const Profile = () => {
           <h3>Daughter Details</h3>
           {daughterDetails &&
             daughterDetails.map((daughter, index) => (
-              <>
+              <section key={daughter._id}>
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                   }}
+                  key={daughter._id}
                 >
                   <label></label>
                   <Button
@@ -806,7 +819,9 @@ const Profile = () => {
                 <div className="headOfFamily-wrapper" key={daughter.firstname}>
                   <div className="headOfFamily-avatar changeAvatar">
                     <img
-                      src={daughter.daughterAvatar}
+                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                        daughter.daughterAvatar
+                      }`}
                       alt={daughter.firstname}
                     />
                     <button>Change Image</button>
@@ -946,7 +961,7 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-              </>
+              </section>
             ))}
           <div className="prfoile-add-son-details-wrapper">
             <Button

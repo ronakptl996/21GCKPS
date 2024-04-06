@@ -1,10 +1,10 @@
 import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { Committee } from "../../models/committee.model.js";
-import { v4 as uuidv4 } from "uuid";
-import optimzeImage from "../../utils/optimizeImage.js";
+import { optimzeImage } from "../../utils/optimizeImage.js";
 
 const addCommittee = asyncHandler(async (req, res) => {
   const { name, address, mobile, committeeName } = req.body;

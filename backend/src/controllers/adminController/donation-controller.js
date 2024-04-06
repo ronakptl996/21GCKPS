@@ -4,8 +4,7 @@ import { Donation } from "../../models/donation.model.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { generateURLToUpload } from "../../utils/awsService.js";
-import optimzeImage from "../../utils/optimizeImage.js";
+import { optimzeImage } from "../../utils/optimizeImage.js";
 
 const addDonation = asyncHandler(async (req, res) => {
   const { name, totalQty, contact, description, price } = req.body;
