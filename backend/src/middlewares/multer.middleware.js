@@ -1,11 +1,10 @@
 import multer from "multer";
-import sharp from "sharp";
 import { ApiError } from "../utils/ApiError.js";
 
 // const storage = multer.diskStorage({
 const storage = multer.memoryStorage({
   destination: function (req, file, cb) {
-    console.log("FILE>>> ", file);
+    console.log("storage FILE>>> ", file);
     cb(null, "./public/temp");
   },
   filename: function (req, file, cb) {

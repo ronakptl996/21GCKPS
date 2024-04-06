@@ -72,8 +72,12 @@
 }
 
 .admin-committee-table tr td > img {
-  width: 50px;
+  display: flex;
+  width: 44px;
   border-radius: 50%;
+  height: 43px;
+  object-fit: cover;
+  align-items: center;
 }
 
 .modal-avatar-wrapper {

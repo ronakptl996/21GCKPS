@@ -29,14 +29,12 @@ const router = Router();
 // router.route("/").get(verifyJwtAdmin);
 
 // Committee Route
-router.route("/add-committee").post(upload.single("avatar"), addCommittee); // verifyJwtAdmin (IMPLEMENT for authorizarion admin)
+router
+  .route("/add-committee")
+  .post(verifyJwtAdmin, upload.single("avatar"), addCommittee);
 router
   .route("/edit-committee-avatar")
-  .post(
-    verifyJwtAdmin,
-    awsUploadMulter.single("avatar"),
-    editCommitteeUserAvatar
-  );
+  .post(verifyJwtAdmin, upload.single("avatar"), editCommitteeUserAvatar);
 router.route("/committee").get(verifyJwt, getCommittee);
 router.route("/committee/:committeeName").get(verifyJwt, getSpecificCommittee);
 router.route("/edit-committee").patch(verifyJwtAdmin, editCommitteeDetail);

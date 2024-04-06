@@ -1,55 +1,30 @@
-import sharp from "sharp";
+import fs from "fs";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { Committee } from "../../models/committee.model.js";
-import { generateURLToUpload } from "../../utils/awsService.js";
 import { v4 as uuidv4 } from "uuid";
+import optimzeImage from "../../utils/optimizeImage.js";
 
 const addCommittee = asyncHandler(async (req, res) => {
   const { name, address, mobile, committeeName } = req.body;
   const avatarLocalImage = req.file;
 
-  console.log("avatarLocalImage >>", req.file.buffer);
-
   if (!avatarLocalImage) {
     throw new ApiError(400, "Avatar file is required");
   }
 
-  // Optimize the uploaded image using sharp
-  const optimizedImageBuffer = await sharp(req.file.buffer)
-    .resize({ width: 300 }) // Adjust the width as needed for optimization
-    .toBuffer();
-
   // Save the optimized image to disk
-  const imagePath = `./public/temp/${req.file.originalname}`; // Adjust the path as needed
-  await sharp(optimizedImageBuffer).toFile(imagePath);
+  const imagePath = `${uuidv4()}-${req.file.originalname}`; // Adjust the path as needed
 
-  return;
-  const fileName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+  const isOptimzeImage = await optimzeImage(req.file.buffer, imagePath);
+  console.log("isOptimzeImage >", isOptimzeImage);
 
-  // Generate URL for upload image to AWS
-  async function init() {
-    return await generateURLToUpload(
-      fileName,
-      avatarLocalImage.mimetype,
-      avatarLocalImage.buffer
+  if (!isOptimzeImage) {
+    throw new ApiError(
+      500,
+      "Error while OptimzeImage edit committee user avatar"
     );
-  }
-  const uploadEndpoint = await init();
-
-  const response = await fetch(uploadEndpoint, {
-    method: "PUT",
-    headers: {
-      "Content-Type": avatarLocalImage.mimetype,
-    },
-    body: avatarLocalImage.buffer,
-  });
-
-  if (response && response.status != 200) {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, "", "Error while uploading image"));
   }
 
   const committeeDetails = await Committee.create({
@@ -57,7 +32,7 @@ const addCommittee = asyncHandler(async (req, res) => {
     address,
     mobile,
     committeeName,
-    avatar: process.env.AWS_S3_URL + fileName,
+    avatar: imagePath,
   });
 
   const createdData = await Committee.findById(committeeDetails._id);
@@ -77,6 +52,8 @@ const editCommitteeUserAvatar = asyncHandler(async (req, res) => {
   const { userId } = req.body;
   const avatarLocalImage = req.file;
 
+  console.log(userId);
+
   if (!avatarLocalImage) {
     throw new ApiError(400, "Avatar file is required");
   }
@@ -87,37 +64,43 @@ const editCommitteeUserAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User not found");
   }
 
-  const fileName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+  console.log("AVATAR >", committeeUserData.avatar);
+  const imagePath = `./temp/${committeeUserData.avatar}`;
 
-  // Generate URL for upload image to AWS
-  async function init() {
-    return await generateURLToUpload(
-      fileName,
-      avatarLocalImage.mimetype,
-      avatarLocalImage.buffer
-    );
-  }
-  const uploadEndpoint = await init();
+  // Remove File from folder
+  fs.access(imagePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`${imagePath} does not exist`);
+      return;
+    }
 
-  const response = await fetch(uploadEndpoint, {
-    method: "PUT",
-    headers: {
-      "Content-Type": avatarLocalImage.mimetype,
-    },
-    body: avatarLocalImage.buffer,
+    // File exists, so proceed with deletion
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(`Error deleting ${imagePath}: ${err}`);
+        return;
+      }
+      console.log(`${imagePath} has been deleted successfully`);
+    });
   });
 
-  if (response && response.status != 200) {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, "", "Error while uploading image"));
+  const newImagePath = `${uuidv4()}-${req.file.originalname}`;
+
+  const isOptimzeImage = await optimzeImage(req.file.buffer, newImagePath);
+  console.log("isOptimzeImage >", isOptimzeImage);
+
+  if (!isOptimzeImage) {
+    throw new ApiError(
+      500,
+      "Error while OptimzeImage edit committee user avatar"
+    );
   }
 
   const updatedData = await Committee.findByIdAndUpdate(
     userId,
     {
       $set: {
-        avatar: process.env.AWS_S3_URL + fileName,
+        avatar: newImagePath,
       },
     },
     { new: true }
@@ -129,7 +112,7 @@ const editCommitteeUserAvatar = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, updatedData, "Committee User Image Updated"));
+    .json(new ApiResponse(200, updatedData, "Committee member Image Updated"));
 });
 
 const getCommittee = asyncHandler(async (req, res) => {
@@ -171,7 +154,11 @@ const editCommitteeDetail = asyncHandler(async (req, res) => {
     return res
       .status(200)
       .json(
-        new ApiResponse(200, updatedData, "User details updated successfully!")
+        new ApiResponse(
+          200,
+          updatedData,
+          "Committee member details updated successfully!"
+        )
       );
   } catch (error) {
     throw new ApiError(
