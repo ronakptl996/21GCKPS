@@ -46,7 +46,13 @@ const DetailMatrimonialProfile = () => {
         <section className="DetailMatrimonialProfile-inner">
           <div className="DetailMatrimonialProfile-user-img-wrapper">
             <div className="user-profile-image">
-              <img src={user?.photo} alt={user?.fullName} srcset="" />
+              <img
+                src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}${
+                  user?.photo
+                }`}
+                alt={user?.fullName}
+                srcset=""
+              />
             </div>
             <div className="social-btn">
               <div className="social-btn-wrapper facebook">

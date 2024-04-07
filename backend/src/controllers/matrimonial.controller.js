@@ -1,12 +1,11 @@
+import mongoose from "mongoose";
 import { Matrimonial } from "../models/matrimonial.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { generateURLToUpload } from "../utils/awsService.js";
 import { v4 as uuidv4 } from "uuid";
 import { Family } from "../models/family.model.js";
-import mongoose from "mongoose";
+import { optimzeImage } from "../utils/optimizeImage.js";
 
 const addMatrimonial = asyncHandler(async (req, res) => {
   const matrimonialImage = req.file;
@@ -30,79 +29,69 @@ const addMatrimonial = asyncHandler(async (req, res) => {
 
   const fileName = `${uuidv4()}-${matrimonialImage.originalname}`;
 
-  // Generate URL for upload image to AWS
-  async function init() {
-    return await generateURLToUpload(
-      fileName,
-      matrimonialImage.mimetype,
-      matrimonialImage.buffer
-    );
-  }
-  const uploadEndpoint = await init();
-
-  const response = await fetch(uploadEndpoint, {
-    method: "PUT",
-    headers: {
-      "Content-Type": matrimonialImage.mimetype,
-    },
-    body: matrimonialImage.buffer,
-  });
-
-  if (response && response.status != 200) {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, "", "Error while uploading image"));
-  }
-
-  const matrimonialData = await Matrimonial.create({
-    fullName: profileDetail.fullName,
-    fatherName: profileDetail.fatherName,
-    motherName: profileDetail.motherName,
-    education: profileDetail.education,
-    profession: profileDetail.profession,
-    gender: profileDetail.gender,
-    achievement: profileDetail.achievement,
-    facebookUserName: profileDetail.facebookUserName,
-    instagramUserName: profileDetail.instagramUserName,
-    contact: profileDetail.contact,
-    bloodGroup: profileDetail.bloodGroup,
-    maternalUncle: profileDetail.maternalUncle,
-    mamaVillageName: profileDetail.mamaVillageName,
-    address: profileDetail.address,
-    dob: profileDetail.dob,
-    interest: profileDetail.interest,
-    hobby: profileDetail.hobby,
-    yourSelf: profileDetail.yourSelf,
-    brotherSisterDetails: sonDetails,
-    photo: process.env.AWS_S3_URL + fileName,
-    createdBy: req.user._id,
-  });
-  // console.log("matrimonialData ::", matrimonialData);
-
-  const createdData = await Matrimonial.findById(matrimonialData._id);
-
-  if (!createdData) {
-    throw new ApiError(500, "Error while add matrimonial details");
-  }
-
-  // Add Matrimonial Profile Id to Family Model
-  const matrimonialId = new mongoose.Types.ObjectId(createdData._id);
-  await Family.findByIdAndUpdate(
-    req.user._id,
-    {
-      $push: {
-        matrimonialProfiles: matrimonialId,
-      },
-    },
-    {
-      new: true,
-      upsert: false,
-    }
+  const isOptimzeImage = await optimzeImage(
+    matrimonialImage.buffer,
+    `matrimonial/${fileName}`
   );
+  console.log("isOptimzeImage >", isOptimzeImage);
 
-  return res
-    .status(201)
-    .json(new ApiResponse(201, createdData, "Matrimonial profile created!"));
+  if (!isOptimzeImage) {
+    throw new ApiError(500, "Error while OptimzeImage add donation avatar");
+  }
+
+  try {
+    const matrimonialData = await Matrimonial.create({
+      fullName: profileDetail.fullName,
+      fatherName: profileDetail.fatherName,
+      motherName: profileDetail.motherName,
+      education: profileDetail.education,
+      profession: profileDetail.profession,
+      gender: profileDetail.gender,
+      achievement: profileDetail.achievement,
+      facebookUserName: profileDetail.facebookUserName,
+      instagramUserName: profileDetail.instagramUserName,
+      contact: profileDetail.contact,
+      bloodGroup: profileDetail.bloodGroup,
+      maternalUncle: profileDetail.maternalUncle,
+      mamaVillageName: profileDetail.mamaVillageName,
+      address: profileDetail.address,
+      dob: profileDetail.dob,
+      interest: profileDetail.interest,
+      hobby: profileDetail.hobby,
+      yourSelf: profileDetail.yourSelf,
+      brotherSisterDetails: sonDetails,
+      photo: fileName,
+      createdBy: req.user._id,
+    });
+
+    const createdData = await Matrimonial.findById(matrimonialData._id);
+
+    if (!createdData) {
+      throw new ApiError(500, "Error while add matrimonial details");
+    }
+
+    // Add Matrimonial Profile Id to Family Model
+    const matrimonialId = new mongoose.Types.ObjectId(createdData._id);
+    await Family.findByIdAndUpdate(
+      req.user._id,
+      {
+        $push: {
+          matrimonialProfiles: matrimonialId,
+        },
+      },
+      {
+        new: true,
+        upsert: false,
+      }
+    );
+
+    return res
+      .status(201)
+      .json(new ApiResponse(201, createdData, "Matrimonial profile created!"));
+  } catch (error) {
+    console.log("Error while Creating matrimonial profile ", error);
+    throw new ApiError(500, "Error while Creating matrimonial profile", error);
+  }
 });
 
 const getMatrimonial = asyncHandler(async (req, res) => {

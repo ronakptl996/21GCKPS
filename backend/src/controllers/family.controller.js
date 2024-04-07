@@ -9,10 +9,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import uploadFilesToS3 from "../utils/uploadFilesToS3.js";
-import {
-  optimizeImagesRegister,
-  optimzeImage,
-} from "../utils/optimizeImage.js";
+import { optimzeImage } from "../utils/optimizeImage.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -138,7 +135,7 @@ const registerFamily = asyncHandler(async (req, res) => {
     const createdData = await Family.findById(familyData._id).select(
       "-password -refreshToken"
     );
-    
+
     if (!createdData) {
       throw new ApiError(500, "Something went wrong while registering");
     }

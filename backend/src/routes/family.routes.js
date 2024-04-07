@@ -11,10 +11,9 @@ import {
   verifyOtp,
 } from "../controllers/family.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
-import { upload, awsUploadMulter } from "../middlewares/multer.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
-
 
 // Update User Profile
 router.route("/profile/update/:id").post(verifyJwt, updateUserProfile);
@@ -27,6 +26,5 @@ router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/verify-otp").post(verifyOtp);
 router.route("/forgot-password").post(changePassword);
 router.route("/:phone").post(findUserWithPhoneNumber);
-
 
 export default router;
