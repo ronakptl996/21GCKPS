@@ -21,3 +21,19 @@ export const indiaTimeFormat = (time) => {
   });
   return istDateString.split(",")[0];
 };
+
+export const isMatrimonialProfile = (matrimonialProfiles, profileId) => {
+  console.log(
+    "matrimonialProfiles >>",
+    matrimonialProfiles,
+    "profileId >>",
+    profileId
+  );
+
+  for (const profile of matrimonialProfiles) {
+    if (profile._id === profileId) {
+      return true;
+    }
+    return false;
+  }
+};
