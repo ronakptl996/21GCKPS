@@ -92,7 +92,7 @@ const editCommitteeUserAvatar = asyncHandler(async (req, res) => {
   if (!isOptimzeImage) {
     throw new ApiError(
       500,
-      "Error while OptimzeImage edit committee user avatar"
+      "Error while Optimze Image edit committee user avatar"
     );
   }
 

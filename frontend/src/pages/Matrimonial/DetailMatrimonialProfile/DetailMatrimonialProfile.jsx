@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 import "./DetailMatrimonialProfile.css";
@@ -14,6 +14,10 @@ import {
   MenuItem,
   Stack,
   Chip,
+  Radio,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { WhatsApp, Instagram, FacebookOutlined } from "@mui/icons-material";
@@ -33,9 +37,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ImageIcon from "@mui/icons-material/Image";
+import { setLoading } from "../../../features/auth/authSlice.js";
 
 const DetailMatrimonialProfile = () => {
   const [user, setUser] = useState();
@@ -43,6 +45,7 @@ const DetailMatrimonialProfile = () => {
   // Edit Modal useState
   const [interestInputValue, setInterestInputValue] = useState("");
   const [hobbyInputValue, setHobbyInputValue] = useState("");
+  const [daughterStatus, setDaughterStatus] = useState("");
   const [open, setOpen] = useState(false);
   const [modalForm, setModalForm] = useState({
     fullName: "",
@@ -68,9 +71,10 @@ const DetailMatrimonialProfile = () => {
   });
 
   const { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loggedInUserDetails } = useSelector((store) => store.auth);
+  const { loggedInUserDetails, isLoading } = useSelector((store) => store.auth);
 
   // Modal
   const handleClickOpen = (data) => {
@@ -97,11 +101,154 @@ const DetailMatrimonialProfile = () => {
       hobby: data.hobby,
       yourSelf: data.yourSelf,
       brotherSisterDetails: data.brotherSisterDetails,
+      matrimonialId: data._id,
     });
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleBrotherSisterDetailChange = (index, field, value) => {
+    setModalForm((prevState) => {
+      const newBrotherSisterDetails = [...prevState.brotherSisterDetails];
+      newBrotherSisterDetails[index][field] = value;
+      return {
+        ...prevState,
+        brotherSisterDetails: newBrotherSisterDetails,
+      };
+    });
+  };
+
+  // Interest Chip
+  const handleInterestAddChip = () => {
+    if (
+      interestInputValue.trim() !== "" &&
+      !modalForm.interest.includes(interestInputValue)
+    ) {
+      // setChips((prevChips) => [...prevChips, inputValue]);
+      setModalForm((prevState) => ({
+        ...prevState,
+        interest: [...modalForm.interest, interestInputValue],
+      }));
+      setInterestInputValue("");
+    }
+  };
+
+  // Delete handleInterestDeleteChip
+  const handleInterestDeleteChip = (chipToDelete) => {
+    setModalForm((prevState) => ({
+      ...prevState,
+      interest: [...modalForm.interest.filter((chip) => chip !== chipToDelete)],
+    }));
+  };
+
+  // Hobby Chip
+  const handleHobbyAddChip = () => {
+    if (
+      hobbyInputValue.trim() !== "" &&
+      !modalForm.hobby.includes(hobbyInputValue)
+    ) {
+      // setChips((prevChips) => [...prevChips, inputValue]);
+      setModalForm((prevState) => ({
+        ...prevState,
+        hobby: [...modalForm.hobby, hobbyInputValue],
+      }));
+      setHobbyInputValue("");
+    }
+  };
+
+  // Delete handleInterestDeleteChip
+  const handleHobbyDeleteChip = (chipToDelete) => {
+    setModalForm((prevState) => ({
+      ...prevState,
+      hobby: [...modalForm.hobby.filter((chip) => chip !== chipToDelete)],
+    }));
+  };
+
+  // Add addBrotherSisterDetailHandler
+  const addBrotherSisterDetailHandler = () => {
+    setModalForm((prevState) => ({
+      ...prevState,
+      brotherSisterDetails: [
+        ...prevState.brotherSisterDetails,
+        {
+          surname: "",
+          firstname: "",
+          secondname: "",
+          profession: "",
+          education: "",
+          dob: "",
+        },
+      ],
+    }));
+  };
+
+  // Delete More Details
+  const deleteBrotherSisterDetailHandler = (index) => {
+    setModalForm((prevState) => {
+      const newBrotherSisterDetails = [...prevState.brotherSisterDetails];
+      newBrotherSisterDetails.splice(index, 1); // Remove the item at the specified index
+      return {
+        ...prevState,
+        brotherSisterDetails: newBrotherSisterDetails,
+      };
+    });
+  };
+
+  // Edit Matrimonial Profile
+  const handleEditProfile = async () => {
+    try {
+      let response = await fetch("/api/matrimonial/edit", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(modalForm),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (data && data.success && data.statusCode == 200) {
+        toast.success(data.message);
+        handleClose();
+        fetchProfile(id);
+      } else if (data.statusCode == 404) {
+        toast.error(data.message);
+        handleClose();
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+      handleClose();
+    }
+  };
+
+  // Edit Image
+  const changeImageModal = async (e) => {
+    dispatch(setLoading(true));
+    console.log(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("avatar", e.target.files[0]);
+    formData.append("matrimonialId", modalForm.matrimonialId);
+
+    try {
+      const response = await fetch("/api/matrimonial/edit-avatar", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data && data.success && data.statusCode == 200) {
+        toast.success(data.message);
+      } else {
+        toast.error("Error while updating image");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
+      handleClose();
+      dispatch(setLoading(false));
+    }
   };
 
   const fetchProfile = async (id) => {
@@ -130,51 +277,73 @@ const DetailMatrimonialProfile = () => {
       <Dialog fullWidth open={open} onClose={handleClose}>
         <DialogTitle>Edit Matrimonial Profile</DialogTitle>
         <DialogContent>
-          <TextField
-            margin="dense"
-            name="fullName"
-            label="Fullname"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={(e) => {
-              setModalForm((prevState) => ({
-                ...prevState,
-                [e.target.name]: e.target.value,
-              }));
-            }}
-            value={modalForm.fullName}
-          />
-          <TextField
-            margin="dense"
-            name="fatherName"
-            label="Father Name"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={(e) => {
-              setModalForm((prevState) => ({
-                ...prevState,
-                [e.target.name]: e.target.value,
-              }));
-            }}
-            value={modalForm.fatherName}
-          />
-          <TextField
-            margin="dense"
-            name="motherName"
-            label="Mother Name"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={(e) => {
-              setModalForm((prevState) => ({
-                ...prevState,
-                [e.target.name]: e.target.value,
-              }));
-            }}
-            value={modalForm.motherName}
-          />
+          <section className="matrimonial-header-details">
+            <section>
+              <TextField
+                margin="dense"
+                name="fullName"
+                label="Fullname"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(e) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    [e.target.name]: e.target.value,
+                  }));
+                }}
+                value={modalForm.fullName}
+              />
+              <TextField
+                margin="dense"
+                name="fatherName"
+                label="Father Name"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(e) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    [e.target.name]: e.target.value,
+                  }));
+                }}
+                value={modalForm.fatherName}
+              />
+              <TextField
+                margin="dense"
+                name="motherName"
+                label="Mother Name"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(e) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    [e.target.name]: e.target.value,
+                  }));
+                }}
+                value={modalForm.motherName}
+              />
+            </section>
+            <section>
+              <img
+                className="matrimonial-profile"
+                src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}${
+                  modalForm?.photo
+                }`}
+                alt={modalForm.fullName}
+              />
+              <Button variant="outlined" size="small" component="label">
+                Change Image{" "}
+                <input
+                  type="file"
+                  hidden
+                  name="avatar"
+                  onChange={changeImageModal}
+                />
+              </Button>
+            </section>
+          </section>
           <div style={{ display: "flex" }}>
             <TextField
               margin="dense"
@@ -270,6 +439,7 @@ const DetailMatrimonialProfile = () => {
             <TextField
               margin="dense"
               name="instagramUserName"
+              sx={{ ml: "10px" }}
               label="Instagram ID"
               type="text"
               fullWidth
@@ -422,9 +592,10 @@ const DetailMatrimonialProfile = () => {
               value={modalForm.yourSelf}
             />
           </div>
-          <div className="register-input-wrapper">
+          <div className="modalForm-matrimonial">
             <div>
               <TextField
+                fullWidth
                 label="Interest"
                 value={interestInputValue}
                 onChange={(e) => setInterestInputValue(e.target.value)}
@@ -439,6 +610,7 @@ const DetailMatrimonialProfile = () => {
                 {modalForm.interest &&
                   modalForm.interest.map((chip, index) => (
                     <Chip
+                      size="small"
                       key={index}
                       label={chip}
                       onDelete={() => handleInterestDeleteChip(chip)}
@@ -449,6 +621,8 @@ const DetailMatrimonialProfile = () => {
             </div>
             <div>
               <TextField
+                sx={{ ml: "10px" }}
+                fullWidth
                 label="Hobby"
                 value={hobbyInputValue}
                 onChange={(e) => setHobbyInputValue(e.target.value)}
@@ -463,6 +637,7 @@ const DetailMatrimonialProfile = () => {
                 {modalForm?.hobby &&
                   modalForm?.hobby?.map((chip, index) => (
                     <Chip
+                      size="small"
                       key={index}
                       label={chip}
                       onDelete={() => handleHobbyDeleteChip(chip)}
@@ -470,6 +645,150 @@ const DetailMatrimonialProfile = () => {
                     />
                   ))}
               </Stack>
+            </div>
+          </div>
+          {/* Son / Daughter Details */}
+          <div
+            className="matrimonial-form-input-wrapper"
+            style={{ marginTop: "15px" }}
+          >
+            <div className="son-daughter-details">
+              <>
+                {modalForm.brotherSisterDetails.map((detail, index) => {
+                  return (
+                    <div className="son-daughter-wrapper" key={index}>
+                      <div className="brother-sister-details">
+                        <label>
+                          Brother/Sister Details {index > 0 ? index : ""}
+                        </label>
+
+                        <Button
+                          size="small"
+                          onClick={() =>
+                            deleteBrotherSisterDetailHandler(index)
+                          }
+                          color="error"
+                          variant="outlined"
+                        >
+                          Delete Details
+                        </Button>
+                      </div>
+                      <div className="register-input-wrapper">
+                        <TextField
+                          id={`outlined-basic-${index}`}
+                          label="Surname"
+                          variant="standard"
+                          value={detail.surname}
+                          onChange={(e) =>
+                            handleBrotherSisterDetailChange(
+                              index,
+                              "surname",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <TextField
+                          id={`outlined-basic-${index}`}
+                          label="Firstname"
+                          variant="standard"
+                          value={detail.firstname}
+                          onChange={(e) =>
+                            handleBrotherSisterDetailChange(
+                              index,
+                              "firstname",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <TextField
+                          id={`outlined-basic-${index}`}
+                          label="Secondname"
+                          variant="standard"
+                          value={detail.secondname}
+                          onChange={(e) =>
+                            handleBrotherSisterDetailChange(
+                              index,
+                              "secondname",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="register-input-wrapper">
+                        <TextField
+                          id={`outlined-basic-${index}`}
+                          label="Proffession"
+                          variant="standard"
+                          value={detail.profession}
+                          onChange={(e) =>
+                            handleBrotherSisterDetailChange(
+                              index,
+                              "profession",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <TextField
+                          id={`outlined-basic-${index}`}
+                          label="Education"
+                          variant="standard"
+                          type="text"
+                          value={detail.education}
+                          onChange={(e) =>
+                            handleBrotherSisterDetailChange(
+                              index,
+                              "education",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-end",
+                }}
+              >
+                <FormControl>
+                  <FormLabel id="demo-row-radio-buttons-group-label">
+                    Add Brother/Sister is married or not
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    value={daughterStatus}
+                    onChange={(e) => setDaughterStatus(e.target.value)}
+                  >
+                    <FormControlLabel
+                      value="married"
+                      control={<Radio size="small" />}
+                      label="Married"
+                    />
+                    <FormControlLabel
+                      value="unmarried"
+                      control={<Radio size="small" />}
+                      label="Unmarried"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                {daughterStatus == "unmarried" && (
+                  <div className="">
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={addBrotherSisterDetailHandler}
+                    >
+                      + Add More Details
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           {/* <div className="avatar-wrapper modal-avatar-wrapper">
@@ -500,7 +819,9 @@ const DetailMatrimonialProfile = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained">Edit</Button>
+          <Button variant="contained" onClick={handleEditProfile}>
+            Edit
+          </Button>
         </DialogActions>
       </Dialog>
       {user && (

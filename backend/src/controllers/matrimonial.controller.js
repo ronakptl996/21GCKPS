@@ -1,3 +1,4 @@
+import fs from "fs";
 import mongoose from "mongoose";
 import { Matrimonial } from "../models/matrimonial.model.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -197,9 +198,114 @@ const searchMatrimonialProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const editMatrimonialProfile = asyncHandler(async (req, res) => {
+  if (!req.body.matrimonialId)
+    throw new ApiError(404, "Profile Id is required!");
+
+  const matrimonialProfile = await Matrimonial.findById(req.body.matrimonialId);
+
+  if (!matrimonialProfile) {
+    throw new ApiError(404, "Profile not found!");
+  }
+
+  try {
+    let updatedData = await Matrimonial.findByIdAndUpdate(
+      req.body.matrimonialId,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      throw new ApiError(501, "Error while updating profile detail!");
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedData, "Profile updated successfully!"));
+  } catch (error) {
+    throw new ApiError(
+      501,
+      error || "Something went wrong while updating profile!"
+    );
+  }
+});
+
+const editMatrimonialUserAvatar = asyncHandler(async (req, res) => {
+  const { matrimonialId } = req.body;
+  console.log("matrimonialId >>", matrimonialId);
+
+  if (!req.file) {
+    throw new ApiError(400, "Avatar file is required");
+  }
+
+  const matrimonialProfile = await Matrimonial.findById(matrimonialId);
+
+  if (!matrimonialProfile) {
+    throw new ApiError(400, "Profile not found");
+  }
+
+  console.log("AVATAR >", matrimonialProfile.photo);
+  const imagePath = `./temp/matrimonial/${matrimonialProfile.photo}`;
+
+  // Remove File from folder
+  fs.access(imagePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`${imagePath} does not exist`);
+      return;
+    }
+
+    // File exists, so proceed with deletion
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(`Error deleting ${imagePath}: ${err}`);
+        return;
+      }
+      console.log(`${imagePath} has been deleted successfully`);
+    });
+  });
+
+  const newImagePath = `${uuidv4()}-${req.file.originalname}`;
+
+  const isOptimzeImage = await optimzeImage(
+    req.file.buffer,
+    `matrimonial/${newImagePath}`
+  );
+
+  console.log("isOptimzeImage >", isOptimzeImage);
+
+  if (!isOptimzeImage) {
+    throw new ApiError(
+      500,
+      "Error while Optimze Image edit matrimonial profile avatar"
+    );
+  }
+
+  const updatedData = await Matrimonial.findByIdAndUpdate(
+    matrimonialId,
+    {
+      $set: {
+        photo: newImagePath,
+      },
+    },
+    { new: true }
+  );
+
+  if (!updatedData) {
+    throw new ApiError(500, "Error while updating avatar");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedData, "Profile image updated!"));
+});
+
 export {
   addMatrimonial,
   getMatrimonial,
   getUserMatrimonial,
   searchMatrimonialProfile,
+  editMatrimonialProfile,
+  editMatrimonialUserAvatar,
 };

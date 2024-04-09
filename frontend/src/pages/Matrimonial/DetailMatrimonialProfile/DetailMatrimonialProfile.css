@@ -251,3 +251,31 @@ h3.heading-h3 {
   color: rgb(24, 28, 32);
   margin: 0;
 }
+
+/* Matrimonial Form */
+.modalForm-matrimonial {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.modalForm-matrimonial .css-1v92mdz-MuiStack-root {
+  flex-wrap: wrap;
+}
+
+.modalForm-matrimonial .css-1hya7ew-MuiButtonBase-root-MuiChip-root {
+  margin: 5px 2px;
+}
+
+.matrimonial-header-details {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.matrimonial-header-details section {
+  display: grid;
+  place-items: center;
+}
+
+.matrimonial-header-details section img.matrimonial-profile {
+  width: 60%;
+}
