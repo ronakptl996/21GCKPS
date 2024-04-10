@@ -18,6 +18,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import ImageIcon from "@mui/icons-material/Image";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -90,7 +91,8 @@ const Profile = () => {
     contact: "",
     education: "",
     bloodGroup: "",
-    dob: "",
+    dob: "00",
+    avatar: "",
   });
 
   const { id } = useParams();
@@ -120,7 +122,7 @@ const Profile = () => {
     });
   };
 
-  // Delete Detials
+  // Delete Details
   const deleteSonDetailHandler = (index) => {
     setSonDetails((prevSonDetails) => {
       const newSonDetails = [...prevSonDetails];
@@ -135,6 +137,12 @@ const Profile = () => {
       newDaughterDetails.splice(index, 1);
       return newDaughterDetails;
     });
+  };
+
+  // Modal Image Upload
+  const handleFileChange = (event, setAvatarFunction) => {
+    const file = event.target.files[0];
+    setAvatarFunction(file);
   };
 
   const fetchProfile = async () => {
@@ -211,6 +219,67 @@ const Profile = () => {
     }
   };
 
+  const addSonDetailsModal = () => {
+    // setSonDetails((prevSonDetails) => [
+    //   ...prevSonDetails,
+    //   {
+    //     surname: modalForm.surname,
+    //     firstname: modalForm.firstname,
+    //     secondname: modalForm.secondname,
+    //     proffession: modalForm.profession,
+    //     contact: modalForm.contact,
+    //     education: modalForm.education,
+    //     bloodGroup: modalForm.bloodGroup,
+    //     dob: modalForm.dob,
+    //     sonAvatar: modalForm.avatar,
+    //   },
+    // ]);
+
+    const {
+      firstname,
+      lastname,
+      surname,
+      avatar,
+      bloodGroup,
+      contact,
+      education,
+      dob,
+      profession,
+    } = modalForm;
+    // console.log("userID:::", userId);
+    if (
+      [
+        firstname,
+        lastname,
+        surname,
+        avatar,
+        bloodGroup,
+        contact,
+        education,
+        dob,
+        profession,
+      ].some((field) => field == "" || field == {})
+    ) {
+      toast.error("Please, fill the details");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("donationImage", e.target.files[0]);
+    formData.append("donationId", modalForm.donationId);
+
+    // IMP
+  };
+
+  // Add Modal Details
+  const addModalHandler = async (modalType) => {
+    console.log(modalType);
+    console.log(modalForm);
+    if (modalType === "sonDetails") {
+      addSonDetailsModal();
+    }
+  };
+
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -223,36 +292,55 @@ const Profile = () => {
           Add {addDetails == "sonDetails" ? "Son" : "Daughter"} Details
         </DialogTitle>
         <DialogContent>
-          <TextField
-            margin="dense"
-            name="surname"
-            label="Surname"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={(e) => {
-              setModalForm((prevState) => ({
-                ...prevState,
-                [e.target.name]: e.target.value,
-              }));
-            }}
-            value={modalForm.surname}
-          />
-          <TextField
-            margin="dense"
-            name="firstname"
-            label="Firstname"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={(e) => {
-              setModalForm((prevState) => ({
-                ...prevState,
-                [e.target.name]: e.target.value,
-              }));
-            }}
-            value={modalForm.firstname}
-          />
+          <div style={{ display: "flex" }}>
+            <TextField
+              sx={{ mr: "10px" }}
+              margin="dense"
+              name="surname"
+              label="Surname"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={(e) => {
+                setModalForm((prevState) => ({
+                  ...prevState,
+                  [e.target.name]: e.target.value,
+                }));
+              }}
+              value={modalForm.surname}
+            />
+            <TextField
+              sx={{ mr: "10px" }}
+              margin="dense"
+              name="firstname"
+              label="Firstname"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={(e) => {
+                setModalForm((prevState) => ({
+                  ...prevState,
+                  [e.target.name]: e.target.value,
+                }));
+              }}
+              value={modalForm.firstname}
+            />
+            <TextField
+              margin="dense"
+              name="lastname"
+              label="Lastname"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={(e) => {
+                setModalForm((prevState) => ({
+                  ...prevState,
+                  [e.target.name]: e.target.value,
+                }));
+              }}
+              value={modalForm.lastname}
+            />
+          </div>
           <TextField
             margin="dense"
             name="profession"
@@ -298,22 +386,101 @@ const Profile = () => {
             }}
             value={modalForm.education}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date of Birth"
-              value={dayjs(modalForm.dob)}
-              onChange={(date) => {
-                setModalForm((prevState) => ({
-                  ...prevState,
-                  dob: new Date(date),
-                }));
-              }}
-            />
-          </LocalizationProvider>
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "space-between",
+              gridTemplateColumns: "1fr 1fr",
+              marginTop: "10px",
+              alignItems: "center",
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Date of Birth"
+                value={dayjs(modalForm.dob)}
+                onChange={(date) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    dob: new Date(date),
+                  }));
+                }}
+              />
+            </LocalizationProvider>
+            <FormControl>
+              <InputLabel id="demo-simple-select-label">Blood Group</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={modalForm.bloodGroup}
+                onChange={(e) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    bloodGroup: e.target.value,
+                  }));
+                }}
+                label="Blood Group"
+              >
+                <MenuItem value="o+">O+</MenuItem>
+                <MenuItem value="o-">O-</MenuItem>
+                <MenuItem value="a+">A+</MenuItem>
+                <MenuItem value="a-">A-</MenuItem>
+                <MenuItem value="b+">B+</MenuItem>
+                <MenuItem value="b-">B-</MenuItem>
+                <MenuItem value="ab+">AB+</MenuItem>
+                <MenuItem value="ab-">AB-</MenuItem>
+                <MenuItem value="ab">AB</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+
+          <div className="avatar-wrapper modal-avatar-wrapper">
+            <Button variant="outlined" component="label">
+              Upload Photo
+              <input
+                type="file"
+                hidden
+                name="avatar"
+                onChange={(e) =>
+                  handleFileChange(e, (file) =>
+                    setModalForm({
+                      ...modalForm,
+                      avatar: file,
+                    })
+                  )
+                }
+              />
+            </Button>
+            {modalForm.avatar ? (
+              <div
+                className="modalForm-avatar"
+                onClick={() =>
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    avatar: "",
+                  }))
+                }
+              >
+                <img
+                  alt="modalForm-avatar-image"
+                  src={URL.createObjectURL(modalForm.avatar)}
+                />
+              </div>
+            ) : (
+              <div className="modal-committee-image-wrapper">
+                <ImageIcon />
+              </div>
+            )}
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button variant="contained">Add</Button>
+          <Button
+            variant="contained"
+            onClick={() => addModalHandler(addDetails)}
+          >
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -621,7 +788,7 @@ const Profile = () => {
           </div>
         )}
 
-        <div className="family-details profile-son-details" key="Son Details">
+        <div className="family-details profile-son-details">
           <h3>Son Details</h3>
           {sonDetails &&
             sonDetails.map((son, index) => (
