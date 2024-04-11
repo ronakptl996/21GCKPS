@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  addSonDaughterDetails,
   changePassword,
   findUserWithPhoneNumber,
   getUser,
@@ -17,6 +18,9 @@ const router = Router();
 
 // Update User Profile
 router.route("/profile/update/:id").post(verifyJwt, updateUserProfile);
+router
+  .route("/profile/add-new-son-daughter")
+  .post(verifyJwt, upload.single("avatar"), addSonDaughterDetails);
 
 router.route("/").get(verifyJwt, getUserDetails);
 router.route("/profile/:id").get(verifyJwt, getUser);

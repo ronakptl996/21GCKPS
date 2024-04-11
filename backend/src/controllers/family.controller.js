@@ -403,6 +403,103 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   // console.log(updatedData);
 });
 
+const addSonDaughterDetails = asyncHandler(async (req, res) => {
+  console.log("req.body >>", req.body);
+
+  const {
+    profileId,
+    firstname,
+    secondname,
+    surname,
+    bloodGroup,
+    contact,
+    education,
+    dob,
+    proffession,
+    addDetailsTo,
+  } = req.body;
+
+  const profileImage = req.file;
+
+  if (!profileImage) {
+    throw new ApiError(400, "Profile image file is required");
+  }
+
+  const familyData = await Family.findById(profileId);
+
+  if (!familyData) {
+    throw new ApiError(400, "Family profile not found!");
+  }
+
+  const imageName = `${uuidv4()}-${profileImage.originalname}`;
+
+  const isOptimzeImage = await optimzeImage(
+    req.file.buffer,
+    `family/${imageName}`
+  );
+  console.log("isOptimzeImage >", isOptimzeImage);
+
+  if (!isOptimzeImage) throw new ApiError(505, "Error while optimazing image!");
+
+  if (addDetailsTo == "son") {
+    const updatedData = await Family.findByIdAndUpdate(
+      profileId,
+      {
+        $push: {
+          sonDetails: {
+            surname,
+            firstname,
+            secondname,
+            proffession,
+            contact,
+            education,
+            bloodGroup,
+            dob,
+            sonAvatar: imageName,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      throw new ApiError(400, "Son details not added!");
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedData, "Son details add successfully!"));
+  } else if (addDetailsTo == "daughter") {
+    const updatedData = await Family.findByIdAndUpdate(
+      profileId,
+      {
+        $push: {
+          daughterDetails: {
+            surname,
+            firstname,
+            secondname,
+            proffession,
+            contact,
+            education,
+            bloodGroup,
+            dob,
+            daughterAvatar: imageName,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      throw new ApiError(400, "Daughter details not added!");
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedData, "Daughter details add successfully!"));
+  }
+});
+
 export {
   registerFamily,
   loginUser,
@@ -413,4 +510,5 @@ export {
   verifyOtp,
   changePassword,
   updateUserProfile,
+  addSonDaughterDetails,
 };

@@ -86,7 +86,7 @@ const Profile = () => {
   const [modalForm, setModalForm] = useState({
     surname: "",
     firstname: "",
-    lastname: "",
+    secondname: "",
     profession: "",
     contact: "",
     education: "",
@@ -219,25 +219,29 @@ const Profile = () => {
     }
   };
 
-  const addSonDetailsModal = () => {
-    // setSonDetails((prevSonDetails) => [
-    //   ...prevSonDetails,
-    //   {
-    //     surname: modalForm.surname,
-    //     firstname: modalForm.firstname,
-    //     secondname: modalForm.secondname,
-    //     proffession: modalForm.profession,
-    //     contact: modalForm.contact,
-    //     education: modalForm.education,
-    //     bloodGroup: modalForm.bloodGroup,
-    //     dob: modalForm.dob,
-    //     sonAvatar: modalForm.avatar,
-    //   },
-    // ]);
+  const clearModal = () => {
+    setOpen(false);
+    setModalForm({
+      surname: "",
+      firstname: "",
+      secondname: "",
+      profession: "",
+      contact: "",
+      education: "",
+      bloodGroup: "",
+      dob: "00",
+      avatar: "",
+    });
+  };
+
+  // Add Modal Details
+  const addModalHandler = async (modalType) => {
+    console.log(modalType);
+    console.log(modalForm);
 
     const {
       firstname,
-      lastname,
+      secondname,
       surname,
       avatar,
       bloodGroup,
@@ -250,7 +254,7 @@ const Profile = () => {
     if (
       [
         firstname,
-        lastname,
+        secondname,
         surname,
         avatar,
         bloodGroup,
@@ -265,18 +269,38 @@ const Profile = () => {
     }
 
     const formData = new FormData();
-    formData.append("donationImage", e.target.files[0]);
-    formData.append("donationId", modalForm.donationId);
+    formData.append("avatar", avatar);
+    formData.append("profileId", id);
+    formData.append("firstname", firstname);
+    formData.append("secondname", secondname);
+    formData.append("surname", surname);
+    formData.append("bloodGroup", bloodGroup);
+    formData.append("contact", contact);
+    formData.append("education", education);
+    formData.append("dob", dob);
+    formData.append("proffession", profession);
+    formData.append(
+      "addDetailsTo",
+      modalType === "sonDetails" ? "son" : "daughter"
+    );
 
-    // IMP
-  };
+    try {
+      const response = await fetch("/api/users/profile/add-new-son-daughter", {
+        method: "POST",
+        body: formData,
+      });
 
-  // Add Modal Details
-  const addModalHandler = async (modalType) => {
-    console.log(modalType);
-    console.log(modalForm);
-    if (modalType === "sonDetails") {
-      addSonDetailsModal();
+      const data = await response.json();
+
+      if (data && data.statusCode == 200 && data.success) {
+        toast.success(data.message);
+        fetchProfile();
+        clearModal();
+      } else {
+        toast.error("Error while add details!");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
     }
   };
 
@@ -297,7 +321,7 @@ const Profile = () => {
               sx={{ mr: "10px" }}
               margin="dense"
               name="surname"
-              label="Surname"
+              label="Surname *"
               type="text"
               fullWidth
               variant="standard"
@@ -313,7 +337,7 @@ const Profile = () => {
               sx={{ mr: "10px" }}
               margin="dense"
               name="firstname"
-              label="Firstname"
+              label="Firstname *"
               type="text"
               fullWidth
               variant="standard"
@@ -327,8 +351,8 @@ const Profile = () => {
             />
             <TextField
               margin="dense"
-              name="lastname"
-              label="Lastname"
+              name="secondname"
+              label="Secondname *"
               type="text"
               fullWidth
               variant="standard"
@@ -338,13 +362,13 @@ const Profile = () => {
                   [e.target.name]: e.target.value,
                 }));
               }}
-              value={modalForm.lastname}
+              value={modalForm.secondname}
             />
           </div>
           <TextField
             margin="dense"
             name="profession"
-            label="Profession"
+            label="Profession *"
             type="text"
             fullWidth
             variant="standard"
@@ -359,7 +383,7 @@ const Profile = () => {
           <TextField
             margin="dense"
             name="contact"
-            label="Contact"
+            label="Contact *"
             type="text"
             fullWidth
             variant="standard"
@@ -374,7 +398,7 @@ const Profile = () => {
           <TextField
             margin="dense"
             name="education"
-            label="Education"
+            label="Education *"
             type="text"
             fullWidth
             variant="standard"
@@ -474,7 +498,7 @@ const Profile = () => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={clearModal}>Cancel</Button>
           <Button
             variant="contained"
             onClick={() => addModalHandler(addDetails)}
@@ -1133,7 +1157,7 @@ const Profile = () => {
           <div className="prfoile-add-son-details-wrapper">
             <Button
               size="small"
-              // onClick={addDaughterDetailHandler}
+              onClick={() => addSonDaughterDetailHandler("daughterDetails")}
               variant="outlined"
             >
               + Add Daughter
