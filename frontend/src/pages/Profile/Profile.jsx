@@ -123,20 +123,36 @@ const Profile = () => {
   };
 
   // Delete Details
-  const deleteSonDetailHandler = (index) => {
-    setSonDetails((prevSonDetails) => {
-      const newSonDetails = [...prevSonDetails];
-      newSonDetails.splice(index, 1);
-      return newSonDetails;
-    });
-  };
+  const deleteSonDaughterDetailHandler = async (childId, deleteDetail) => {
+    if (!childId && !id) {
+      toast.error("Son/daughter id or family id is required!");
+      return;
+    }
 
-  const deleteDaughterDetailHandler = (index) => {
-    setDaughterDetails((prevDaughterDetails) => {
-      const newDaughterDetails = [...prevDaughterDetails];
-      newDaughterDetails.splice(index, 1);
-      return newDaughterDetails;
-    });
+    try {
+      const response = await fetch(`/api/users/delete-son-daughter`, {
+        method: "DELETE",
+        body: JSON.stringify({
+          childId,
+          familyId: id,
+          deleteDetail,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (data && data.success) {
+        toast.success(data.message);
+        fetchProfile();
+      } else {
+        toast.error(data.message || "Error while delete details");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
   };
 
   // Modal Image Upload
@@ -826,7 +842,9 @@ const Profile = () => {
                   <label></label>
                   <Button
                     size="small"
-                    onClick={() => deleteSonDetailHandler(index)}
+                    onClick={() =>
+                      deleteSonDaughterDetailHandler(son._id, "sonDetails")
+                    }
                     variant="outlined"
                   >
                     Delete Son
@@ -1001,7 +1019,12 @@ const Profile = () => {
                   <label></label>
                   <Button
                     size="small"
-                    onClick={() => deleteDaughterDetailHandler(index)}
+                    onClick={() =>
+                      deleteSonDaughterDetailHandler(
+                        daughter._id,
+                        "daughterDetails"
+                      )
+                    }
                     variant="outlined"
                   >
                     Delete Daughter

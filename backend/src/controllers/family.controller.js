@@ -404,8 +404,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 const addSonDaughterDetails = asyncHandler(async (req, res) => {
-  console.log("req.body >>", req.body);
-
   const {
     profileId,
     firstname,
@@ -496,7 +494,58 @@ const addSonDaughterDetails = asyncHandler(async (req, res) => {
 
     return res
       .status(200)
-      .json(new ApiResponse(200, updatedData, "Daughter details add successfully!"));
+      .json(
+        new ApiResponse(200, updatedData, "Daughter details add successfully!")
+      );
+  }
+});
+
+const deleteSonDaughterDetails = asyncHandler(async (req, res) => {
+  const { childId, familyId, deleteDetail } = req.body;
+
+  if (!familyId || !childId || !deleteDetail)
+    throw new ApiError(400, "Family id or Son/daughter id required!");
+
+  const familyData = await Family.findById(familyId);
+
+  if (!familyData) throw new ApiError(400, "Family data not found!");
+
+  if (deleteDetail === "sonDetails") {
+    const updatedData = await Family.findOneAndUpdate(
+      { _id: familyId },
+      { $pull: { sonDetails: { _id: childId } } },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      throw new ApiError(500, "Error while delete son details");
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, updatedData, "Son detail deleted successfully!")
+      );
+  } else if (deleteDetail === "daughterDetails") {
+    const updatedData = await Family.findOneAndUpdate(
+      { _id: familyId },
+      { $pull: { daughterDetails: { _id: childId } } },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      throw new ApiError(500, "Error while delete daughter details");
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          updatedData,
+          "Daughter detail deleted successfully!"
+        )
+      );
   }
 });
 
@@ -507,6 +556,7 @@ export {
   getUserDetails,
   getUser,
   findUserWithPhoneNumber,
+  deleteSonDaughterDetails,
   verifyOtp,
   changePassword,
   updateUserProfile,
