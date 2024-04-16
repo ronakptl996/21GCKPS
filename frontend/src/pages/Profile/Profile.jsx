@@ -235,6 +235,38 @@ const Profile = () => {
     }
   };
 
+  // Edit Profile Image
+  const changeImageHeadOfFamily = async (e, setAvatarTo, childObjectId) => {
+    console.log("E >>", e.target.files[0], setAvatarTo, childObjectId);
+
+    const formData = new FormData();
+
+    formData.append("avatar", e.target.files[0]);
+    formData.append("setAvatarTo", setAvatarTo);
+    formData.append("childObjectId", childObjectId);
+    formData.append("familyId", id);
+
+    // try {
+    const response = await fetch("/api/users/update-image", {
+      method: "POST",
+      body: formData,
+    });
+
+    //   const data = await response.json();
+
+    //   console.log(data);
+    //   if (data && data.success) {
+    //     toast.success(data.message);
+    //     fetchProfile();
+    //   } else {
+    //     toast.error(data.message || "Error while updating image");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   toast.error(error || "Something went wrong!");
+    // }
+  };
+
   const clearModal = () => {
     setOpen(false);
     setModalForm({
@@ -538,7 +570,15 @@ const Profile = () => {
                     alt={headOfFamily.firstname}
                   />
                 )}
-                <button>Change Image</button>
+                <Button variant="outlined" size="small" component="label">
+                  Change Image
+                  <input
+                    type="file"
+                    hidden
+                    name="avatar"
+                    onChange={(e) => changeImageHeadOfFamily(e, "headOfFamily")}
+                  />
+                </Button>
               </div>
               <div>
                 <div className="headOfFamily-input-wrapper">
@@ -695,7 +735,15 @@ const Profile = () => {
                   }`}
                   alt={wifeDetails.firstname}
                 />
-                <button>Change Image</button>
+                <Button variant="outlined" size="small" component="label">
+                  Change Image
+                  <input
+                    type="file"
+                    hidden
+                    name="avatar"
+                    onChange={(e) => changeImageHeadOfFamily(e, "wifeDetails")}
+                  />
+                </Button>
               </div>
               <div>
                 <div className="headOfFamily-input-wrapper">
@@ -858,7 +906,17 @@ const Profile = () => {
                       }`}
                       alt={son.firstname}
                     />
-                    <button>Change Image</button>
+                    <Button variant="outlined" size="small" component="label">
+                      Change Image
+                      <input
+                        type="file"
+                        hidden
+                        name="avatar"
+                        onChange={(e) =>
+                          changeImageHeadOfFamily(e, "sonDetails", son._id)
+                        }
+                      />
+                    </Button>
                   </div>
                   <div>
                     <div className="headOfFamily-input-wrapper">

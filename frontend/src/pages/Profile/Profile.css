@@ -46,12 +46,12 @@
 }
 
 .changeAvatar button {
-  padding: 10px 20px;
+  padding: 8px 12px;
   border: none;
   background: rgb(233, 135, 0);
   color: #fff;
   border-radius: 5px;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
 }

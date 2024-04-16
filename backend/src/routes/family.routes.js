@@ -9,6 +9,7 @@ import {
   loginUser,
   logoutUser,
   registerFamily,
+  updateProfileImages,
   updateUserProfile,
   verifyOtp,
 } from "../controllers/family.controller.js";
@@ -18,6 +19,9 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
 // Update User Profile
+router
+  .route("/update-image")
+  .post(upload.single("avatar"), verifyJwt, updateProfileImages);
 router.route("/profile/update/:id").post(verifyJwt, updateUserProfile);
 router
   .route("/profile/add-new-son-daughter")
@@ -28,6 +32,7 @@ router.route("/register").post(upload.any(), registerFamily);
 router
   .route("/delete-son-daughter")
   .delete(verifyJwt, deleteSonDaughterDetails);
+
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/verify-otp").post(verifyOtp);
