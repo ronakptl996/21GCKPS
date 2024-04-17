@@ -557,8 +557,6 @@ const updateProfileImages = asyncHandler(async (req, res) => {
   const { setAvatarTo, childObjectId, familyId } = req.body;
   const avatarLocalImage = req.file;
 
-  console.log("avatarLocalImage >>", avatarLocalImage);
-
   if (!avatarLocalImage) throw new ApiError(400, "Image is required!");
 
   if (!setAvatarTo || !childObjectId || !familyId) {
@@ -665,49 +663,100 @@ const updateProfileImages = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, updatedData, "Wife avatar is updated!"));
   } else if (setAvatarTo == "sonDetails") {
-    const sonDetail = await Family.findById(childObjectId);
-    console.log("Son Detail OLD >>", sonDetail);
-    const imagePath = `./temp/family/${sonDetail.sonAvatar}`;
+    const updateData = familyData.sonDetails.id(childObjectId);
+
+    if (!updateData) throw new ApiError(505, "Son details not found!");
+
+    console.log("updateData >>", updateData);
+
+    const imagePath = `./temp/family/${updateData.sonAvatar}`;
 
     // Remove File from folder
-    // fs.access(imagePath, fs.constants.F_OK, (err) => {
-    //   if (err) {
-    //     console.error(`${imagePath} does not exist`);
-    //     return;
-    //   }
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
 
-    //   // File exists, so proceed with deletion
-    //   fs.unlink(imagePath, (err) => {
-    //     if (err) {
-    //       console.error(`Error deleting ${imagePath}: ${err}`);
-    //       return;
-    //     }
-    //     console.log(`${imagePath} has been deleted successfully`);
-    //   });
-    // });
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
 
-    // const newImageName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+    const newImageName = `${uuidv4()}-${avatarLocalImage.originalname}`;
 
-    // const isOptimzeImage = await optimzeImage(
-    //   req.file.buffer,
-    //   `family/${newImageName}`
-    // );
-    // console.log("isOptimzeImage >", isOptimzeImage);
+    const isOptimzeImage = await optimzeImage(
+      req.file.buffer,
+      `family/${newImageName}`
+    );
+    console.log("isOptimzeImage >", isOptimzeImage);
 
-    // if (!isOptimzeImage)
-    //   throw new ApiError(505, "Error while optimazing image!");
+    if (!isOptimzeImage)
+      throw new ApiError(505, "Error while optimazing image!");
 
-    // const updatedData = await Family.findByIdAndUpdate(
-    //   familyId,
-    //   { $set: { "sonDetails.$[son].sonAvatar": newImageName } },
-    //   { new: true, arrayFilters: [{ "son._id": childObjectId }] }
-    // );
+    const updatedData = await Family.findByIdAndUpdate(
+      familyId,
+      { $set: { "sonDetails.$[son].sonAvatar": newImageName } },
+      { new: true, arrayFilters: [{ "son._id": childObjectId }] }
+    );
 
-    // if (!updatedData) throw new ApiError(505, "Error while updating image!");
+    if (!updatedData) throw new ApiError(505, "Error while updating image!");
 
-    // return res
-    //   .status(200)
-    //   .json(new ApiResponse(200, updatedData, "Son avatar is updated!"));
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedData, "Son avatar is updated!"));
+  } else if (setAvatarTo == "daughterDetails") {
+    const updateData = familyData.daughterDetails.id(childObjectId);
+
+    if (!updateData) throw new ApiError(505, "Daughter details not found!");
+
+    console.log("updateData >>", updateData);
+
+    const imagePath = `./temp/family/${updateData.daughterAvatar}`;
+
+    // Remove File from folder
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
+
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
+
+    const newImageName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+
+    const isOptimzeImage = await optimzeImage(
+      req.file.buffer,
+      `family/${newImageName}`
+    );
+
+    if (!isOptimzeImage)
+      throw new ApiError(505, "Error while optimazing image!");
+
+    const updatedData = await Family.findByIdAndUpdate(
+      familyId,
+      { $set: { "daughterDetails.$[daughter].daughterAvatar": newImageName } },
+      { new: true, arrayFilters: [{ "daughter._id": childObjectId }] }
+    );
+
+    if (!updatedData) throw new ApiError(505, "Error while updating image!");
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedData, "Daughter avatar is updated!"));
   }
 });
 

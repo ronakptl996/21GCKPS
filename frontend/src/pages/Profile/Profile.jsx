@@ -246,25 +246,25 @@ const Profile = () => {
     formData.append("childObjectId", childObjectId);
     formData.append("familyId", id);
 
-    // try {
-    const response = await fetch("/api/users/update-image", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("/api/users/update-image", {
+        method: "POST",
+        body: formData,
+      });
 
-    //   const data = await response.json();
+      const data = await response.json();
 
-    //   console.log(data);
-    //   if (data && data.success) {
-    //     toast.success(data.message);
-    //     fetchProfile();
-    //   } else {
-    //     toast.error(data.message || "Error while updating image");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error || "Something went wrong!");
-    // }
+      console.log(data);
+      if (data && data.success) {
+        toast.success(data.message);
+        fetchProfile();
+      } else {
+        toast.error(data.message || "Error while updating image");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error || "Something went wrong!");
+    }
   };
 
   const clearModal = () => {
@@ -1096,7 +1096,17 @@ const Profile = () => {
                       }`}
                       alt={daughter.firstname}
                     />
-                    <button>Change Image</button>
+                    <Button variant="outlined" size="small" component="label">
+                      Change Image
+                      <input
+                        type="file"
+                        hidden
+                        name="avatar"
+                        onChange={(e) =>
+                          changeImageHeadOfFamily(e, "daughterDetails", daughter._id)
+                        }
+                      />
+                    </Button>
                   </div>
                   <div>
                     <div className="headOfFamily-input-wrapper">
