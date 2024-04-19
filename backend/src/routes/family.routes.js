@@ -12,6 +12,8 @@ import {
   updateProfileImages,
   updateUserProfile,
   verifyOtp,
+  villageFamilyData,
+  villageWiseData,
 } from "../controllers/family.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -38,5 +40,9 @@ router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/verify-otp").post(verifyOtp);
 router.route("/forgot-password").post(changePassword);
 router.route("/:phone").post(findUserWithPhoneNumber);
+
+// Get Village wise data
+router.route("/village").get(verifyJwt, villageWiseData);
+router.route("/village/:villageName").get(verifyJwt, villageFamilyData);
 
 export default router;

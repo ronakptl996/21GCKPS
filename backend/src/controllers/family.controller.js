@@ -9,7 +9,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import uploadFilesToS3 from "../utils/uploadFilesToS3.js";
 import { optimzeImage } from "../utils/optimizeImage.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
@@ -760,6 +759,123 @@ const updateProfileImages = asyncHandler(async (req, res) => {
   }
 });
 
+const villageWiseData = asyncHandler(async (req, res) => {
+  try {
+    const data = await Family.aggregate([
+      {
+        $group: {
+          _id: "$headOfFamily.address", // Grouping by the village name extracted from headOfFamily.address
+          totalFamily: {
+            $sum: {
+              $add: [
+                1, // for Family
+              ],
+            },
+          },
+          totalSon: {
+            $sum: {
+              $add: [
+                {
+                  $cond: {
+                    if: { $isArray: "$sonDetails" },
+                    then: { $size: "$sonDetails" },
+                    else: 0,
+                  },
+                },
+              ],
+            },
+          },
+          totalDaughter: {
+            $sum: {
+              $add: [
+                {
+                  $cond: {
+                    if: { $isArray: "$daughterDetails" },
+                    then: { $size: "$daughterDetails" },
+                    else: 0,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          villageName: "$_id",
+          totalFamily: 1,
+          totalSon: 1,
+          totalDaughter: 1,
+        },
+      },
+    ]);
+
+    if (!data) {
+      throw new ApiError(505, "Error data not found!");
+    }
+
+    return res.status(200).json(new ApiResponse(200, data, ""));
+  } catch (error) {
+    throw new ApiError(505, "Something went wrong!");
+  }
+});
+
+const villageFamilyData = asyncHandler(async (req, res) => {
+  const { villageName } = req.params;
+
+  try {
+    const data = await Family.aggregate([
+      {
+        $match: {
+          "headOfFamily.address": villageName, // Filter documents where headOfFamily.address is "undel"
+        },
+      },
+      {
+        $project: {
+          headOfFamilyName: {
+            $concat: [
+              "$headOfFamily.surname",
+              " ",
+              "$headOfFamily.firstname",
+              " ",
+              "$headOfFamily.secondname",
+            ], // Concatenating first and second name
+          },
+          totalFamilyMember: {
+            $add: [
+              {
+                $cond: {
+                  if: { $isArray: "$sonDetails" },
+                  then: { $size: "$sonDetails" },
+                  else: 0,
+                },
+              },
+              {
+                $cond: {
+                  if: { $isArray: "$daughterDetails" },
+                  then: { $size: "$daughterDetails" },
+                  else: 0,
+                },
+              },
+              2, // for headOfFamily and wifeDetails
+            ],
+          },
+          mobile: "$headOfFamily.contact", // Mobile number from headOfFamily.contact
+        },
+      },
+    ]);
+
+    if (!data) {
+      throw new ApiError(505, "Error data not found!");
+    }
+
+    return res.status(200).json(new ApiResponse(200, data, ""));
+  } catch (error) {
+    throw new ApiError(505, "Something went wrong!");
+  }
+});
+
 export {
   registerFamily,
   loginUser,
@@ -773,4 +889,6 @@ export {
   updateUserProfile,
   addSonDaughterDetails,
   updateProfileImages,
+  villageWiseData,
+  villageFamilyData,
 };

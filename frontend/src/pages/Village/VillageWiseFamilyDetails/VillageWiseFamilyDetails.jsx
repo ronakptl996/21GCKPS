@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./VillageWiseFamilyDetails.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CallIcon from "@mui/icons-material/Call";
 import GroupsIcon from "@mui/icons-material/Groups";
+import { villageFamilyData } from "../../../../../backend/src/controllers/family.controller";
 
 const villageWiseFamilyDetails = () => {
+  cosnt[(villageFamilyData, setFamilyData)] = useState([]);
+  const { villageName } = useParams();
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`/api/users//village/${villageName}`);
+      const data = await response.json();
+
+      if (data && data.success) {
+        setFamilyData(data.data);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <section className="villageWiseFamilyDetails">
       <div className="villageWiseFamilyDetails-wrapper">
