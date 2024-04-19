@@ -7,7 +7,7 @@ import { Committee } from "../../models/committee.model.js";
 import { optimzeImage } from "../../utils/optimizeImage.js";
 
 const addCommittee = asyncHandler(async (req, res) => {
-  const { name, address, mobile, committeeName } = req.body;
+  const { name, village, mobile, committeeName } = req.body;
   const avatarLocalImage = req.file;
 
   if (!avatarLocalImage) {
@@ -29,7 +29,7 @@ const addCommittee = asyncHandler(async (req, res) => {
 
   const committeeDetails = await Committee.create({
     name,
-    address,
+    village,
     mobile,
     committeeName,
     avatar: imagePath,
@@ -126,7 +126,7 @@ const getCommittee = asyncHandler(async (req, res) => {
 });
 
 const editCommitteeDetail = asyncHandler(async (req, res) => {
-  const { userId, name, address, mobile, committeeName } = req.body;
+  const { userId, name, village, mobile, committeeName } = req.body;
 
   const committeeUser = await Committee.findById(userId);
   if (!committeeUser) {
@@ -139,7 +139,7 @@ const editCommitteeDetail = asyncHandler(async (req, res) => {
       {
         $set: {
           name,
-          address,
+          village,
           mobile,
           committeeName,
         },

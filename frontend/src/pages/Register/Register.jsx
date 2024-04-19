@@ -398,21 +398,35 @@ const Register = () => {
                 />
               </LocalizationProvider>
             </div>
-            <div>
-              <TextField
-                fullWidth
-                label="Address"
-                id="fullWidth"
-                value={headOfFamily.address}
-                onChange={(e) =>
-                  setHeadOfFamily((prevState) => ({
-                    ...prevState,
-                    address: e.target.value,
-                  }))
-                }
-              />
-            </div>
             <div className="register-input-wrapper">
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="demo-simple-select-label">
+                  Village Name
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="village"
+                  label="Village Name"
+                  value={headOfFamily.address}
+                  onChange={(e) =>
+                    setHeadOfFamily((prevState) => ({
+                      ...prevState,
+                      address: e.target.value,
+                    }))
+                  }
+                >
+                  <MenuItem value="Choose Village" disabled>
+                    Choose Village
+                  </MenuItem>
+                  <MenuItem value="moraj">Moraj</MenuItem>
+                  <MenuItem value="jinaj">Jinaj</MenuItem>
+                  <MenuItem value="rangpur">Rangpur</MenuItem>
+                  <MenuItem value="undel">Undel</MenuItem>
+                  <MenuItem value="piploi">Piploi</MenuItem>
+                  <MenuItem value="malu">Malu</MenuItem>
+                </Select>
+              </FormControl>
               <TextField
                 id="outlined-basic"
                 label="Create Password"

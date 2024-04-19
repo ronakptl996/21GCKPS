@@ -18,7 +18,7 @@ const CommitteeTable = () => {
     { id: "id", name: "Sr.No." },
     { id: "avatar", name: "Image" },
     { id: "name", name: "Name" },
-    { id: "address", name: "Address" },
+    { id: "village", name: "Village" },
     { id: "mobile", name: "Mobile" },
     { id: "committeeName", name: "Committee" },
   ];

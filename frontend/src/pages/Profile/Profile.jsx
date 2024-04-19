@@ -719,6 +719,36 @@ const Profile = () => {
                     />
                   </LocalizationProvider>
                 </div>
+                <div className="headOfFamily-input-wrapper">
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel id="demo-simple-select-label">
+                      Village Name
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="village"
+                      label="Village Name"
+                      value={headOfFamily.address}
+                      onChange={(e) =>
+                        setHeadOfFamily((prevState) => ({
+                          ...prevState,
+                          address: e.target.value,
+                        }))
+                      }
+                    >
+                      <MenuItem value="Choose Village" disabled>
+                        Choose Village
+                      </MenuItem>
+                      <MenuItem value="moraj">Moraj</MenuItem>
+                      <MenuItem value="jinaj">Jinaj</MenuItem>
+                      <MenuItem value="rangpur">Rangpur</MenuItem>
+                      <MenuItem value="undel">Undel</MenuItem>
+                      <MenuItem value="piploi">Piploi</MenuItem>
+                      <MenuItem value="malu">Malu</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
               </div>
             </div>
           )}
@@ -1103,7 +1133,11 @@ const Profile = () => {
                         hidden
                         name="avatar"
                         onChange={(e) =>
-                          changeImageHeadOfFamily(e, "daughterDetails", daughter._id)
+                          changeImageHeadOfFamily(
+                            e,
+                            "daughterDetails",
+                            daughter._id
+                          )
                         }
                       />
                     </Button>

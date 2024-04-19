@@ -23,7 +23,7 @@ import { setLoading } from "../../../features/auth/authSlice";
 
 const AdminCommittee = () => {
   const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
+  const [village, setVillage] = useState("");
   const [mobile, setMobile] = useState("");
   const [avatar, setAvatar] = useState("");
   const [committee, setCommittee] = useState("Choose Committee");
@@ -33,7 +33,7 @@ const AdminCommittee = () => {
   const [open, setOpen] = useState(false);
   const [modalForm, setModalForm] = useState({
     name: "",
-    address: "",
+    village: "",
     mobile: "",
     committeeName: "Choose Committee",
     avatar: "",
@@ -46,7 +46,7 @@ const AdminCommittee = () => {
   // Add Committee Detail
   const handleSubmit = async () => {
     if (
-      [name, address, mobile, avatar, committee].some(
+      [name, village, mobile, avatar, committee].some(
         (field) => field == "" || field == {}
       )
     ) {
@@ -57,7 +57,7 @@ const AdminCommittee = () => {
     const formData = new FormData();
 
     formData.append("name", name);
-    formData.append("address", address);
+    formData.append("village", village);
     formData.append("mobile", mobile);
     formData.append("avatar", avatar);
     formData.append("committeeName", committee);
@@ -73,7 +73,7 @@ const AdminCommittee = () => {
       if (data.success) {
         toast.success(data.message);
         setName("");
-        setAddress("");
+        setVillage("");
         setAvatar("");
         setCommittee("Choose Committee");
         setMobile("");
@@ -133,10 +133,10 @@ const AdminCommittee = () => {
 
   // Edit Modal Button handler
   const handleEdit = async () => {
-    const { name, address, mobile, committeeName, userId } = modalForm;
+    const { name, village, mobile, committeeName, userId } = modalForm;
     console.log("userID:::", userId);
     if (
-      [name, address, mobile, committeeName].some(
+      [name, village, mobile, committeeName].some(
         (field) => field == "" || field == {}
       )
     ) {
@@ -146,7 +146,7 @@ const AdminCommittee = () => {
 
     let formData = {
       name,
-      address,
+      village,
       mobile,
       committeeName,
       userId,
@@ -164,7 +164,7 @@ const AdminCommittee = () => {
         toast.success(data.message);
         setModalForm({
           name: "",
-          address: "",
+          village: "",
           mobile: "",
           committeeName: "Choose Committee",
           avatar: "",
@@ -185,7 +185,7 @@ const AdminCommittee = () => {
     setOpen(true);
     setModalForm({
       name: user.name,
-      address: user.address,
+      village: user.village,
       mobile: user.mobile,
       committeeName: user.committeeName,
       avatar: user.avatar,
@@ -249,21 +249,34 @@ const AdminCommittee = () => {
               }}
               value={modalForm.name}
             />
-            <TextField
-              margin="dense"
-              name="address"
-              label="Address"
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={(e) => {
-                setModalForm((prevState) => ({
-                  ...prevState,
-                  [e.target.name]: e.target.value,
-                }));
-              }}
-              value={modalForm.address}
-            />
+            <FormControl margin="dense" fullWidth variant="standard">
+              <InputLabel id="demo-simple-select-label">
+                Village Name
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="village"
+                label="Village Name"
+                onChange={(e) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    [e.target.name]: e.target.value,
+                  }));
+                }}
+                value={modalForm.village}
+              >
+                <MenuItem value="Choose Village" disabled>
+                  Choose Village
+                </MenuItem>
+                <MenuItem value="moraj">Moraj</MenuItem>
+                <MenuItem value="jinaj">Jinaj</MenuItem>
+                <MenuItem value="rangpur">Rangpur</MenuItem>
+                <MenuItem value="undel">Undel</MenuItem>
+                <MenuItem value="piploi">Piploi</MenuItem>
+                <MenuItem value="malu">Malu</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               margin="dense"
               name="mobile"
@@ -358,13 +371,29 @@ const AdminCommittee = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <TextField
-              id="outlined-basic"
-              label="Address"
-              variant="outlined"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="demo-simple-select-label">
+                Village Name
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="village"
+                label="Village Name"
+                value={village}
+                onChange={(e) => setVillage(e.target.value)}
+              >
+                <MenuItem value="Choose Village" disabled>
+                  Choose Village
+                </MenuItem>
+                <MenuItem value="moraj">Moraj</MenuItem>
+                <MenuItem value="jinaj">Jinaj</MenuItem>
+                <MenuItem value="rangpur">Rangpur</MenuItem>
+                <MenuItem value="undel">Undel</MenuItem>
+                <MenuItem value="piploi">Piploi</MenuItem>
+                <MenuItem value="malu">Malu</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               id="outlined-basic"
               label="Mobile No."
@@ -438,7 +467,7 @@ const AdminCommittee = () => {
                   <th>Sr.No.</th>
                   <th>Image</th>
                   <th>Name</th>
-                  <th>Address</th>
+                  <th>Village</th>
                   <th>Mobile</th>
                   <th>Committee</th>
                 </tr>
@@ -463,7 +492,7 @@ const AdminCommittee = () => {
                         )}
                       </td>
                       <td>{user.name}</td>
-                      <td>{user.address}</td>
+                      <td>{user.village}</td>
                       <td>{user.mobile}</td>
                       <td>{user.committeeName.split(" ")[0]}</td>
                       <td className="button">
