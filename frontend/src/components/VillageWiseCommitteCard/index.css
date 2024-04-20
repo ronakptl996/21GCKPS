@@ -1,0 +1,75 @@
+.villageWiseCommitteeCards-Wrapper {
+  margin: 30px 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-card {
+  width: 100%;
+  padding: 20px;
+}
+
+.villageWiseCommitteeCards-Wrapper .comeeti-carousel-img {
+  height: 150px;
+}
+
+.villageWiseCommitteeCards-Wrapper .comeeti-carousel-img img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-info h2 {
+  font-family: "Roboto";
+  font-size: 19px;
+  margin: 10px 0;
+}
+
+.villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-info p {
+  color: #1e1e1ed7;
+  font-family: "Poppins";
+  margin: 0;
+  font-size: 14px;
+}
+
+@media (max-width: 1150px) {
+  .villageWiseCommitteeCards-Wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-card {
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 850px) {
+  .villageWiseCommitteeCards-Wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-card {
+    height: 260px;
+  }
+
+  .villageWiseCommitteeCards-Wrapper
+    .village-wise-comeeti-carousel-card
+    .comeeti-carousel-img {
+    width: 122px;
+  }
+}
+
+@media (max-width: 650px) {
+  .villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-info h2 {
+    font-size: 18px;
+  }
+  .villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-info p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 580px) {
+  .villageWiseCommitteeCards-Wrapper {
+    grid-template-columns: 1fr;
+  }
+}

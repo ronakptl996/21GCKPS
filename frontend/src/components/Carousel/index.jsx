@@ -53,7 +53,7 @@ const Carousel = ({ data, heading, committee }) => {
                 <div>
                   <h2>{data.villageName.toUpperCase()}</h2>
                   <p className="total-family">
-                    Total Family({data.totalFamily})
+                    Total Family ({data.totalFamily})
                   </p>
                   <div className="carousel-comeeti-details">
                     <div className="carousel-comeeti-gender">

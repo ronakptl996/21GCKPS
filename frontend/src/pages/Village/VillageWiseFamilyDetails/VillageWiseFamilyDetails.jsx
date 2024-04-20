@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import CallIcon from "@mui/icons-material/Call";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Pagination, Stack } from "@mui/material";
+import VillageWiseCommiteeMemberCard from "../../../components/VillageWiseCommitteCard";
 
 const villageWiseFamilyDetails = () => {
   const [page, setPage] = useState(1);
@@ -34,6 +35,26 @@ const villageWiseFamilyDetails = () => {
 
   return (
     <section className="villageWiseFamilyDetails">
+      {/* Village Committe Member Card */}
+      <div className="villageWiseCommiteeMember">
+        <div className="villageWiseCommiteeMember-header">
+          <h1>
+            {villageName.slice(0, 1).toUpperCase()}
+            {villageName.slice(1)} Committee Member
+          </h1>
+        </div>
+        <div className="villageWiseCommitteMember-card">
+          <VillageWiseCommiteeMemberCard />
+        </div>
+      </div>
+
+      {/* Village Family Card */}
+      <div className="villageWiseFamily-header">
+        <h1>
+          {villageName.slice(0, 1).toUpperCase()}
+          {villageName.slice(1)} Family
+        </h1>
+      </div>
       <div className="villageWiseFamilyDetails-wrapper">
         {villageFamilyData &&
           villageFamilyData.length > 0 &&

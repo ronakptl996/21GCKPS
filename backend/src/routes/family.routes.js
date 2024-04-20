@@ -6,6 +6,7 @@ import {
   findUserWithPhoneNumber,
   getUser,
   getUserDetails,
+  getVillageWiseCommitteData,
   loginUser,
   logoutUser,
   registerFamily,
@@ -35,14 +36,17 @@ router
   .route("/delete-son-daughter")
   .delete(verifyJwt, deleteSonDaughterDetails);
 
+// Get Village wise data
+router.route("/village").get(verifyJwt, villageWiseData);
+router.route("/village/:villageName").get(verifyJwt, villageFamilyData);
+
+// Get Village wise commite data
+router.route("/committe-data").post(verifyJwt, getVillageWiseCommitteData);
+
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/verify-otp").post(verifyOtp);
 router.route("/forgot-password").post(changePassword);
 router.route("/:phone").post(findUserWithPhoneNumber);
-
-// Get Village wise data
-router.route("/village").get(verifyJwt, villageWiseData);
-router.route("/village/:villageName").get(villageFamilyData);
 
 export default router;

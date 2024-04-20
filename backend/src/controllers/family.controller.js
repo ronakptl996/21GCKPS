@@ -4,11 +4,11 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import fast2sms from "fast-two-sms";
 import { Family } from "../models/family.model.js";
+import { Committee } from "../models/committee.model.js";
 import { Forgot } from "../models/forgot.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { optimzeImage } from "../utils/optimizeImage.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
@@ -759,6 +759,7 @@ const updateProfileImages = asyncHandler(async (req, res) => {
   }
 });
 
+// Get Village Wise Data
 const villageWiseData = asyncHandler(async (req, res) => {
   try {
     const data = await Family.aggregate([
@@ -821,6 +822,7 @@ const villageWiseData = asyncHandler(async (req, res) => {
   }
 });
 
+// Get Village Wise Family Data
 const villageFamilyData = asyncHandler(async (req, res) => {
   const { villageName } = req.params;
   const page = Number(req.query.page) || 1;
@@ -899,6 +901,26 @@ const villageFamilyData = asyncHandler(async (req, res) => {
   }
 });
 
+// Get Committe Data
+const getVillageWiseCommitteData = asyncHandler(async (req, res) => {
+  console.log("getVillageWiseCommitteData");
+  const { village } = req.body;
+  console.log(village);
+
+  if (village) {
+    const committeeData = await Committee.find({ village });
+
+    if (!committeeData) {
+      throw new ApiError(
+        505,
+        "No data found for the specified village committee!"
+      );
+    }
+
+    return res.status(200).json(new ApiResponse(200, committeeData, ""));
+  }
+});
+
 export {
   registerFamily,
   loginUser,
@@ -914,4 +936,5 @@ export {
   updateProfileImages,
   villageWiseData,
   villageFamilyData,
+  getVillageWiseCommitteData,
 };
