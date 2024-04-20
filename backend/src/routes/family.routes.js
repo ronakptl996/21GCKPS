@@ -43,6 +43,6 @@ router.route("/:phone").post(findUserWithPhoneNumber);
 
 // Get Village wise data
 router.route("/village").get(verifyJwt, villageWiseData);
-router.route("/village/:villageName").get(verifyJwt, villageFamilyData);
+router.route("/village/:villageName").get(villageFamilyData);
 
 export default router;

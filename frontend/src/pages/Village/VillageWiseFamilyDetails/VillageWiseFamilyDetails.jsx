@@ -3,18 +3,25 @@ import "./VillageWiseFamilyDetails.css";
 import { Link, useParams } from "react-router-dom";
 import CallIcon from "@mui/icons-material/Call";
 import GroupsIcon from "@mui/icons-material/Groups";
+import { Pagination, Stack } from "@mui/material";
 
 const villageWiseFamilyDetails = () => {
+  const [page, setPage] = useState(1);
+  const [totalFamilyProfile, setTotalFamilyProfile] = useState();
   const [villageFamilyData, setVillageFamilyData] = useState([]);
   const { villageName } = useParams();
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/users/village/${villageName}`);
+      const response = await fetch(
+        `/api/users/village/${villageName}?page=${page}&limit=10`
+      );
       const data = await response.json();
       console.log(data.data);
       if (data && data.success) {
-        setVillageFamilyData(data.data);
+        const { totalFamilyDataLength, familyData } = data.data;
+        setVillageFamilyData(familyData);
+        setTotalFamilyProfile(totalFamilyDataLength);
       }
     } catch (error) {
       console.log(error);
@@ -23,7 +30,7 @@ const villageWiseFamilyDetails = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]);
 
   return (
     <section className="villageWiseFamilyDetails">
@@ -64,6 +71,18 @@ const villageWiseFamilyDetails = () => {
 
         {villageFamilyData.length == 0 && <h2>No family details found</h2>}
       </div>
+
+      {totalFamilyProfile > 10 && (
+        <div>
+          <Stack spacing={2} justifyContent={"center"} alignItems={"center"}>
+            <Pagination
+              count={Math.ceil(totalFamilyProfile / 10)}
+              color="primary"
+              onChange={(e, value) => setPage(value)}
+            />
+          </Stack>
+        </div>
+      )}
     </section>
   );
 };

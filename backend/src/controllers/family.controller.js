@@ -823,56 +823,78 @@ const villageWiseData = asyncHandler(async (req, res) => {
 
 const villageFamilyData = asyncHandler(async (req, res) => {
   const { villageName } = req.params;
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
 
   try {
     const data = await Family.aggregate([
       {
         $match: {
-          "headOfFamily.address": villageName, // Filter documents where headOfFamily.address is "undel"
+          "headOfFamily.address": villageName, // Filter documents where headOfFamily.address matches the village name
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalFamilyDataLength: { $sum: 1 }, // Count the number of documents
+          familyData: {
+            $push: {
+              headOfFamilyName: {
+                $concat: [
+                  "$headOfFamily.surname",
+                  " ",
+                  "$headOfFamily.firstname",
+                  " ",
+                  "$headOfFamily.secondname",
+                ],
+              },
+              totalFamilyMember: {
+                $add: [
+                  {
+                    $cond: {
+                      if: { $isArray: "$sonDetails" },
+                      then: { $size: "$sonDetails" },
+                      else: 0,
+                    },
+                  },
+                  {
+                    $cond: {
+                      if: { $isArray: "$daughterDetails" },
+                      then: { $size: "$daughterDetails" },
+                      else: 0,
+                    },
+                  },
+                  2, // for headOfFamily and wifeDetails
+                ],
+              },
+              mobile: "$headOfFamily.contact",
+              avatar: "$headOfFamily.headOfFamilyAvatar",
+              _id: "$_id",
+            },
+          },
         },
       },
       {
         $project: {
-          headOfFamilyName: {
-            $concat: [
-              "$headOfFamily.surname",
-              " ",
-              "$headOfFamily.firstname",
-              " ",
-              "$headOfFamily.secondname",
-            ], // Concatenating first and second name
-          },
-          totalFamilyMember: {
-            $add: [
-              {
-                $cond: {
-                  if: { $isArray: "$sonDetails" },
-                  then: { $size: "$sonDetails" },
-                  else: 0,
-                },
-              },
-              {
-                $cond: {
-                  if: { $isArray: "$daughterDetails" },
-                  then: { $size: "$daughterDetails" },
-                  else: 0,
-                },
-              },
-              2, // for headOfFamily and wifeDetails
-            ],
-          },
-          mobile: "$headOfFamily.contact", // Mobile number from headOfFamily.contact
-          avatar: "$headOfFamily.headOfFamilyAvatar",
+          totalFamilyDataLength: 1,
+          familyData: { $slice: ["$familyData", skip, limit] }, // Apply pagination to the familyData array
         },
       },
     ]);
 
     if (!data) {
-      throw new ApiError(505, "Error data not found!");
+      throw new ApiError(404, "No data found for the specified village!");
     }
 
-    return res.status(200).json(new ApiResponse(200, data, ""));
+    // Extracting the totalFamilyDataLength and familyData from the result
+    const { totalFamilyDataLength, familyData } = data[0];
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, { totalFamilyDataLength, familyData }, ""));
   } catch (error) {
+    console.log("error >", error);
     throw new ApiError(505, "Something went wrong!");
   }
 });
