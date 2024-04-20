@@ -862,6 +862,7 @@ const villageFamilyData = asyncHandler(async (req, res) => {
             ],
           },
           mobile: "$headOfFamily.contact", // Mobile number from headOfFamily.contact
+          avatar: "$headOfFamily.headOfFamilyAvatar",
         },
       },
     ]);

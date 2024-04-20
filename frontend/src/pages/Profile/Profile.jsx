@@ -95,7 +95,8 @@ const Profile = () => {
     avatar: "",
   });
 
-  const { id } = useParams();
+  const { id, villageName } = useParams();
+  console.log(villageName);
   const navigate = useNavigate();
 
   // Add Son Details
@@ -570,20 +571,25 @@ const Profile = () => {
                     alt={headOfFamily.firstname}
                   />
                 )}
-                <Button variant="outlined" size="small" component="label">
-                  Change Image
-                  <input
-                    type="file"
-                    hidden
-                    name="avatar"
-                    onChange={(e) => changeImageHeadOfFamily(e, "headOfFamily")}
-                  />
-                </Button>
+                {!villageName && (
+                  <Button variant="outlined" size="small" component="label">
+                    Change Image
+                    <input
+                      type="file"
+                      hidden
+                      name="avatar"
+                      onChange={(e) =>
+                        changeImageHeadOfFamily(e, "headOfFamily")
+                      }
+                    />
+                  </Button>
+                )}
               </div>
               <div>
                 <div className="headOfFamily-input-wrapper">
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Surname"
                     variant="outlined"
                     value={headOfFamily.surname}
@@ -596,6 +602,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Firstname"
                     variant="outlined"
                     value={headOfFamily.firstname}
@@ -608,6 +615,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Lastname"
                     variant="outlined"
                     value={headOfFamily.secondname}
@@ -622,6 +630,7 @@ const Profile = () => {
                 <div className="headOfFamily-input-wrapper">
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Email"
                     type="email"
                     variant="outlined"
@@ -635,6 +644,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Profession"
                     type="text"
                     variant="outlined"
@@ -648,6 +658,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Contact"
                     type="number"
                     variant="outlined"
@@ -663,6 +674,7 @@ const Profile = () => {
                 <div className="headOfFamily-input-wrapper">
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Education"
                     type="text"
                     variant="outlined"
@@ -674,7 +686,7 @@ const Profile = () => {
                       }))
                     }
                   />
-                  <FormControl>
+                  <FormControl disabled={villageName && true}>
                     <InputLabel id="demo-simple-select-label">
                       Blood Group
                     </InputLabel>
@@ -704,6 +716,7 @@ const Profile = () => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     {/* <DatePicker label="Choose your DOB" /> */}
                     <DatePicker
+                      disabled={villageName && true}
                       label="Choose your DOB"
                       value={dayjs(headOfFamily.dob)} // Set the value prop to the 'dob' property in your state
                       // onChange={handleDateChange} // Pass the handleDateChange function
@@ -720,7 +733,11 @@ const Profile = () => {
                   </LocalizationProvider>
                 </div>
                 <div className="headOfFamily-input-wrapper">
-                  <FormControl fullWidth variant="outlined">
+                  <FormControl
+                    disabled={villageName && true}
+                    fullWidth
+                    variant="outlined"
+                  >
                     <InputLabel id="demo-simple-select-label">
                       Village Name
                     </InputLabel>
@@ -765,20 +782,25 @@ const Profile = () => {
                   }`}
                   alt={wifeDetails.firstname}
                 />
-                <Button variant="outlined" size="small" component="label">
-                  Change Image
-                  <input
-                    type="file"
-                    hidden
-                    name="avatar"
-                    onChange={(e) => changeImageHeadOfFamily(e, "wifeDetails")}
-                  />
-                </Button>
+                {!villageName && (
+                  <Button variant="outlined" size="small" component="label">
+                    Change Image
+                    <input
+                      type="file"
+                      hidden
+                      name="avatar"
+                      onChange={(e) =>
+                        changeImageHeadOfFamily(e, "wifeDetails")
+                      }
+                    />
+                  </Button>
+                )}
               </div>
               <div>
                 <div className="headOfFamily-input-wrapper">
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Surname"
                     variant="outlined"
                     value={wifeDetails.surname}
@@ -791,6 +813,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Firstname"
                     variant="outlined"
                     value={wifeDetails.firstname}
@@ -803,6 +826,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Lastname"
                     variant="outlined"
                     value={wifeDetails.secondname}
@@ -817,6 +841,7 @@ const Profile = () => {
                 <div className="headOfFamily-input-wrapper">
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Profession"
                     type="text"
                     variant="outlined"
@@ -830,6 +855,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Education"
                     type="text"
                     variant="outlined"
@@ -843,6 +869,7 @@ const Profile = () => {
                   />
                   <TextField
                     id="outlined-basic"
+                    disabled={villageName && true}
                     label="Contact"
                     type="number"
                     variant="outlined"
@@ -856,7 +883,7 @@ const Profile = () => {
                   />
                 </div>
                 <div className="headOfFamily-input-wrapper">
-                  <FormControl>
+                  <FormControl disabled={villageName && true}>
                     <InputLabel id="demo-simple-select-label">
                       Blood Group
                     </InputLabel>
@@ -886,6 +913,7 @@ const Profile = () => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     {/* <DatePicker label="Choose your DOB" /> */}
                     <DatePicker
+                      disabled={villageName && true}
                       label="Choose your DOB"
                       value={dayjs(wifeDetails.dob)} // Set the value prop to the 'dob' property in your state
                       onChange={(date) => {
@@ -910,7 +938,7 @@ const Profile = () => {
           <h3>Son Details</h3>
           {sonDetails &&
             sonDetails.map((son, index) => (
-              <section key={son._id}>
+              <section key={index}>
                 <div
                   style={{
                     display: "flex",
@@ -918,17 +946,19 @@ const Profile = () => {
                   }}
                 >
                   <label></label>
-                  <Button
-                    size="small"
-                    onClick={() =>
-                      deleteSonDaughterDetailHandler(son._id, "sonDetails")
-                    }
-                    variant="outlined"
-                  >
-                    Delete Son
-                  </Button>
+                  {!villageName && (
+                    <Button
+                      size="small"
+                      onClick={() =>
+                        deleteSonDaughterDetailHandler(son._id, "sonDetails")
+                      }
+                      variant="outlined"
+                    >
+                      Delete Son
+                    </Button>
+                  )}
                 </div>
-                <div className="headOfFamily-wrapper" key={son.firstname}>
+                <div className="headOfFamily-wrapper">
                   <div className="headOfFamily-avatar changeAvatar">
                     <img
                       src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
@@ -936,22 +966,25 @@ const Profile = () => {
                       }`}
                       alt={son.firstname}
                     />
-                    <Button variant="outlined" size="small" component="label">
-                      Change Image
-                      <input
-                        type="file"
-                        hidden
-                        name="avatar"
-                        onChange={(e) =>
-                          changeImageHeadOfFamily(e, "sonDetails", son._id)
-                        }
-                      />
-                    </Button>
+                    {!villageName && (
+                      <Button variant="outlined" size="small" component="label">
+                        Change Image
+                        <input
+                          type="file"
+                          hidden
+                          name="avatar"
+                          onChange={(e) =>
+                            changeImageHeadOfFamily(e, "sonDetails", son._id)
+                          }
+                        />
+                      </Button>
+                    )}
                   </div>
                   <div>
                     <div className="headOfFamily-input-wrapper">
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Surname"
                         variant="outlined"
                         value={son.surname}
@@ -965,6 +998,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Firstname"
                         variant="outlined"
                         value={son.firstname}
@@ -978,6 +1012,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Lastname"
                         variant="outlined"
                         value={son.secondname}
@@ -993,6 +1028,7 @@ const Profile = () => {
                     <div className="headOfFamily-input-wrapper">
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Profession"
                         type="text"
                         variant="outlined"
@@ -1007,6 +1043,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Contact"
                         type="number"
                         variant="outlined"
@@ -1021,6 +1058,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Education"
                         type="text"
                         variant="outlined"
@@ -1035,7 +1073,7 @@ const Profile = () => {
                       />
                     </div>
                     <div className="headOfFamily-input-wrapper">
-                      <FormControl>
+                      <FormControl disabled={villageName && true}>
                         <InputLabel id="demo-simple-select-label">
                           Blood Group
                         </InputLabel>
@@ -1066,6 +1104,7 @@ const Profile = () => {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/* <DatePicker label="Choose your DOB" /> */}
                         <DatePicker
+                          disabled={villageName && true}
                           label="Choose your DOB"
                           value={dayjs(son.dob)} // Set the value prop to the 'dob' property in your state
                           onChange={(date) =>
@@ -1081,42 +1120,45 @@ const Profile = () => {
                 </div>
               </section>
             ))}
-          <div className="prfoile-add-son-details-wrapper">
-            <Button
-              size="small"
-              onClick={() => addSonDaughterDetailHandler("sonDetails")}
-              variant="outlined"
-            >
-              + Add Son
-            </Button>
-          </div>
+          {!villageName && (
+            <div className="prfoile-add-son-details-wrapper">
+              <Button
+                size="small"
+                onClick={() => addSonDaughterDetailHandler("sonDetails")}
+                variant="outlined"
+              >
+                + Add Son
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="family-details profile-son-details">
           <h3>Daughter Details</h3>
           {daughterDetails &&
             daughterDetails.map((daughter, index) => (
-              <section key={daughter._id}>
+              <section key={index}>
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                   }}
-                  key={daughter._id}
                 >
                   <label></label>
-                  <Button
-                    size="small"
-                    onClick={() =>
-                      deleteSonDaughterDetailHandler(
-                        daughter._id,
-                        "daughterDetails"
-                      )
-                    }
-                    variant="outlined"
-                  >
-                    Delete Daughter
-                  </Button>
+                  {!villageName && (
+                    <Button
+                      size="small"
+                      onClick={() =>
+                        deleteSonDaughterDetailHandler(
+                          daughter._id,
+                          "daughterDetails"
+                        )
+                      }
+                      variant="outlined"
+                    >
+                      Delete Daughter
+                    </Button>
+                  )}
                 </div>
                 <div className="headOfFamily-wrapper" key={daughter.firstname}>
                   <div className="headOfFamily-avatar changeAvatar">
@@ -1126,26 +1168,29 @@ const Profile = () => {
                       }`}
                       alt={daughter.firstname}
                     />
-                    <Button variant="outlined" size="small" component="label">
-                      Change Image
-                      <input
-                        type="file"
-                        hidden
-                        name="avatar"
-                        onChange={(e) =>
-                          changeImageHeadOfFamily(
-                            e,
-                            "daughterDetails",
-                            daughter._id
-                          )
-                        }
-                      />
-                    </Button>
+                    {!villageName && (
+                      <Button variant="outlined" size="small" component="label">
+                        Change Image
+                        <input
+                          type="file"
+                          hidden
+                          name="avatar"
+                          onChange={(e) =>
+                            changeImageHeadOfFamily(
+                              e,
+                              "daughterDetails",
+                              daughter._id
+                            )
+                          }
+                        />
+                      </Button>
+                    )}
                   </div>
                   <div>
                     <div className="headOfFamily-input-wrapper">
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Surname"
                         variant="outlined"
                         value={daughter.surname}
@@ -1159,6 +1204,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Firstname"
                         variant="outlined"
                         value={daughter.firstname}
@@ -1172,6 +1218,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Lastname"
                         variant="outlined"
                         value={daughter.secondname}
@@ -1187,6 +1234,7 @@ const Profile = () => {
                     <div className="headOfFamily-input-wrapper">
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Proffession"
                         type="text"
                         variant="outlined"
@@ -1201,6 +1249,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Contact"
                         type="number"
                         variant="outlined"
@@ -1215,6 +1264,7 @@ const Profile = () => {
                       />
                       <TextField
                         id="outlined-basic"
+                        disabled={villageName && true}
                         label="Education"
                         type="text"
                         variant="outlined"
@@ -1229,7 +1279,7 @@ const Profile = () => {
                       />
                     </div>
                     <div className="headOfFamily-input-wrapper">
-                      <FormControl>
+                      <FormControl disabled={villageName && true}>
                         <InputLabel id="demo-simple-select-label">
                           Blood Group
                         </InputLabel>
@@ -1260,6 +1310,7 @@ const Profile = () => {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/* <DatePicker label="Choose your DOB" /> */}
                         <DatePicker
+                          disabled={villageName && true}
                           label="Choose your DOB"
                           value={dayjs(daughter.dob)} // Set the value prop to the 'dob' property in your state
                           onChange={(date) =>
@@ -1279,19 +1330,23 @@ const Profile = () => {
                 </div>
               </section>
             ))}
-          <div className="prfoile-add-son-details-wrapper">
-            <Button
-              size="small"
-              onClick={() => addSonDaughterDetailHandler("daughterDetails")}
-              variant="outlined"
-            >
-              + Add Daughter
-            </Button>
-          </div>
+          {!villageName && (
+            <div className="prfoile-add-son-details-wrapper">
+              <Button
+                size="small"
+                onClick={() => addSonDaughterDetailHandler("daughterDetails")}
+                variant="outlined"
+              >
+                + Add Daughter
+              </Button>
+            </div>
+          )}
         </div>
-        <Button variant="contained" onClick={handleEditProfile}>
-          Edit Profile
-        </Button>
+        {!villageName && (
+          <Button variant="contained" onClick={handleEditProfile}>
+            Edit Profile
+          </Button>
+        )}
       </div>
     </section>
   );

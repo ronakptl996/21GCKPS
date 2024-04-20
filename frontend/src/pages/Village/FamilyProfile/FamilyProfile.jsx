@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   FormControl,
@@ -14,6 +14,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
 const FamilyProfile = () => {
+  const { villageName } = useParams();
+
   return (
     <section className="profile">
       <div className="profile-inner">

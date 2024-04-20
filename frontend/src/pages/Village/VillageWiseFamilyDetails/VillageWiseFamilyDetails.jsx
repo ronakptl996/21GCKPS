@@ -3,21 +3,22 @@ import "./VillageWiseFamilyDetails.css";
 import { Link, useParams } from "react-router-dom";
 import CallIcon from "@mui/icons-material/Call";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { villageFamilyData } from "../../../../../backend/src/controllers/family.controller";
 
 const villageWiseFamilyDetails = () => {
-  cosnt[(villageFamilyData, setFamilyData)] = useState([]);
+  const [villageFamilyData, setVillageFamilyData] = useState([]);
   const { villageName } = useParams();
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/users//village/${villageName}`);
+      const response = await fetch(`/api/users/village/${villageName}`);
       const data = await response.json();
-
+      console.log(data.data);
       if (data && data.success) {
-        setFamilyData(data.data);
+        setVillageFamilyData(data.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -27,106 +28,41 @@ const villageWiseFamilyDetails = () => {
   return (
     <section className="villageWiseFamilyDetails">
       <div className="villageWiseFamilyDetails-wrapper">
-        <div className="villageWiseFamilyDetails-card">
-          <div className="villageWiseFamilyDetails-image-wrapper">
-            <img src="https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.webp" />
-          </div>
-          <div className="villageWiseFamilyDetails-info">
-            <h3 className="headOfFamilyName">Prajapati Kartik Bhikhabhai</h3>
-            <div className="villageWiseFamilyDetails-info-contact">
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <CallIcon />
-                </div>
-                <p>+91 8154974580</p>
+        {villageFamilyData &&
+          villageFamilyData.length > 0 &&
+          villageFamilyData.map((family) => (
+            <div className="villageWiseFamilyDetails-card" key={family._id}>
+              <div className="villageWiseFamilyDetails-image-wrapper">
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                    family.avatar
+                  }`}
+                />
               </div>
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <GroupsIcon />
+              <div className="villageWiseFamilyDetails-info">
+                <h3 className="headOfFamilyName">{family.headOfFamilyName}</h3>
+                <div className="villageWiseFamilyDetails-info-contact">
+                  <div className="villageWiseFamilyDetails-info-contact-wrapper">
+                    <div className="info-contact-icon">
+                      <CallIcon />
+                    </div>
+                    <p>{family.mobile}</p>
+                  </div>
+                  <div className="villageWiseFamilyDetails-info-contact-wrapper">
+                    <div className="info-contact-icon">
+                      <GroupsIcon />
+                    </div>
+                    <p>Total Member ({family.totalFamilyMember})</p>
+                  </div>
                 </div>
-                <p>Total Member (03)</p>
-              </div>
-            </div>
-            <div className="more-info-link">
-              <Link to={"1234"}>More Info</Link>
-            </div>
-          </div>
-        </div>
-        <div className="villageWiseFamilyDetails-card">
-          <div className="villageWiseFamilyDetails-image-wrapper">
-            <img src="https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.webp" />
-          </div>
-          <div className="villageWiseFamilyDetails-info">
-            <h3 className="headOfFamilyName">Prajapati Kartik Bhikhabhai</h3>
-            <div className="villageWiseFamilyDetails-info-contact">
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <CallIcon />
+                <div className="more-info-link">
+                  <Link to={family._id}>More Info</Link>
                 </div>
-                <p>+91 8154974580</p>
-              </div>
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <GroupsIcon />
-                </div>
-                <p>Total Member (03)</p>
               </div>
             </div>
-            <div className="more-info-link">
-              <Link to={"name=dolatporda"}>More Info</Link>
-            </div>
-          </div>
-        </div>
-        <div className="villageWiseFamilyDetails-card">
-          <div className="villageWiseFamilyDetails-image-wrapper">
-            <img src="https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.webp" />
-          </div>
-          <div className="villageWiseFamilyDetails-info">
-            <h3 className="headOfFamilyName">Prajapati Kartik Bhikhabhai</h3>
-            <div className="villageWiseFamilyDetails-info-contact">
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <CallIcon />
-                </div>
-                <p>+91 8154974580</p>
-              </div>
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <GroupsIcon />
-                </div>
-                <p>Total Member (03)</p>
-              </div>
-            </div>
-            <div className="more-info-link">
-              <Link to={"name=dolatporda"}>More Info</Link>
-            </div>
-          </div>
-        </div>
-        <div className="villageWiseFamilyDetails-card">
-          <div className="villageWiseFamilyDetails-image-wrapper">
-            <img src="https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.webp" />
-          </div>
-          <div className="villageWiseFamilyDetails-info">
-            <h3 className="headOfFamilyName">Prajapati Kartik Bhikhabhai</h3>
-            <div className="villageWiseFamilyDetails-info-contact">
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <CallIcon />
-                </div>
-                <p>+91 8154974580</p>
-              </div>
-              <div className="villageWiseFamilyDetails-info-contact-wrapper">
-                <div className="info-contact-icon">
-                  <GroupsIcon />
-                </div>
-                <p>Total Member (03)</p>
-              </div>
-            </div>
-            <div className="more-info-link">
-              <Link to={"name=dolatporda"}>More Info</Link>
-            </div>
-          </div>
-        </div>
+          ))}
+
+        {villageFamilyData.length == 0 && <h2>No family details found</h2>}
       </div>
     </section>
   );

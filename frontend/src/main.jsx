@@ -100,7 +100,7 @@ const router = createBrowserRouter(
               path=":id"
               element={
                 <ProtectedRoute>
-                  <FamilyProfile />
+                  <Profile />
                 </ProtectedRoute>
               }
             />
