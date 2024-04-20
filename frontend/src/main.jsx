@@ -54,7 +54,6 @@ import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Profile from "./pages/Profile/Profile";
 import VillageWiseFamilyDetails from "./pages/Village/VillageWiseFamilyDetails/VillageWiseFamilyDetails";
-import FamilyProfile from "./pages/Village/FamilyProfile/FamilyProfile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
