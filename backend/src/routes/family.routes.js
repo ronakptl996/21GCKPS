@@ -40,8 +40,8 @@ router
 router.route("/village").get(verifyJwt, villageWiseData);
 router.route("/village/:villageName").get(verifyJwt, villageFamilyData);
 
-// Get Village wise commite data
-router.route("/committe-data").post(verifyJwt, getVillageWiseCommitteData);
+// Get Village wise commite data for Committe Card
+router.route("/committe-data").post(getVillageWiseCommitteData);
 
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);

@@ -903,10 +903,9 @@ const villageFamilyData = asyncHandler(async (req, res) => {
 
 // Get Committe Data
 const getVillageWiseCommitteData = asyncHandler(async (req, res) => {
-  console.log("getVillageWiseCommitteData");
   const { village } = req.body;
-  console.log(village);
 
+  // Village then get data for Home First Committe Card Data
   if (village) {
     const committeeData = await Committee.find({ village });
 
@@ -918,6 +917,30 @@ const getVillageWiseCommitteData = asyncHandler(async (req, res) => {
     }
 
     return res.status(200).json(new ApiResponse(200, committeeData, ""));
+  } else {
+    // Get Committee Data for Village Wise Committee Member Details
+    try {
+      const data = await Committee.aggregate([
+        {
+          $group: {
+            _id: "$village", // Group by village
+            totalCommitteeMembers: { $sum: 1 }, // Count the number of documents in each group
+          },
+        },
+        {
+          $project: {
+            _id: 0, // Exclude the default _id field
+            village: "$_id", // Rename the _id field to village
+            totalCommitteeMembers: 1, // Include the totalCommitteeMembers field
+          },
+        },
+      ]);
+
+      return res.status(200).json(new ApiResponse(200, data, ""));
+    } catch (error) {
+      console.log("error >", error);
+      throw new ApiError(500, "Something went wrong!");
+    }
   }
 });
 

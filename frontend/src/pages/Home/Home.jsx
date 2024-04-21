@@ -1,66 +1,15 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Slider from "react-slick";
 import "./index.css";
 import Carousel from "../../components/Carousel";
-import Userdemo from "../../assets/images/young-boy3.avif";
-import Village1 from "../../assets/images/village.jpg";
 import { fetchLoggedInUserDetails } from "../../features/auth/authSlice";
 import CommitteeTable from "../../components/CommitteeTable";
-import { Link } from "react-router-dom";
-import ImageCarousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import VillageWiseCommitteeMemberDetails from "../../components/VillageCommitteeMember";
 
 const Home = () => {
   const dispatch = useDispatch();
-
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
-
-  const villages = [
-    {
-      name: `John Morgan`,
-      img: Village1,
-      review: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-    },
-    {
-      name: `Ellie Anderson`,
-      img: `/students/Ellie_Anderson.jpg`,
-      review: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-    },
-    {
-      name: `Nia Adebayo`,
-      img: `/students/Nia_Adebayo.jpg`,
-      review: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-    },
-    {
-      name: `Rigo Louie`,
-      img: `/students/Rigo_Louie.jpg`,
-      review: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-    },
-    {
-      name: `Mia Williams`,
-      img: `/students/Mia_Williams.jpg`,
-      review: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-    },
-  ];
 
   // useEffect(() => {
   //   console.log("useEffect HOme");
@@ -91,14 +40,12 @@ const Home = () => {
         </div>
         <div className="carousel">
           {/* Village Carousel */}
-          <Carousel
-            data={villages}
-            heading="21 Gam Charotar Kadva Patidar Samaj"
-          />
+          <Carousel />
         </div>
 
-        {/* Village wise comeeti members */}
-        <div className="village-wise-comeeti-members">
+        {/* Village wise comeeti members Details */}
+        <VillageWiseCommitteeMemberDetails />
+        {/* <div className="village-wise-comeeti-members">
           <div className="village-wise-comeeti-members-header">
             <h2>Village Wise Comeeti Members Details</h2>
             <div className="header-bottom">
@@ -113,26 +60,9 @@ const Home = () => {
             </p>
           </div>
           <div className="village-wise-comeeti-member-carousel">
-            {/* <Slider {...settings}>
-              {villages &&
-                villages.map((d, index) => (
-                  <div key={index}>
-                    <div className="village-wise-comeeti-carousel-card">
-                      <div className="comeeti-carousel-img">
-                        <img src={Userdemo} alt="" />
-                      </div>
-                      <div className="village-wise-comeeti-carousel-info">
-                        <h1>Kartik B. Prajapati</h1>
-                        <p>Call: +91 1234567890</p>
-                        <p>Whatsapp: +91 1234567890</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </Slider> */}
             <ImageCarousel
               responsive={responsive}
-              // showDots
+              showDots
               // dotListClass="custom-dot-list-style"
             >
               {villages &&
@@ -152,7 +82,7 @@ const Home = () => {
                 ))}
             </ImageCarousel>
           </div>
-        </div>
+        </div> */}
 
         {/* Yuvak Mandal */}
         <div className="yuvak-mandal-wrapper">

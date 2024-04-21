@@ -4,7 +4,7 @@ import "./index.css";
 import ImageCarousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-const Carousel = ({ data, heading, committee }) => {
+const Carousel = () => {
   const [villageWiseData, setVillageWiseData] = useState([]);
   const navigate = useNavigate();
 
