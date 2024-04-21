@@ -54,6 +54,7 @@ import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Profile from "./pages/Profile/Profile";
 import VillageWiseFamilyDetails from "./pages/Village/VillageWiseFamilyDetails/VillageWiseFamilyDetails";
+import Email from "./pages/Email";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -106,6 +107,7 @@ const router = createBrowserRouter(
           </Route>
         </Route>
         <Route path="about" element={<About />} />
+        <Route path="email" element={<Email />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="contact" element={<Contact />} />
         <Route
