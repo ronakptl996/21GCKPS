@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import path from "node:path";
 
 const app = express();
 
@@ -17,20 +16,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
-
-import { fileURLToPath } from 'url';
-
-// Get the full path to the current script
-const fullPath = fileURLToPath(import.meta.url);
-
-// Get the current script directory
-const currentScriptDirectory = path.dirname(fullPath);
-
-// Get the parent directory
-const parentDirectory = path.dirname(currentScriptDirectory);
-
-console.log("Current script directory:", currentScriptDirectory);
-console.log("Parent directory:", parentDirectory);
 
 import familyRoute from "./routes/family.routes.js";
 import adminRoute from "./routes/admin.routes.js";

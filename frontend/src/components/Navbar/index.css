@@ -37,7 +37,9 @@ nav {
   font-family: "Poppins";
 }
 
-.navbar-item-wrapper ul li:last-child {
+/* for logout & mobile responsive for li in dropdown */
+.navbar-item-wrapper ul li.logout-btn,
+li.openNav-li-dropdown {
   margin-left: 10px;
 }
 
@@ -80,6 +82,12 @@ nav {
   right: 30px;
   top: 15px;
   cursor: pointer;
+}
+
+/* for mobile drop down */
+.openNav-li-dropdown {
+  font-family: "Roboto" !important;
+  margin: 8px 0;
 }
 
 @media (min-width: 1200px) and (max-width: 1290px) {

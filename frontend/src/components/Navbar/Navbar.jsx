@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Logo from "../../assets/logo.png";
@@ -134,7 +134,18 @@ const Navbar = () => {
                     onMouseEnter={toggleDropdown}
                     onMouseLeave={closeDropdown}
                   >
-                    <NavLink to="#">Management Loby</NavLink>
+                    {showNavbar ? (
+                      <li
+                        className="openNav-li-dropdown"
+                        onClick={() => {
+                          showNavbar && toggleDropdown();
+                        }}
+                      >
+                        Management Loby
+                      </li>
+                    ) : (
+                      <NavLink to="#">Management Loby</NavLink>
+                    )}
                     {isOpen && (
                       <div className="dropdown-content">
                         <ul>
@@ -181,7 +192,18 @@ const Navbar = () => {
                     onMouseEnter={toggleDropdown}
                     onMouseLeave={closeDropdown}
                   >
-                    <NavLink to="#">Business</NavLink>
+                    {showNavbar ? (
+                      <li
+                        className="openNav-li-dropdown"
+                        onClick={() => {
+                          showNavbar && toggleDropdown();
+                        }}
+                      >
+                        Business
+                      </li>
+                    ) : (
+                      <NavLink to="#">Business</NavLink>
+                    )}
                     {isOpen && (
                       <div className="dropdown-content">
                         <ul>
@@ -213,7 +235,18 @@ const Navbar = () => {
                         onMouseEnter={toggleDropdown}
                         onMouseLeave={closeDropdown}
                       >
-                        <NavLink to="#">Profiles</NavLink>
+                        {showNavbar ? (
+                          <li
+                            className="openNav-li-dropdown"
+                            onClick={() => {
+                              showNavbar && toggleDropdown();
+                            }}
+                          >
+                            Profiles
+                          </li>
+                        ) : (
+                          <NavLink to="#">Profiles</NavLink>
+                        )}
                         {isOpen && (
                           <div className="dropdown-content">
                             <ul>
@@ -255,7 +288,7 @@ const Navbar = () => {
                       </li>
                     </>
                   )}
-                  <li>
+                  <li className="logout-btn">
                     <Button
                       style={{ background: "rgb(233 135 0)" }}
                       size="small"
@@ -310,7 +343,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {/* </nav> */}
     </nav>
   );
 };
