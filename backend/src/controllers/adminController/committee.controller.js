@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { Committee } from "../../models/committee.model.js";
-import { optimzeImage } from "../../utils/optimizeImage.js";
+import { convertToWebP, optimzeImage } from "../../utils/optimizeImage.js";
 
 const addCommittee = asyncHandler(async (req, res) => {
   const { name, village, mobile, committeeName } = req.body;
@@ -15,9 +15,11 @@ const addCommittee = asyncHandler(async (req, res) => {
   }
 
   // Save the optimized image to disk
-  const imagePath = `${uuidv4()}-${req.file.originalname}`; // Adjust the path as needed
+  const imagePath = `${uuidv4()}-${
+    avatarLocalImage.originalname.split(".")[0]
+  }.webp`; // Adjust the path as needed
 
-  const isOptimzeImage = await optimzeImage(req.file.buffer, imagePath);
+  const isOptimzeImage = await convertToWebP(req.file.buffer, imagePath);
   console.log("isOptimzeImage >", isOptimzeImage);
 
   if (!isOptimzeImage) {
@@ -84,9 +86,11 @@ const editCommitteeUserAvatar = asyncHandler(async (req, res) => {
     });
   });
 
-  const newImagePath = `${uuidv4()}-${req.file.originalname}`;
+  const newImagePath = `${uuidv4()}-${
+    avatarLocalImage.originalname.split(".")[0]
+  }.webp`;
 
-  const isOptimzeImage = await optimzeImage(req.file.buffer, newImagePath);
+  const isOptimzeImage = await convertToWebP(req.file.buffer, newImagePath);
   console.log("isOptimzeImage >", isOptimzeImage);
 
   if (!isOptimzeImage) {
@@ -178,6 +182,24 @@ const deleteCommitteeUser = asyncHandler(async (req, res) => {
     if (!updatedData) {
       throw new ApiError(404, "User not found!");
     }
+
+    const imagePath = `./temp/${updatedData.avatar}`;
+    // Remove File from folder
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
+
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
 
     return res
       .status(200)

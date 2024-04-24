@@ -43,4 +43,20 @@ const optimzeImage = async (buffer, imageName) => {
   });
 };
 
-export { optimzeImage };
+const convertToWebP = async (buffer, outputPath, quality = 50) => {
+  return new Promise((resolve, reject) => {
+    sharp(buffer)
+      .webp({ quality }) // Convert to WebP with specified quality
+      .toFile(`./temp/${outputPath}`, (err, info) => {
+        if (err) {
+          console.error("Error:", err);
+          reject(err);
+        } else {
+          console.log("Image converted and compressed successfully");
+          resolve(info);
+        }
+      });
+  });
+};
+
+export { optimzeImage, convertToWebP };

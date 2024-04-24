@@ -4,7 +4,7 @@ import { Donation } from "../../models/donation.model.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { optimzeImage } from "../../utils/optimizeImage.js";
+import { convertToWebP, optimzeImage } from "../../utils/optimizeImage.js";
 
 const addDonation = asyncHandler(async (req, res) => {
   const { name, totalQty, contact, description, price } = req.body;
@@ -14,9 +14,11 @@ const addDonation = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Donation image file is required");
   }
 
-  const fileName = `${uuidv4()}-${donationImage.originalname}`;
+  const fileName = `${uuidv4()}-${
+    donationImage.originalname.split(".")[0]
+  }.webp`;
 
-  const isOptimzeImage = await optimzeImage(req.file.buffer, fileName);
+  const isOptimzeImage = await convertToWebP(req.file.buffer, fileName);
   console.log("isOptimzeImage >", isOptimzeImage);
 
   if (!isOptimzeImage) {
@@ -69,6 +71,20 @@ const editDonationImage = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Donation data not found");
   }
 
+  const newImagePath = `${uuidv4()}-${
+    donationImg.originalname.split(".")[0]
+  }.webp`;
+
+  const isOptimzeImage = await convertToWebP(req.file.buffer, newImagePath);
+  console.log("isOptimzeImage >", isOptimzeImage);
+
+  if (!isOptimzeImage) {
+    throw new ApiError(
+      500,
+      "Error while OptimzeImage edit committee user avatar"
+    );
+  }
+
   console.log("AVATAR >", donationsData.image);
   const imagePath = `./temp/${donationsData.image}`;
 
@@ -88,18 +104,6 @@ const editDonationImage = asyncHandler(async (req, res) => {
       console.log(`${imagePath} has been deleted successfully`);
     });
   });
-
-  const newImagePath = `${uuidv4()}-${donationImg.originalname}`;
-
-  const isOptimzeImage = await optimzeImage(req.file.buffer, newImagePath);
-  console.log("isOptimzeImage >", isOptimzeImage);
-
-  if (!isOptimzeImage) {
-    throw new ApiError(
-      500,
-      "Error while OptimzeImage edit committee user avatar"
-    );
-  }
 
   const updatedData = await Donation.findByIdAndUpdate(
     donationId,
@@ -174,6 +178,25 @@ const deleteDonationData = asyncHandler(async (req, res) => {
     if (!updatedData) {
       throw new ApiError(404, "Donation data not found!");
     }
+
+    const imagePath = `./temp/${updatedData.image}`;
+
+    // Remove File from folder
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
+
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
 
     return res
       .status(200)
