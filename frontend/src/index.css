@@ -45,6 +45,26 @@
   font-family: "Roboto Bold", sans-serif;
 }
 
+/* Loading - ProtectedRoute */
+.loading-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.loading.css-18lrjg1-MuiCircularProgress-root {
+  color: rgb(233, 135, 0) !important;
+}
+
+.loading-wrapper h3 {
+  color: #ffffffd7;
+  margin-top: 15px;
+  font-family: "Roboto";
+  letter-spacing: 1px;
+}
+
 /* Landing Page */
 .landing-page {
   background: url(./assets/images/login-bg.jpg);
