@@ -153,6 +153,7 @@ const AdminCommittee = () => {
     };
 
     try {
+      dispatch(setLoading(true));
       let response = await fetch("/api/admin/edit-committee", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -161,6 +162,7 @@ const AdminCommittee = () => {
 
       let data = await response.json();
       if (data.success) {
+        dispatch(setLoading(false));
         toast.success(data.message);
         setModalForm({
           name: "",
@@ -173,9 +175,11 @@ const AdminCommittee = () => {
         setOpen(false);
         fetchCommitteeDetails();
       } else {
+        dispatch(setLoading(false));
         throw new Error("Error while edit committee detail");
       }
     } catch (error) {
+      dispatch(setLoading(false));
       toast.error(error || "Something went wrong while edit committee detail");
     }
   };
@@ -447,7 +451,7 @@ const AdminCommittee = () => {
               </Select>
             </FormControl>
           </div>
-          <div className="committee-btn">
+          <div className="committee-btn" style={{ display: "flex" }}>
             <Button
               style={{ background: "#a7732b", marginTop: "10px" }}
               variant="contained"

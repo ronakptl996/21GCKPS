@@ -13,6 +13,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+import { setLoading } from "../../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const AdminFestival = () => {
   const [festivalsData, setFestivalsData] = useState([]);
@@ -35,6 +37,8 @@ const AdminFestival = () => {
     festivalId: "",
   });
 
+  const dispatch = useDispatch();
+
   // Add Festival Details
   const handleSubmit = async () => {
     const { name, address, fromDate, toDate, description } = inputFestivalData;
@@ -48,6 +52,7 @@ const AdminFestival = () => {
     }
 
     try {
+      dispatch(setLoading(true));
       const response = await fetch("/api/admin/add-festival", {
         method: "POST",
         headers: {
@@ -59,6 +64,7 @@ const AdminFestival = () => {
       const data = await response.json();
 
       if (data.success) {
+        dispatch(setLoading(false));
         toast.success(data.message);
         setInputFestivalData(() => ({
           name: "",
@@ -70,6 +76,7 @@ const AdminFestival = () => {
         fetchFestivalData();
       }
     } catch (error) {
+      dispatch(setLoading(false));
       toast.error("Error while add festival details");
     }
   };
@@ -110,6 +117,7 @@ const AdminFestival = () => {
     };
 
     try {
+      dispatch(setLoading(true));
       let response = await fetch("/api/admin/edit-festival", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -118,6 +126,7 @@ const AdminFestival = () => {
 
       let data = await response.json();
       if (data.success) {
+        dispatch(setLoading(false));
         toast.success(data.message);
         setModalForm({
           name: "",
@@ -129,9 +138,11 @@ const AdminFestival = () => {
         setOpen(false);
         fetchFestivalData();
       } else {
+        dispatch(setLoading(false));
         throw new Error("Error while edit festival detail");
       }
     } catch (error) {
+      dispatch(setLoading(false));
       toast.error(error || "Something went wrong while edit festival detail");
     }
   };

@@ -1,3 +1,4 @@
+import { CircularProgress, Modal } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
@@ -15,7 +16,21 @@ const AdminProtectedRoute = ({ children }) => {
   //   }, [loggedInUserDetails, isLoading]);
 
   // Render loading state or the protected content
-  return isLoading ? <p>Loading...</p> : <>{children}</>;
+  return isLoading ? (
+    <Modal
+      open={true}
+      // onClose={handleClose}
+      aria-labelledby="parent-modal-title"
+      aria-describedby="parent-modal-description"
+    >
+      <section className="loading-wrapper">
+        <CircularProgress className="loading" />
+        <h3>Loading...</h3>
+      </section>
+    </Modal>
+  ) : (
+    <>{children}</>
+  );
 };
 
 export default AdminProtectedRoute;
