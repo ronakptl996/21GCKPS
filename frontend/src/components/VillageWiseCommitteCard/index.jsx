@@ -39,7 +39,10 @@ const VillageWiseCommiteeMemberCard = () => {
         {committeeMemberData &&
           committeeMemberData.length > 0 &&
           committeeMemberData.map((member) => (
-            <div className="village-wise-comeeti-carousel-card">
+            <div
+              className="village-wise-comeeti-carousel-card"
+              key={member._id}
+            >
               <div className="comeeti-carousel-img">
                 <img
                   src={`${import.meta.env.VITE_BACKEND_URL}${member.avatar}`}

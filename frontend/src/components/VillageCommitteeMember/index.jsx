@@ -74,7 +74,7 @@ const VillageWiseCommitteeMemberDetails = () => {
           {committeeMemberData &&
             committeeMemberData.length > 0 &&
             committeeMemberData.map((data) => (
-              <div key={data.villageName}>
+              <div key={data.village}>
                 <div className="carousel-card">
                   <div>
                     <h2>{data.village.toUpperCase()}</h2>

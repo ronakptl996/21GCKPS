@@ -21,6 +21,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ImageIcon from "@mui/icons-material/Image";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Swal from "sweetalert2";
 
 const Profile = () => {
   const [profile, setProfile] = useState();
@@ -130,29 +131,39 @@ const Profile = () => {
       return;
     }
 
-    try {
-      const response = await fetch(`/api/users/delete-son-daughter`, {
-        method: "DELETE",
-        body: JSON.stringify({
-          childId,
-          familyId: id,
-          deleteDetail,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    let result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-      const data = await response.json();
-
-      if (data && data.success) {
-        toast.success(data.message);
-        fetchProfile();
-      } else {
-        toast.error(data.message || "Error while delete details");
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`/api/users/delete-son-daughter`, {
+          method: "DELETE",
+          body: JSON.stringify({
+            childId,
+            familyId: id,
+            deleteDetail,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        if (data && data.success) {
+          toast.success(data.message);
+          fetchProfile();
+        } else {
+          toast.error(data.message || "Error while delete details");
+        }
+      } catch (error) {
+        toast.error("Something went wrong!");
       }
-    } catch (error) {
-      toast.error("Something went wrong!");
     }
   };
 
