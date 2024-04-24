@@ -9,7 +9,7 @@ import { Forgot } from "../models/forgot.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { optimzeImage } from "../utils/optimizeImage.js";
+import { convertToWebP, optimzeImage } from "../utils/optimizeImage.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -64,22 +64,24 @@ const registerFamily = asyncHandler(async (req, res) => {
     {
       file: headOfFamilyAvatar,
       fieldName: "headOfFamilyAvatar",
-      fileName: `${uuidv4()}-${headOfFamilyAvatar.originalname}`,
+      fileName: `${uuidv4()}-${
+        headOfFamilyAvatar.originalname.split(".")[0]
+      }.webp`,
     },
     {
       file: wifeAvatar,
       fieldName: "wifeAvatar",
-      fileName: `${uuidv4()}-${headOfFamilyAvatar.originalname}`,
+      fileName: `${uuidv4()}-${wifeAvatar.originalname.split(".")[0]}.webp`,
     },
     ...sonAvatars.map((file, index) => ({
       file,
       fieldName: `sonAvatars-${index}`,
-      fileName: `${uuidv4()}-${file.originalname}`,
+      fileName: `${uuidv4()}-${file.originalname.split(".")[0]}.webp`,
     })),
     ...daughterAvatars.map((file, index) => ({
       file,
       fieldName: `daughterAvatars-${index}`,
-      fileName: `${uuidv4()}-${file.originalname}`,
+      fileName: `${uuidv4()}-${file.originalname.split(".")[0]}.webp`,
     })),
   ];
 
@@ -89,11 +91,10 @@ const registerFamily = asyncHandler(async (req, res) => {
   try {
     await Promise.all(
       filesToUpload.map(async (file) => {
-        const optimzedImage = await optimzeImage(
+        const optimzedImage = await convertToWebP(
           file.file.buffer,
           `family/${file.fileName}`
         );
-
         if (!optimzedImage) {
           throw new ApiError(
             500,
@@ -429,9 +430,11 @@ const addSonDaughterDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Family profile not found!");
   }
 
-  const imageName = `${uuidv4()}-${profileImage.originalname}`;
+  const imageName = `${uuidv4()}-${
+    profileImage.originalname.split(".")[0]
+  }.webp`;
 
-  const isOptimzeImage = await optimzeImage(
+  const isOptimzeImage = await convertToWebP(
     req.file.buffer,
     `family/${imageName}`
   );
@@ -501,6 +504,7 @@ const addSonDaughterDetails = asyncHandler(async (req, res) => {
 });
 
 const deleteSonDaughterDetails = asyncHandler(async (req, res) => {
+  console.log("req.body >> ", req.body);
   const { childId, familyId, deleteDetail } = req.body;
 
   if (!familyId || !childId || !deleteDetail)
@@ -511,6 +515,8 @@ const deleteSonDaughterDetails = asyncHandler(async (req, res) => {
   if (!familyData) throw new ApiError(400, "Family data not found!");
 
   if (deleteDetail === "sonDetails") {
+    const deleteData = familyData.sonDetails.id(childId);
+
     const updatedData = await Family.findOneAndUpdate(
       { _id: familyId },
       { $pull: { sonDetails: { _id: childId } } },
@@ -521,12 +527,33 @@ const deleteSonDaughterDetails = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Error while delete son details");
     }
 
+    const imagePath = `./temp/family/${deleteData?.sonAvatar}`;
+
+    // Remove File from folder
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
+
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
+
     return res
       .status(200)
       .json(
         new ApiResponse(200, updatedData, "Son detail deleted successfully!")
       );
   } else if (deleteDetail === "daughterDetails") {
+    const deleteData = familyData.daughterDetails.id(childId);
+
     const updatedData = await Family.findOneAndUpdate(
       { _id: familyId },
       { $pull: { daughterDetails: { _id: childId } } },
@@ -536,6 +563,25 @@ const deleteSonDaughterDetails = asyncHandler(async (req, res) => {
     if (!updatedData) {
       throw new ApiError(500, "Error while delete daughter details");
     }
+
+    const imagePath = `./temp/family/${deleteData?.daughterAvatar}`;
+
+    // Remove File from folder
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
+
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
 
     return res
       .status(200)
@@ -590,9 +636,11 @@ const updateProfileImages = asyncHandler(async (req, res) => {
       });
     });
 
-    const newImageName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+    const newImageName = `${uuidv4()}-${
+      avatarLocalImage.originalname.split(".")[0]
+    }.webp`;
 
-    const isOptimzeImage = await optimzeImage(
+    const isOptimzeImage = await convertToWebP(
       req.file.buffer,
       `family/${newImageName}`
     );
@@ -637,9 +685,11 @@ const updateProfileImages = asyncHandler(async (req, res) => {
       });
     });
 
-    const newImageName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+    const newImageName = `${uuidv4()}-${
+      avatarLocalImage.originalname.split(".")[0]
+    }.webp`;
 
-    const isOptimzeImage = await optimzeImage(
+    const isOptimzeImage = await convertToWebP(
       req.file.buffer,
       `family/${newImageName}`
     );
@@ -687,9 +737,11 @@ const updateProfileImages = asyncHandler(async (req, res) => {
       });
     });
 
-    const newImageName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+    const newImageName = `${uuidv4()}-${
+      avatarLocalImage.originalname.split(".")[0]
+    }.webp`;
 
-    const isOptimzeImage = await optimzeImage(
+    const isOptimzeImage = await convertToWebP(
       req.file.buffer,
       `family/${newImageName}`
     );
@@ -735,9 +787,11 @@ const updateProfileImages = asyncHandler(async (req, res) => {
       });
     });
 
-    const newImageName = `${uuidv4()}-${avatarLocalImage.originalname}`;
+    const newImageName = `${uuidv4()}-${
+      avatarLocalImage.originalname.split(".")[0]
+    }.webp`;
 
-    const isOptimzeImage = await optimzeImage(
+    const isOptimzeImage = await convertToWebP(
       req.file.buffer,
       `family/${newImageName}`
     );
