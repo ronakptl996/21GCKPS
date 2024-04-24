@@ -3,9 +3,11 @@ import ImageCarousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import UserDemo from "../../assets/images/young-boy3.avif";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const VillageWiseCommitteeMemberDetails = () => {
   const [committeeMemberData, setCommitteeMemberData] = useState([]);
+  const navigate = useNavigate();
 
   const responsive = {
     superLargeDesktop: {

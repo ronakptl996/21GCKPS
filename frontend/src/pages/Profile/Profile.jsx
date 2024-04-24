@@ -433,7 +433,7 @@ const Profile = () => {
             margin="dense"
             name="contact"
             label="Contact *"
-            type="text"
+            type="number"
             fullWidth
             variant="standard"
             onChange={(e) => {
