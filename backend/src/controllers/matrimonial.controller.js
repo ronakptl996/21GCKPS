@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { v4 as uuidv4 } from "uuid";
 import { Family } from "../models/family.model.js";
-import { optimzeImage } from "../utils/optimizeImage.js";
+import { convertToWebP, optimzeImage } from "../utils/optimizeImage.js";
 
 const addMatrimonial = asyncHandler(async (req, res) => {
   const matrimonialImage = req.file;
@@ -28,9 +28,11 @@ const addMatrimonial = asyncHandler(async (req, res) => {
       .json(new ApiResponse(401, [], "Profile with contact already exists"));
   }
 
-  const fileName = `${uuidv4()}-${matrimonialImage.originalname}`;
+  const fileName = `${uuidv4()}-${
+    matrimonialImage.originalname.split(".")[0]
+  }.webp`;
 
-  const isOptimzeImage = await optimzeImage(
+  const isOptimzeImage = await convertToWebP(
     matrimonialImage.buffer,
     `matrimonial/${fileName}`
   );
@@ -266,9 +268,11 @@ const editMatrimonialUserAvatar = asyncHandler(async (req, res) => {
     });
   });
 
-  const newImagePath = `${uuidv4()}-${req.file.originalname}`;
+  const newImagePath = `${uuidv4()}-${
+    req.file.originalname.split(".")[0]
+  }.webp`;
 
-  const isOptimzeImage = await optimzeImage(
+  const isOptimzeImage = await convertToWebP(
     req.file.buffer,
     `matrimonial/${newImagePath}`
   );
