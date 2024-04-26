@@ -87,8 +87,17 @@ const BusinessPackeages = () => {
   };
 
   // *Submit Modal Form
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log(modalForm);
+
+    const formData = new FormData();
+    formData.append("businessVisitingCard", modalForm.businessVisitingCard);
+    formData.append("businessLogo", modalForm.businessLogo);
+
+    const response = await fetch("/api/business/add", {
+      method: "POST",
+      body: formData,
+    });
   };
   return (
     <section className="businessPackages">
