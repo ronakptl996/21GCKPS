@@ -3,52 +3,114 @@ import "./BusinessPackages.css";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
 import {
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
+  Grid,
+  Input,
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   TextField,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
+import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
 
 const BusinessPackeages = () => {
   // Edit Modal useState
-  const [openFree, setOpenFree] = useState(false);
-  const [modalForm, setModalForm] = useState({
-    nameOfPerson: "",
-    businessName: "",
-    emailId: "",
-    businessAddress: "",
-    contact: "",
-    businessCategory: "Choose Business Category",
-    createdBy: "",
+  const [open, setOpen] = useState(false);
+  const [hour, setHour] = useState({
+    open: "Start Time",
+    close: "Close Time",
+    openMeridiem: "AM/PM",
+    closeMeridiem: "AM/PM",
   });
+  const [provideServices, setProvideServices] = useState("");
+  const [modalForm, setModalForm] = useState({
+    businessOwner: "",
+    businessName: "",
+    businessContact: "",
+    businessEmail: "",
+    businessAddress: "",
+    businessLogo: "",
+    businessVisitingCard: "",
+    provideServices: [],
+    openingHours: `${hour.open} ${hour.openMeridiem} to ${hour.close} ${hour.closeMeridiem}`,
+    businessWebsite: "",
+    businessInstagramUsername: "",
+    businessTwitterUsername: "",
+    businessFacebookUsername: "",
+    quickInfo: "",
+    detailedInfo: "",
+    yearOfEstablishment: "",
+    businessCategory: "",
+    packageType: "",
+  });
+
+  // *OPEN MODAL
+  const openModal = (packageType) => {
+    setModalForm((prevState) => ({
+      ...prevState,
+      packageType: packageType,
+    }));
+    setOpen(true);
+  };
+
+  // *Interest Chip
+  const handleProvideServiceAddChip = () => {
+    if (
+      provideServices.trim() !== "" &&
+      !modalForm.provideServices.includes(provideServices)
+    ) {
+      // setChips((prevChips) => [...prevChips, inputValue]);
+      setModalForm((prevState) => ({
+        ...prevState,
+        provideServices: [...modalForm.provideServices, provideServices],
+      }));
+      setProvideServices("");
+    }
+  };
+
+  // *Delete handleServicesDeleteChip
+  const handleServicesDeleteChip = (chipToDelete) => {
+    setModalForm((prevState) => ({
+      ...prevState,
+      provideServices: [
+        ...modalForm.provideServices.filter((chip) => chip !== chipToDelete),
+      ],
+    }));
+  };
+
+  // *Submit Modal Form
+  const handleSubmit = () => {
+    console.log(modalForm);
+  };
   return (
     <section className="businessPackages">
       {/* Dialog Form */}
-      <Dialog fullWidth open={openFree} onClose={() => setOpenFree(false)}>
+      <Dialog fullWidth open={open} onClose={() => setOpen(false)}>
         <DialogTitle style={{ fontWeight: "600" }}>
-          Create Your Free Business Listing
+          {`Create Your ${modalForm.packageType} Business Listing`}
         </DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
-            label="Name of Person"
+            label="Name of Owner"
             type="text"
             fullWidth
             variant="standard"
             onChange={(e) => {
               setModalForm((prevState) => ({
                 ...prevState,
-                nameOfPerson: e.target.value,
+                businessOwner: e.target.value,
               }));
             }}
-            value={modalForm.nameOfPerson}
+            value={modalForm.businessOwner}
           />
           <TextField
             margin="dense"
@@ -75,24 +137,24 @@ const BusinessPackeages = () => {
               onChange={(e) => {
                 setModalForm((prevState) => ({
                   ...prevState,
-                  contact: e.target.value,
+                  businessContact: e.target.value,
                 }));
               }}
-              value={modalForm.businessAddress}
+              value={modalForm.businessContact}
             />
             <TextField
               margin="dense"
-              label="Email Id"
+              label="Business Email"
               type="email"
               fullWidth
               variant="standard"
               onChange={(e) => {
                 setModalForm((prevState) => ({
                   ...prevState,
-                  emailId: e.target.value,
+                  businessEmail: e.target.value,
                 }));
               }}
-              value={modalForm.businessAddress}
+              value={modalForm.businessEmail}
             />
           </div>
           <TextField
@@ -144,26 +206,346 @@ const BusinessPackeages = () => {
               <MenuItem value="Other">Other</MenuItem>
             </Select>
           </FormControl>
-          {modalForm.businessCategory === "Other" && (
-            <TextField
-              margin="dense"
-              label="Type Your Business Category"
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={(e) => {
-                setModalForm((prevState) => ({
-                  ...prevState,
-                  businessCategory: e.target.value,
-                }));
-              }}
-              value={modalForm.businessAddress}
-            />
+
+          {/* // ^UPLOAD DATA FOR ELITE PACKAGE */}
+          {modalForm.packageType !== "FREE" && (
+            <>
+              <div className="businessPackage-services">
+                <TextField
+                  variant="standard"
+                  label="Provide Services"
+                  value={provideServices}
+                  onChange={(e) => setProvideServices(e.target.value)}
+                  onKeyPress={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      handleProvideServiceAddChip();
+                    }
+                  }}
+                />
+                <Stack direction="row" spacing={1} mt={1}>
+                  {modalForm?.provideServices?.map((chip, index) => (
+                    <Chip
+                      key={index}
+                      size="small"
+                      label={chip}
+                      onDelete={() => handleServicesDeleteChip(chip)}
+                      color="primary"
+                    />
+                  ))}
+                </Stack>
+              </div>
+              <TextField
+                label="Business Quick Info"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(e) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    quickInfo: e.target.value,
+                  }));
+                }}
+                value={modalForm.quickInfo}
+              />
+              <div className="openingHours-wrapper">
+                <Input disabled placeholder="Business Hour" />
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Start Time"
+                  variant="standard"
+                  onChange={(e) => {
+                    setHour((prevState) => ({
+                      ...prevState,
+                      open: e.target.value,
+                    }));
+                  }}
+                  value={hour.open}
+                >
+                  <MenuItem value="Start Time" disabled>
+                    Start time
+                  </MenuItem>
+                  <MenuItem value="1">1</MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
+                  <MenuItem value="6">6</MenuItem>
+                  <MenuItem value="7">7</MenuItem>
+                  <MenuItem value="8">8</MenuItem>
+                  <MenuItem value="9">9</MenuItem>
+                  <MenuItem value="10">10</MenuItem>
+                  <MenuItem value="11">11</MenuItem>
+                  <MenuItem value="12">12</MenuItem>
+                </Select>
+
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="AM/PM"
+                  variant="standard"
+                  onChange={(e) => {
+                    setHour((prevState) => ({
+                      ...prevState,
+                      openMeridiem: e.target.value,
+                    }));
+                  }}
+                  value={hour.openMeridiem}
+                >
+                  <MenuItem value="AM/PM" disabled>
+                    AM/PM
+                  </MenuItem>
+                  <MenuItem value="AM">AM</MenuItem>
+                  <MenuItem value="PM">PM</MenuItem>
+                </Select>
+
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Close Time"
+                  variant="standard"
+                  onChange={(e) => {
+                    setHour((prevState) => ({
+                      ...prevState,
+                      close: e.target.value,
+                    }));
+                  }}
+                  value={hour.close}
+                >
+                  <MenuItem value="Close Time" disabled>
+                    End time
+                  </MenuItem>
+                  <MenuItem value="1">1</MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
+                  <MenuItem value="6">6</MenuItem>
+                  <MenuItem value="7">7</MenuItem>
+                  <MenuItem value="8">8</MenuItem>
+                  <MenuItem value="9">9</MenuItem>
+                  <MenuItem value="10">10</MenuItem>
+                  <MenuItem value="11">11</MenuItem>
+                  <MenuItem value="12">12</MenuItem>
+                </Select>
+
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="AM/PM"
+                  variant="standard"
+                  onChange={(e) => {
+                    setHour((prevState) => ({
+                      ...prevState,
+                      closeMeridiem: e.target.value,
+                    }));
+                  }}
+                  value={hour.closeMeridiem}
+                >
+                  <MenuItem value="AM/PM" disabled>
+                    AM/PM
+                  </MenuItem>
+                  <MenuItem value="AM">AM</MenuItem>
+                  <MenuItem value="PM">PM</MenuItem>
+                </Select>
+              </div>
+            </>
           )}
+
+          {/* // ^UPLOAD DATA FOR PREMIER PACKAGE */}
+          {modalForm.packageType === "PREMIER" && (
+            <>
+              <div style={{ display: "flex" }}>
+                <TextField
+                  style={{ paddingRight: "20px" }}
+                  margin="dense"
+                  label="Website URL"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => {
+                    setModalForm((prevState) => ({
+                      ...prevState,
+                      businessWebsite: e.target.value,
+                    }));
+                  }}
+                  value={modalForm.businessWebsite}
+                />
+                <TextField
+                  margin="dense"
+                  label="Year of Establishment"
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => {
+                    setModalForm((prevState) => ({
+                      ...prevState,
+                      yearOfEstablishment: e.target.value,
+                    }));
+                  }}
+                  value={modalForm.yearOfEstablishment}
+                />
+              </div>
+
+              <Grid container spacing={1} my={0}>
+                <Grid item xs={4}>
+                  <TextField
+                    label="Business Instagram"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => {
+                      setModalForm((prevState) => ({
+                        ...prevState,
+                        businessInstagramUsername: e.target.value,
+                      }));
+                    }}
+                    value={modalForm.businessInstagramUsername}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    label="Business Twitter"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => {
+                      setModalForm((prevState) => ({
+                        ...prevState,
+                        businessTwitterUsername: e.target.value,
+                      }));
+                    }}
+                    value={modalForm.businessTwitterUsername}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    label="Business Facebook"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => {
+                      setModalForm((prevState) => ({
+                        ...prevState,
+                        businessFacebookUsername: e.target.value,
+                      }));
+                    }}
+                    value={modalForm.businessFacebookUsername}
+                  />
+                </Grid>
+              </Grid>
+
+              <TextField
+                margin="dense"
+                label="Detailed Info (min 200 characters)"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(e) => {
+                  setModalForm((prevState) => ({
+                    ...prevState,
+                    detailedInfo: e.target.value,
+                  }));
+                }}
+                value={modalForm.detailedInfo}
+              />
+            </>
+          )}
+
+          {/* // ^IMAGE UPLOAD */}
+          <Grid container spacing={0} my={1}>
+            <Grid item xs={6}>
+              <div className="businessmodal-image-wrapper">
+                <Button variant="outlined" size="small" component="label">
+                  Upload Visiting Card
+                  <input
+                    type="file"
+                    hidden
+                    name="businessVisitingCard"
+                    onChange={(e) => {
+                      setModalForm((prevState) => ({
+                        ...prevState,
+                        businessVisitingCard: e.target.files[0],
+                      }));
+                    }}
+                  />
+                </Button>
+                {/* <div> */}
+                {modalForm.businessVisitingCard ? (
+                  <div
+                    className="businessmodal-image donation-image"
+                    onClick={() =>
+                      setModalForm((prevState) => ({
+                        ...prevState,
+                        businessVisitingCard: "",
+                      }))
+                    }
+                  >
+                    <img
+                      alt="businessVisitingCard"
+                      src={URL.createObjectURL(modalForm.businessVisitingCard)}
+                    />
+                  </div>
+                ) : (
+                  <div className="businessmodal-image">
+                    <ImageIcon />
+                  </div>
+                )}
+                {/* </div> */}
+              </div>
+            </Grid>
+
+            <Grid item xs={6}>
+              {/* IMAGE FOR BUSINESS LOGO */}
+              {modalForm.packageType !== "FREE" && (
+                <div className="businessmodal-image-wrapper">
+                  <Button variant="outlined" size="small" component="label">
+                    Upload Business Logo
+                    <input
+                      type="file"
+                      hidden
+                      name="businessLogo"
+                      onChange={(e) => {
+                        setModalForm((prevState) => ({
+                          ...prevState,
+                          businessLogo: e.target.files[0],
+                        }));
+                      }}
+                    />
+                  </Button>
+                  {/* <div> */}
+                  {modalForm.businessLogo ? (
+                    <div
+                      className="businessmodal-image donation-image"
+                      onClick={() =>
+                        setModalForm((prevState) => ({
+                          ...prevState,
+                          businessLogo: "",
+                        }))
+                      }
+                    >
+                      <img
+                        alt="businessLogo"
+                        src={URL.createObjectURL(modalForm.businessLogo)}
+                      />
+                    </div>
+                  ) : (
+                    <div className="businessmodal-image">
+                      <ImageIcon />
+                    </div>
+                  )}
+                  {/* </div> */}
+                </div>
+              )}
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenFree(false)}>Cancel</Button>
-          <Button variant="contained">Submit</Button>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleSubmit}>
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
       <HeroSectionHeader heading="Select Your Business Packages" />
@@ -242,7 +624,7 @@ const BusinessPackeages = () => {
               </li>
             </ul>
           </div>
-          <button className="cart-btn" onClick={() => setOpenFree(true)}>
+          <button className="cart-btn" onClick={() => openModal("FREE")}>
             Choose Plan
           </button>
         </div>
@@ -320,7 +702,7 @@ const BusinessPackeages = () => {
               </li>
             </ul>
           </div>
-          <button className="cart-btn" onClick={() => setOpenFree(true)}>
+          <button className="cart-btn" onClick={() => openModal("ELITE")}>
             Choose Plan
           </button>
         </div>
@@ -398,85 +780,7 @@ const BusinessPackeages = () => {
               </li>
             </ul>
           </div>
-          <button className="cart-btn" onClick={() => setOpenFree(true)}>
-            Choose Plan
-          </button>
-        </div>
-        <div className="businessPackages-card">
-          <div className="package-top">
-            <div className="businessPackages-card-header">
-              <p className="pricing">
-                <p className="save-pricing">Premier Plus</p>
-              </p>
-              <p className="price-desc">
-                Everything you need to create your website
-              </p>
-            </div>
-            <div className="businessPackages-card-pricing">
-              <div className="package-price">
-                ₹3000.00 <span>/mo</span>
-              </div>
-            </div>
-          </div>
-          <div className="packages-features free-package">
-            <h3>What is included</h3>
-            <ul>
-              <li>
-                <DoneIcon fontSize="small" />
-                Visiting Card Upload
-              </li>
-              <li>
-                <DoneIcon fontSize="small" />
-                Business Name
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Business Contact
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Business Email Id
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Busines Address
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Business Photo Upload
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Services/ Product Listing
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Opening Hours
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Website URL
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Social Media Profiles
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> GSTIN
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> WhatsApp
-              </li>
-              <li>
-                <DoneIcon fontSize="small" /> Quick Information
-              </li>
-              <li>
-                <DoneIcon fontSize="small" />
-                Detailed Information
-              </li>
-              <li>
-                <DoneIcon fontSize="small" />
-                Year of Establishment
-              </li>
-              <li>
-                <DoneIcon fontSize="small" />
-                Business Category
-              </li>
-            </ul>
-          </div>
-          <button className="cart-btn" onClick={() => setOpenFree(true)}>
+          <button className="cart-btn" onClick={() => openModal("PREMIER")}>
             Choose Plan
           </button>
         </div>

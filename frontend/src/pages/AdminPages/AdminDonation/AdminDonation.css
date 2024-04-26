@@ -33,6 +33,7 @@
   content: "X";
   position: absolute;
   width: 100%;
+  cursor: pointer;
   height: 100%;
   left: 0;
   top: 0;

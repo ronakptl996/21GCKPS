@@ -119,7 +119,7 @@ const CreateMatrimonialProfile = () => {
     }
   };
 
-  // Delete handleInterestDeleteChip
+  // Delete handleHobbyDeleteChip
   const handleHobbyDeleteChip = (chipToDelete) => {
     setProfileDetail((prevState) => ({
       ...prevState,

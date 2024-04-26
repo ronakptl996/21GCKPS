@@ -108,3 +108,37 @@
 .packages-features ul li svg {
   margin-right: 10px;
 }
+
+/* ^Business Modal */
+.businessmodal-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.businessmodal-image {
+  margin-left: 10px;
+  position: relative;
+  width: 50px;
+  height: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ^STACK CHIP */
+.businessPackage-services .css-1v92mdz-MuiStack-root {
+  flex-wrap: wrap !important;
+}
+
+.businessPackage-services .css-1hya7ew-MuiButtonBase-root-MuiChip-root {
+  margin: 2px;
+}
+
+.openingHours-wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: 20px;
+}
