@@ -82,13 +82,41 @@ const getBusinessData = asyncHandler(async (req, res) => {
   try {
     const now = new Date();
 
-    console.log(now);
-
     // Query businesses where expiryDate is greater than the current date
-    const validBusinesses = await Business.find({
-      expiryDate: { $gte: now },
-      isApproved: true,
-    }).select("_id businessOwner businessName businessLogo packageType");
+    const validBusinesses = await Business.aggregate([
+      // Match businesses where expiryDate is greater than the current date
+      { $match: { expiryDate: { $gt: now } } },
+
+      // Add a field for custom sorting based on packageType
+      {
+        $addFields: {
+          packagePriority: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$packageType", "PREMIER"] }, then: 1 },
+                { case: { $eq: ["$packageType", "ELITE"] }, then: 2 },
+                { case: { $eq: ["$packageType", "FREE"] }, then: 3 },
+              ],
+              default: 4, // In case no packageType matches
+            },
+          },
+        },
+      },
+
+      // Sort by the custom field in ascending order
+      { $sort: { packagePriority: 1 } },
+
+      // Project only the desired fields
+      {
+        $project: {
+          _id: 1,
+          businessOwner: 1,
+          businessName: 1,
+          businessLogo: 1,
+          packageType: 1,
+        },
+      },
+    ]);
 
     return res.status(200).json(new ApiResponse(200, validBusinesses, "")); // Return the filtered business data
   } catch (error) {
