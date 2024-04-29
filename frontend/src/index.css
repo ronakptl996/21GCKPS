@@ -45,6 +45,11 @@
   font-family: "Roboto Bold", sans-serif;
 }
 
+/* ^OUTLET */
+.main {
+  min-height: 100vh;
+}
+
 /* Loading - ProtectedRoute */
 .loading-wrapper {
   width: 100%;

@@ -12,7 +12,9 @@ const Layout = () => {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <section className="main">
+        <Outlet />
+      </section>
       <Footer />
     </>
   );
