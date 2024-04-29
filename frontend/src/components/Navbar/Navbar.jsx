@@ -208,12 +208,12 @@ const Navbar = () => {
                       <div className="dropdown-content">
                         <ul>
                           <li className="navbar-item">
-                            <NavLink to="/business">Add Business</NavLink>
+                            <NavLink to="/business-package">
+                              Add Business
+                            </NavLink>
                           </li>
                           <li className="navbar-item">
-                            <NavLink to="/education-committee">
-                              Businesses
-                            </NavLink>
+                            <NavLink to="/business">Businesses</NavLink>
                           </li>
                         </ul>
                       </div>

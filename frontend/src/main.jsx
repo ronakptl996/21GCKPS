@@ -130,7 +130,7 @@ const router = createBrowserRouter(
           path="business"
           element={
             <ProtectedRoute>
-              <BusinessPackages />
+              <Business />
             </ProtectedRoute>
           }
         />
@@ -146,7 +146,7 @@ const router = createBrowserRouter(
           path="business-package"
           element={
             <ProtectedRoute>
-              <Business />
+              <BusinessPackages />
             </ProtectedRoute>
           }
         />
