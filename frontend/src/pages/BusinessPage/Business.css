@@ -1,32 +1,53 @@
 .business-wrapper {
   padding: 50px 200px;
-}
-
-.business-wrapper form {
-  padding: 20px;
-  width: 800px;
-  margin: auto;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.business-wrapper .business-input-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  margin: 8px 0;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.business-input-wrapper .css-sghohy-MuiButtonBase-root-MuiButton-root {
-  width: 98%;
-  background: transparent;
-  box-shadow: none;
-  border: 1px solid rgba(0, 0, 0, 0.23);
-  color: rgba(0, 0, 0, 0.7);
-  height: 96%;
-  margin: 2px;
-  text-transform: capitalize;
+.business-wrapper .businessName {
+  margin-bottom: 5px;
 }
 
-.business-input-wrapper .css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
-  background: transparent;
-  box-shadow: none;
+.business-wrapper .business-info-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.business-wrapper .business-info-wrapper .info-contact-icon {
+  background: rgb(233, 135, 0);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.business-wrapper .business-info-wrapper p {
+  font-size: 13px;
+  color: #1e1e1ed7;
+  font-family: "Poppins";
+}
+
+@media screen and (max-width: 1300px) {
+  .business-wrapper {
+    padding: 50px 100px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .business-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .business-wrapper {
+    padding: 50px 30px;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .business-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+    padding: 50px 20px;
+  }
 }

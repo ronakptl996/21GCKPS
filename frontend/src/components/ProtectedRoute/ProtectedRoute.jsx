@@ -2,13 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchLoggedInUserDetails } from "../../features/auth/authSlice";
-import {
-  Box,
-  CircularProgress,
-  LinearProgress,
-  Modal,
-  Stack,
-} from "@mui/material";
+import Loading from "../Loading/Loading";
 
 const ProtectedRoute = ({ children }) => {
   const dispatch = useDispatch();
@@ -27,21 +21,7 @@ const ProtectedRoute = ({ children }) => {
     }
   }, [isLoading, isAuth]);
 
-  return isLoading ? (
-    <Modal
-      open={true}
-      // onClose={handleClose}
-      aria-labelledby="parent-modal-title"
-      aria-describedby="parent-modal-description"
-    >
-      <section className="loading-wrapper">
-        <CircularProgress className="loading" />
-        <h3>Loading...</h3>
-      </section>
-    </Modal>
-  ) : (
-    <>{children}</>
-  );
+  return isLoading ? <Loading /> : <>{children}</>;
 };
 
 export default ProtectedRoute;

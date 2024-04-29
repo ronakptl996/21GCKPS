@@ -1,143 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Button, TextField } from "@mui/material";
 import "./Business.css";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Business = () => {
+  const [businessData, setBusinessData] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/api/business/valid");
+
+      if (response.ok) {
+        const data = await response.json();
+        setBusinessData(data.data);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <section className="business">
-      <HeroSectionHeader heading="Business" paragraph="Add Business Details" />
+      <HeroSectionHeader
+        heading="Business"
+        paragraph="Pick any one and known about it."
+      />
       <div className="business-wrapper">
-        <form>
-          <div className="business-input-wrapper">
-            <TextField
-              id="outlined-basic"
-              label="Name of Person"
-              type="text"
-              variant="outlined"
-              // value={headOfFamily.email}
-              // onChange={(e) =>
-              //   setHeadOfFamily((prevState) => ({
-              //     ...prevState,
-              //     email: e.target.value,
-              //   }))
-              // }
-            />
-            <TextField
-              id="outlined-basic"
-              label="Business Name"
-              type="text"
-              variant="outlined"
-              // value={headOfFamily.email}
-              // onChange={(e) =>
-              //   setHeadOfFamily((prevState) => ({
-              //     ...prevState,
-              //     email: e.target.value,
-              //   }))
-              // }
-            />
-            <TextField
-              id="outlined-basic"
-              label="Brief Name of Business"
-              type="text"
-              variant="outlined"
-              // value={headOfFamily.email}
-              // onChange={(e) =>
-              //   setHeadOfFamily((prevState) => ({
-              //     ...prevState,
-              //     email: e.target.value,
-              //   }))
-              // }
-            />
-          </div>
-          <div className="business-input-wrapper">
-            <TextField
-              id="outlined-basic"
-              label="Email Id"
-              type="email"
-              variant="outlined"
-              // value={headOfFamily.email}
-              // onChange={(e) =>
-              //   setHeadOfFamily((prevState) => ({
-              //     ...prevState,
-              //     email: e.target.value,
-              //   }))
-              // }
-            />
-            <TextField
-              id="outlined-basic"
-              label="Address"
-              type="text"
-              variant="outlined"
-              // value={headOfFamily.email}
-              // onChange={(e) =>
-              //   setHeadOfFamily((prevState) => ({
-              //     ...prevState,
-              //     email: e.target.value,
-              //   }))
-              // }
-            />
-            <TextField
-              id="outlined-basic"
-              label="Contact No."
-              type="text"
-              variant="outlined"
-              // value={headOfFamily.email}
-              // onChange={(e) =>
-              //   setHeadOfFamily((prevState) => ({
-              //     ...prevState,
-              //     email: e.target.value,
-              //   }))
-              // }
-            />
-          </div>
-          <div className="business-input-wrapper">
-            <TextField
-              id="outlined-basic"
-              label="Website"
-              type="text"
-              variant="outlined"
-              // value={headOfFamily.email}
-              // onChange={(e) =>
-              //   setHeadOfFamily((prevState) => ({
-              //     ...prevState,
-              //     email: e.target.value,
-              //   }))
-              // }
-            />
-            <Button variant="contained" component="label">
-              <CloudUploadIcon style={{ marginRight: "5px" }} /> Upload Company
-              Photo
-              <input
-                type="file"
-                hidden
-                name="avatar"
-                // onChange={(e) => setAvatar(e.target.files[0])}
-              />
-            </Button>
-            <Button variant="contained" component="label">
-              <CloudUploadIcon style={{ marginRight: "5px" }} /> Upload Business
-              Logo
-              <input
-                type="file"
-                hidden
-                name="avatar"
-                // onChange={(e) => setAvatar(e.target.files[0])}
-              />
-            </Button>
-          </div>
-          <div>
-            <Button
-              // onClick={handleSubmit}
-              fullWidth
-              style={{ background: "#a7732b", marginTop: "10px" }}
-              variant="contained"
-            >
-              Register
-            </Button>
-          </div>
-        </form>
+        {businessData &&
+          businessData.length > 0 &&
+          businessData.map((data) => (
+            <div className="villageWiseFamilyDetails-card" key={data._id}>
+              <div className="villageWiseFamilyDetails-image-wrapper">
+                <img
+                // src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                //   family.avatar
+                // }`}
+                />
+              </div>
+              <div className="villageWiseFamilyDetails-info">
+                <h3 className="headOfFamilyName businessName">
+                  {data.businessName.toUpperCase()}
+                </h3>
+                <div className="business-info-wrapper">
+                  <div className="info-contact-icon"></div>
+                  <p>{data.businessOwner}</p>
+                </div>
+                <div className="business-info-wrapper">
+                  <div className="info-contact-icon"></div>
+                  <p>{data.packageType}</p>
+                </div>
+                <div className="more-info-link">
+                  <Link to={`${data._id}`}>More Info</Link>
+                </div>
+              </div>
+            </div>
+          ))}
       </div>
     </section>
   );

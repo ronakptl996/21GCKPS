@@ -1,24 +1,19 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Modal } from "@mui/material";
 import React from "react";
 
 const Loading = () => {
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(255, 255, 255, 0.8)", // Adjust the background color and opacity
-        zIndex: 9999, // Ensure it's above other elements
-      }}
+    <Modal
+      open={true}
+      // onClose={handleClose}
+      aria-labelledby="parent-modal-title"
+      aria-describedby="parent-modal-description"
     >
-      <CircularProgress />
-    </div>
+      <section className="loading-wrapper">
+        <CircularProgress className="loading" />
+        <h3>Loading...</h3>
+      </section>
+    </Modal>
   );
 };
 
