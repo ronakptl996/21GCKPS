@@ -1,12 +1,19 @@
-import React from 'react'
-import Committee from '../../../components/Committee'
+import React from "react";
+import { useDispatch } from "react-redux";
+import Committee from "../../../components/Committee";
+import { fetchCommitteeDetails } from "../../../features/admin/adminSlice";
 
 const MahilaCommittee = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCommitteeDetails("Mahila Committee"));
+  }, []);
   return (
     <div>
-        <Committee header="Mahila Committee" />
+      <Committee header="Mahila Committee" />
     </div>
-  )
-}
+  );
+};
 
-export default MahilaCommittee
+export default MahilaCommittee;
