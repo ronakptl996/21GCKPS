@@ -96,10 +96,7 @@ const registerFamily = asyncHandler(async (req, res) => {
           `family/${file.fileName}`
         );
         if (!optimzedImage) {
-          throw new ApiError(
-            500,
-            "Error while OptimzeImage add donation avatar"
-          );
+          throw new ApiError(500, "Error while OptimzeImage family avatar");
         } else {
           if (file.fieldName.includes("headOfFamilyAvatar")) {
             headOfFamily.headOfFamilyAvatar = file.fileName;

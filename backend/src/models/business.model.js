@@ -16,11 +16,11 @@ const businessSchema = Schema({
   businessFacebookUsername: { type: String },
   quickInfo: { type: String },
   detailedInfo: { type: String },
-  yearOfEstablishment: { type: String },
+  yearOfEstablishment: { type: Number },
   businessCategory: { type: String },
   isApproved: { type: Boolean, default: false },
   packageType: { type: String, enum: ["FREE", "ELITE", "PREMIER"] },
-  createdBy: { type: String, required: true },
+  createdBy: { type: Schema.Types.ObjectId, ref: "Family" },
   expiryDate: { type: Date, required: true },
 });
 

@@ -40,7 +40,7 @@ const BusinessPackeages = () => {
     businessLogo: "",
     businessVisitingCard: "",
     provideServices: [],
-    openingHours: `${hour.open} ${hour.openMeridiem} to ${hour.close} ${hour.closeMeridiem}`,
+    openingHours: "",
     businessWebsite: "",
     businessInstagramUsername: "",
     businessTwitterUsername: "",
@@ -90,9 +90,12 @@ const BusinessPackeages = () => {
   const handleSubmit = async () => {
     console.log(modalForm);
 
+    modalForm.openingHours = `${hour.open} ${hour.openMeridiem} to ${hour.close} ${hour.closeMeridiem}`;
+
     const formData = new FormData();
     formData.append("businessVisitingCard", modalForm.businessVisitingCard);
     formData.append("businessLogo", modalForm.businessLogo);
+    formData.append("businessData", JSON.stringify(modalForm));
 
     const response = await fetch("/api/business/add", {
       method: "POST",
@@ -222,7 +225,7 @@ const BusinessPackeages = () => {
               <div className="businessPackage-services">
                 <TextField
                   variant="standard"
-                  label="Provide Services"
+                  label="Type and press Enter to add a service (e.g., 'Cleaning', 'Maintenance')"
                   value={provideServices}
                   onChange={(e) => setProvideServices(e.target.value)}
                   onKeyPress={(event) => {
