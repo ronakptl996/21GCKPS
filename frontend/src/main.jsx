@@ -126,22 +126,25 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
-        <Route
-          path="business"
-          element={
-            <ProtectedRoute>
-              <Business />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="business-detail"
-          element={
-            <ProtectedRoute>
-              <BusinessDetail />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="business">
+          <Route
+            path=""
+            element={
+              <ProtectedRoute>
+                <Business />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path=":businessID"
+            element={
+              <ProtectedRoute>
+                <BusinessDetail />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
         <Route
           path="business-package"
           element={

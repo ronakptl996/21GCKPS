@@ -85,7 +85,7 @@ const getBusinessData = asyncHandler(async (req, res) => {
     // Query businesses where expiryDate is greater than the current date
     const validBusinesses = await Business.aggregate([
       // Match businesses where expiryDate is greater than the current date
-      { $match: { expiryDate: { $gt: now } } },
+      { $match: { expiryDate: { $gt: now }, isApproved: true } },
 
       // Add a field for custom sorting based on packageType
       {
@@ -125,4 +125,24 @@ const getBusinessData = asyncHandler(async (req, res) => {
   }
 });
 
-export { addBusiness, getBusinessData };
+// ^Get Data for business using ID
+const getBusinessDataByID = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new ApiError(401, "Business ID is required!");
+  }
+
+  try {
+    const data = await Business.findById(id).select("-createdBy");
+
+    if (!data) throw new ApiError(500, "Data not found!");
+
+    return res.status(200).json(new ApiResponse(200, data, ""));
+  } catch (error) {
+    console.log(error);
+    throw new ApiError(500, "Something went wrong!", error);
+  }
+});
+
+export { addBusiness, getBusinessData, getBusinessDataByID };

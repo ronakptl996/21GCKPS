@@ -5,6 +5,9 @@ import Bus1 from "../../assets/images/Business/bus-1.avif";
 import Bus2 from "../../assets/images/Business/bus-2.avif";
 import Bus3 from "../../assets/images/Business/bus-3.avif";
 import Logo from "../../assets/images/Business/logo.webp";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
+import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import CallRounded from "@mui/icons-material/CallRounded";
 import LocationOn from "@mui/icons-material/LocationOn";
 import Facebook from "@mui/icons-material/Facebook";
@@ -12,6 +15,7 @@ import Instagram from "@mui/icons-material/Instagram";
 import Email from "@mui/icons-material/Email";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading/Loading";
+import { Chip, Stack, Tooltip } from "@mui/material";
 
 const BusinessDetail = () => {
   const [data, setData] = useState();
@@ -27,13 +31,12 @@ const BusinessDetail = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setData(data.data);
       } else {
         throw new Error("Data not found!");
       }
     } catch (error) {
-      toast.error(error || "Something went wrong!");
+      toast.error(error.message || "Something went wrong!");
       navigate("/business");
     } finally {
       setLoading(false);
@@ -47,52 +50,81 @@ const BusinessDetail = () => {
   if (loading) return <Loading />;
   return (
     <section className="businessDetail">
-      <div className="businessDetail-info">
-        <div className="businessDetail-image-wrapper">
-          <img src={Bus1} alt="" />
-          <img src={Bus2} alt="" />
-          <img src={Bus3} alt="" />
-        </div>
-        <div className="businessDetail-header">
-          <div className="businessDetail-logo">
-            <img src={Logo} alt="" />
+      {data && (
+        <div className="businessDetail-info">
+          <div className="businessDetail-image-wrapper">
+            {/* // & ADD IMAGES */}
+            <img src={Bus1} alt="" />
+            <img src={Bus2} alt="" />
+            <img src={Bus3} alt="" />
           </div>
-          <div className="businessDetail-name-info">
-            <h2>Maharaj Bhog (Oberoi Mall)</h2>
-            <div className="businessDetail-location">
-              <ul>
-                <li>
-                  <LocationOn /> Goregaon East, India
-                </li>
-                <li>(Opening hours 9:30AM to 8:00PM)</li>
-              </ul>
+          <div className="businessDetail-header">
+            <div className="businessDetail-logo">
+              {/* // & ADD LOGO */}
+              <img src={Logo} alt="" />
             </div>
-            <div className="businessDetail-description">
-              <h3>Business Heading</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam
-                debitis suscipit reprehenderit fugiat incidunt? Placeat
-                consequuntur quia veniam ratione quas quo suscipit, autem
-                asperiores consequatur quod quaerat aspernatur obcaecati eaque!
-              </p>
-            </div>
-            <div className="call-detail">
-              <div>
-                <CallRounded /> +91 9313535461
+            <div className="businessDetail-name-info">
+              <h2>{data.businessName.toUpperCase()}</h2>
+              <div className="businessDetail-location">
+                <ul>
+                  <li>
+                    <BusinessCenterIcon />
+                    {data.businessCategory}
+                  </li>
+                  <li>
+                    <LocationOn /> {data.businessAddress}
+                  </li>
+                  <li>
+                    <WatchLaterIcon />
+                    {data.openingHours}
+                  </li>
+                  <li>
+                    <RoomPreferencesIcon />
+                    {data.yearOfEstablishment}
+                  </li>
+                </ul>
               </div>
-              <div>
-                <Email /> info@calmcoders.com
+              <div className="businessDetail-description">
+                <h4>{data.quickInfo}</h4>
+                {data.detailedInfo && <p>{data.detailedInfo}</p>}
               </div>
-              <div>
-                <Facebook /> Facebook
-              </div>
-              <div>
-                <Instagram /> Instagram
+
+              {data.provideServices && data.provideServices.length > 0 && (
+                <div className="business-services">
+                  <Stack direction="row" spacing={1}>
+                    {data.provideServices.map((service) => (
+                      <Chip label={service} key={service} />
+                    ))}
+                  </Stack>
+                </div>
+              )}
+              <div className="call-detail">
+                <div>
+                  <CallRounded /> {data.businessContact}
+                </div>
+                <div>
+                  <Email /> {data.businessEmail}
+                </div>
+                {data.businessInstagramUsername && (
+                  <div>
+                    <Instagram /> {data.businessInstagramUsername}
+                  </div>
+                )}
+                {data.businessFacebookUsername && (
+                  <div>
+                    <Facebook /> {data.businessFacebookUsername}
+                  </div>
+                )}
+                {data.businessTwitterUsername && (
+                  <div>
+                    <Facebook /> {data.businessTwitterUsername}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };
