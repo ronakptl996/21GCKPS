@@ -1,24 +1,130 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AdminHome.css";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { toast } from "react-toastify";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminHome = () => {
-  const [villageName, setVillageName] = useState("Choose Village Name");
-  const data = {
+  const [statistics, setStatistics] = useState({});
+  const [villageName, setVillageName] = useState("moraj");
+  const [matrimonialVillageName, setMatrimonialVillageName] = useState("moraj");
+  const [villageData, setVillageData] = useState({
+    menCount: 0,
+    womenCount: 0,
+  });
+  const [matrimonialData, setMatrimonialData] = useState({
+    menCount: 0,
+    womenCount: 0,
+  });
+
+  // ^village wise men/women count - CHART DATA
+  const villageChartData = {
     labels: ["Men", "Women"],
     datasets: [
       {
         label: "Data",
-        data: [300, 50],
+        data: [villageData?.menCount, villageData?.womenCount],
         backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
         hoverOffset: 4,
       },
     ],
   };
+
+  // ^Matrimonial Village wise men/women count - CHART DATA
+  const matrimonialChartData = {
+    labels: ["Men", "Women"],
+    datasets: [
+      {
+        label: "Data",
+        data: [matrimonialData?.menCount, matrimonialData?.womenCount],
+        backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
+        hoverOffset: 4,
+      },
+    ],
+  };
+
+  // ^village wise men/women count
+  const getVillageWiseMenWomenCount = async (villageName) => {
+    try {
+      const response = await fetch(
+        `/api/admin/village-wise-men-women/${villageName}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data && data.success) {
+          setVillageData(data.data[0]);
+        }
+      } else {
+        throw new Error("Data not found!");
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+
+  // ^Matrimonial village wise men/women count
+  const getMatrimonialMenWomenCount = async (villageName) => {
+    try {
+      const response = await fetch(
+        `/api/admin/matrimonial-men-women-count/${villageName}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data && data.success) {
+          setMatrimonialData(data.data[0]);
+        }
+      } else {
+        throw new Error("Data not found!");
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+
+  // ^Get Statistics
+  const getStatistics = async () => {
+    try {
+      const response = await fetch(`/api/admin/statictics`);
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data && data.success) {
+          setStatistics(data.data);
+        }
+      } else {
+        throw new Error("Data not found!");
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+
+  // ^village wise men/women count
+  useEffect(() => {
+    if (villageName) {
+      getVillageWiseMenWomenCount(villageName); // Fetch data when village name changes
+    }
+  }, [villageName]);
+
+  // ^Matrimonial village wise men/women count
+  useEffect(() => {
+    if (matrimonialVillageName) {
+      getMatrimonialMenWomenCount(matrimonialVillageName); // Fetch data when village name changes
+    }
+  }, [matrimonialVillageName]);
+
+  useEffect(() => {
+    getStatistics();
+  }, []);
+
   return (
     <>
       <section className="adminHome">
@@ -30,26 +136,24 @@ const AdminHome = () => {
             <div className="form">
               <FormControl>
                 <InputLabel id="demo-simple-select-label">
-                  Choose Village Name
+                  Choose Village
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={villageName}
                   onChange={(e) => setVillageName(e.target.value)}
-                  label="Choose Village Name"
+                  label="Choose Village"
                 >
-                  <MenuItem value="Choose Village Name" disabled>
-                    Choose Village Name
+                  <MenuItem value="Choose Village" disabled>
+                    Choose Village
                   </MenuItem>
-                  <MenuItem value="o-">O-</MenuItem>
-                  <MenuItem value="a+">A+</MenuItem>
-                  <MenuItem value="a-">A-</MenuItem>
-                  <MenuItem value="b+">B+</MenuItem>
-                  <MenuItem value="b-">B-</MenuItem>
-                  <MenuItem value="ab+">AB+</MenuItem>
-                  <MenuItem value="ab-">AB-</MenuItem>
-                  <MenuItem value="ab">AB</MenuItem>
+                  <MenuItem value="moraj">Moraj</MenuItem>
+                  <MenuItem value="jinaj">Jinaj</MenuItem>
+                  <MenuItem value="rangpur">Rangpur</MenuItem>
+                  <MenuItem value="undel">Undel</MenuItem>
+                  <MenuItem value="piploi">Piploi</MenuItem>
+                  <MenuItem value="malu">Malu</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -57,15 +161,17 @@ const AdminHome = () => {
               <div className="chart-details-one">
                 <ul>
                   <li>
-                    <b>Men: </b>2000
+                    <b>Men: </b>
+                    {villageData?.menCount ? villageData?.menCount : 0}
                   </li>
                   <li>
-                    <b>Women: </b>2000
+                    <b>Women: </b>
+                    {villageData?.womenCount ? villageData?.womenCount : 0}
                   </li>
                 </ul>
               </div>
               <div className="chart-details-two">
-                <Doughnut data={data} />
+                <Doughnut data={villageChartData} />
               </div>
             </div>
           </div>
@@ -78,26 +184,24 @@ const AdminHome = () => {
             <div className="form">
               <FormControl>
                 <InputLabel id="demo-simple-select-label">
-                  Choose Village Name
+                  Choose Village
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={villageName}
-                  onChange={(e) => setVillageName(e.target.value)}
-                  label="Choose Village Name"
+                  value={matrimonialVillageName}
+                  onChange={(e) => setMatrimonialVillageName(e.target.value)}
+                  label="Choose Village"
                 >
-                  <MenuItem value="Choose Village Name" disabled>
-                    Choose Village Name
+                  <MenuItem value="Choose Village" disabled>
+                    Choose Village
                   </MenuItem>
-                  <MenuItem value="o-">O-</MenuItem>
-                  <MenuItem value="a+">A+</MenuItem>
-                  <MenuItem value="a-">A-</MenuItem>
-                  <MenuItem value="b+">B+</MenuItem>
-                  <MenuItem value="b-">B-</MenuItem>
-                  <MenuItem value="ab+">AB+</MenuItem>
-                  <MenuItem value="ab-">AB-</MenuItem>
-                  <MenuItem value="ab">AB</MenuItem>
+                  <MenuItem value="moraj">Moraj</MenuItem>
+                  <MenuItem value="jinaj">Jinaj</MenuItem>
+                  <MenuItem value="rangpur">Rangpur</MenuItem>
+                  <MenuItem value="undel">Undel</MenuItem>
+                  <MenuItem value="piploi">Piploi</MenuItem>
+                  <MenuItem value="malu">Malu</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -105,15 +209,19 @@ const AdminHome = () => {
               <div className="chart-details-one">
                 <ul>
                   <li>
-                    <b>Men: </b>2000
+                    <b>Men: </b>{" "}
+                    {matrimonialData?.menCount ? matrimonialData?.menCount : 0}
                   </li>
                   <li>
-                    <b>Women: </b>2000
+                    <b>Women: </b>
+                    {matrimonialData?.womenCount
+                      ? matrimonialData?.womenCount
+                      : 0}
                   </li>
                 </ul>
               </div>
               <div className="chart-details-two">
-                <Doughnut data={data} />
+                <Doughnut data={matrimonialChartData} />
               </div>
             </div>
           </div>
@@ -121,19 +229,19 @@ const AdminHome = () => {
       </section>
       <section className="admin-home-details">
         <div className="home-details">
-          <p>23</p>
+          <p>{statistics?.totalFamily}</p>
           <h3>Total Family</h3>
         </div>
         <div className="home-details">
-          <p>23</p>
+          <p>{statistics?.totalFestival}</p>
           <h3>Total Festival</h3>
         </div>
         <div className="home-details">
-          <p>23</p>
+          <p>{statistics?.totalCommittee}</p>
           <h3>Total Committee Member</h3>
         </div>
         <div className="home-details">
-          <p>23</p>
+          <p>{statistics?.totalJob}</p>
           <h3>Total Jobs</h3>
         </div>
       </section>

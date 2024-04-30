@@ -24,7 +24,11 @@ import {
   getDonationDetails,
   getSpecificDonationDetail,
 } from "../controllers/adminController/donation-controller.js";
-import { getVillageWiseMenWomenCount } from "../controllers/adminController/family.controllers.js";
+import {
+  adminStatictics,
+  getMatrimonialMenWomenCount,
+  getVillageWiseMenWomenCount,
+} from "../controllers/adminController/family.controllers.js";
 
 const router = Router();
 // router.route("/").get(verifyJwtAdmin);
@@ -63,5 +67,10 @@ router.route("/delete-donation").delete(verifyJwtAdmin, deleteDonationData);
 // ADMIN Home page village wise data
 router
   .route("/village-wise-men-women/:villageName")
-  .get(getVillageWiseMenWomenCount);
+  .get(verifyJwtAdmin, getVillageWiseMenWomenCount);
+router
+  .route("/matrimonial-men-women-count/:villageName")
+  .get(verifyJwtAdmin, getMatrimonialMenWomenCount);
+router.route("/statictics").get(verifyJwtAdmin, adminStatictics);
+
 export default router;
