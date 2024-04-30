@@ -408,19 +408,33 @@ const CreateMatrimonialProfile = () => {
                 </FormControl>
               </div>
               <div className="register-input-wrapper">
-                <TextField
-                  id="outlined-basic"
-                  label="Your Village Name"
-                  type="text"
-                  variant="outlined"
-                  value={profileDetail.address}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      address: e.target.value,
-                    }))
-                  }
-                />
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="demo-simple-select-label">
+                    Village Name
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Village Name"
+                    value={profileDetail.address}
+                    onChange={(e) =>
+                      setProfileDetail((prevState) => ({
+                        ...prevState,
+                        address: e.target.value,
+                      }))
+                    }
+                  >
+                    <MenuItem value="Choose Village" disabled>
+                      Choose Village
+                    </MenuItem>
+                    <MenuItem value="moraj">Moraj</MenuItem>
+                    <MenuItem value="jinaj">Jinaj</MenuItem>
+                    <MenuItem value="rangpur">Rangpur</MenuItem>
+                    <MenuItem value="undel">Undel</MenuItem>
+                    <MenuItem value="piploi">Piploi</MenuItem>
+                    <MenuItem value="malu">Malu</MenuItem>
+                  </Select>
+                </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   {/* <DatePicker label="Choose your DOB" /> */}
                   <DatePicker
