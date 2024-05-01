@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -10,7 +11,7 @@ import {
 } from "react-router-dom";
 import { store } from "./store";
 import { Provider } from "react-redux";
-import "./index.css";
+import { DropdownProvider } from "./context/DropdownContext";
 import Layout from "./Layout";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login/Login";
@@ -49,12 +50,11 @@ import DetailMatrimonialProfile from "./pages/Matrimonial/DetailMatrimonialProfi
 import Business from "./pages/BusinessPage/Business";
 import BusinessDetail from "./pages/BusinessDetail/BusinessDetail";
 import BusinessPackages from "./pages/BusinessPackages/BusinessPackages";
-import { DropdownProvider } from "./context/DropdownContext";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Profile from "./pages/Profile/Profile";
 import VillageWiseFamilyDetails from "./pages/Village/VillageWiseFamilyDetails/VillageWiseFamilyDetails";
-import Email from "./pages/Email";
+import AdminBusiness from "./pages/AdminPages/AdminBusiness/AdminBusiness";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -107,7 +107,6 @@ const router = createBrowserRouter(
           </Route>
         </Route>
         <Route path="about" element={<About />} />
-        <Route path="email" element={<Email />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="contact" element={<Contact />} />
         <Route
@@ -291,6 +290,8 @@ const router = createBrowserRouter(
           />
         </Route>
       </Route>
+
+      {/* //^ ADMIN ROUTE */}
       <Route
         path="/admin"
         element={
@@ -307,6 +308,7 @@ const router = createBrowserRouter(
         <Route path="donation" element={<AdminDonation />} />
         <Route path="festival" element={<AdminFestival />} />
         <Route path="job-posting" element={<AdminAddJobPosting />} />
+        <Route path="business" element={<AdminBusiness />} />
       </Route>
     </>
   )

@@ -24,6 +24,9 @@ const AdminSidebar = () => {
           <li>
             <NavLink to="/admin/job-posting">Job Posting</NavLink>
           </li>
+          <li>
+            <NavLink to="/admin/business">Business</NavLink>
+          </li>
         </ul>
       </div>
     </section>

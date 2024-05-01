@@ -29,6 +29,12 @@ import {
   getMatrimonialMenWomenCount,
   getVillageWiseMenWomenCount,
 } from "../controllers/adminController/family.controllers.js";
+import {
+  deleteBusinessDetails,
+  getAdminApprovedBusinessDetails,
+  getAdminExpiredBusinessDetails,
+  getAdminUnapprovedBusinessDetails,
+} from "../controllers/adminController/business.controller.js";
 
 const router = Router();
 // router.route("/").get(verifyJwtAdmin);
@@ -72,5 +78,11 @@ router
   .route("/matrimonial-men-women-count/:villageName")
   .get(verifyJwtAdmin, getMatrimonialMenWomenCount);
 router.route("/statictics").get(verifyJwtAdmin, adminStatictics);
+
+// ^ ADMIN Business Route
+router.route("/business/approve").get(getAdminApprovedBusinessDetails);
+router.route("/business/expire").get(getAdminExpiredBusinessDetails);
+router.route("/business/unapprove").get(getAdminUnapprovedBusinessDetails);
+router.route("/business/delete/:id").delete(deleteBusinessDetails);
 
 export default router;

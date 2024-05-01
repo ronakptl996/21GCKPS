@@ -20,6 +20,7 @@ import {
 import DoneIcon from "@mui/icons-material/Done";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
 
 const BusinessPackeages = () => {
   // Edit Modal useState
@@ -97,11 +98,25 @@ const BusinessPackeages = () => {
     formData.append("businessLogo", modalForm.businessLogo);
     formData.append("businessData", JSON.stringify(modalForm));
 
-    const response = await fetch("/api/business/add", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("/api/business/add", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result && result.success) {
+          toast.success("Business details add successfully");
+        } else {
+          toast.error("Error while purchase business package");
+        }
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
   };
+
   return (
     <section className="businessPackages">
       {/* Dialog Form */}

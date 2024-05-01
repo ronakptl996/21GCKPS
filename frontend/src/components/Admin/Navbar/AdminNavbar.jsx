@@ -7,7 +7,7 @@ const AdminNavbar = () => {
   return (
     <section className="admin-navbar">
       <div className="admin-navbar-logo">
-        <img src={Logo} srcset="" />
+        <img src={Logo} />
       </div>
       <div className="admin-navbar-items">
         <ul>
