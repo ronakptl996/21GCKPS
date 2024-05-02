@@ -47,9 +47,10 @@ import AdminProtectedRoute from "./components/ProtectedRoute/AdminProtectedRoute
 import CreateMatrimonialProfile from "./pages/Matrimonial/CreateMatrimonialProfile/CreateMatrimonialProfile";
 import MatrimonialProfiles from "./pages/Matrimonial/MatrimonialProfiles/MatrimonialProfiles";
 import DetailMatrimonialProfile from "./pages/Matrimonial/DetailMatrimonialProfile/DetailMatrimonialProfile";
-import Business from "./pages/BusinessPage/Business";
-import BusinessDetail from "./pages/BusinessDetail/BusinessDetail";
-import BusinessPackages from "./pages/BusinessPackages/BusinessPackages";
+import Business from "./pages/Business/BusinessPage/Business";
+import BusinessDetail from "./pages/Business/BusinessDetail/BusinessDetail";
+import BusinessPackages from "./pages/Business/BusinessPackages/BusinessPackages";
+import MyBusiness from "./pages/Business/MyBusiness/MyBusiness";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Profile from "./pages/Profile/Profile";
@@ -149,6 +150,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute>
               <BusinessPackages />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="my-business"
+          element={
+            <ProtectedRoute>
+              <MyBusiness />
             </ProtectedRoute>
           }
         />

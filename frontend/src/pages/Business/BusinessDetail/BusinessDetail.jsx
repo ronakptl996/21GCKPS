@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./BusinessDetail.css";
-import Bus1 from "../../assets/images/Business/bus-1.avif";
-import Bus2 from "../../assets/images/Business/bus-2.avif";
-import Bus3 from "../../assets/images/Business/bus-3.avif";
-import Logo from "../../assets/images/Business/logo.webp";
+import Bus1 from "../../../assets/images/Business/bus-1.avif";
+import Bus2 from "../../../assets/images/Business/bus-2.avif";
+import Bus3 from "../../../assets/images/Business/bus-3.avif";
+import Logo from "../../../assets/images/Business/logo.webp";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
@@ -14,7 +14,7 @@ import Facebook from "@mui/icons-material/Facebook";
 import Instagram from "@mui/icons-material/Instagram";
 import Email from "@mui/icons-material/Email";
 import { toast } from "react-toastify";
-import Loading from "../../components/Loading/Loading";
+import Loading from "../../../components/Loading/Loading";
 import { Chip, Stack, Tooltip } from "@mui/material";
 
 const BusinessDetail = () => {

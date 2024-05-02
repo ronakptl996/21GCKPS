@@ -145,4 +145,88 @@ const getBusinessDataByID = asyncHandler(async (req, res) => {
   }
 });
 
-export { addBusiness, getBusinessData, getBusinessDataByID };
+// ^User Businesses
+const myBusinessData = asyncHandler(async (req, res) => {
+  const userId = req?.user._id;
+
+  if (!userId) {
+    throw new ApiError(401, "Unable to get business data!");
+  }
+
+  try {
+    const now = new Date();
+    const data = await Business.aggregate([
+      {
+        $match: {
+          createdBy: req.user._id, // Match businesses created by the given user ID
+        },
+      },
+      {
+        $addFields: {
+          isExpired: { $lte: ["$expiryDate", now] }, // Determine if a business is expired
+        },
+      },
+      {
+        $group: {
+          _id: null, // We don't want to group by any specific field, so use null
+          approved: {
+            $push: {
+              $cond: [
+                {
+                  $and: [
+                    { $eq: ["$isApproved", true] },
+                    { $gt: ["$expiryDate", now] },
+                  ],
+                },
+                "$$ROOT",
+                null,
+              ],
+            },
+          },
+          expired: {
+            $push: {
+              $cond: [{ $lte: ["$expiryDate", now] }, "$$ROOT", null],
+            },
+          },
+          notApproved: {
+            $push: {
+              $cond: [{ $eq: ["$isApproved", false] }, "$$ROOT", null],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          approved: {
+            $filter: {
+              input: "$approved",
+              as: "item",
+              cond: { $ne: ["$$item", null] },
+            },
+          },
+          expired: {
+            $filter: {
+              input: "$expired",
+              as: "item",
+              cond: { $ne: ["$$item", null] },
+            },
+          },
+          notApproved: {
+            $filter: {
+              input: "$notApproved",
+              as: "item",
+              cond: { $ne: ["$$item", null] },
+            },
+          },
+        },
+      },
+    ]);
+
+    return res.status(200).json(new ApiResponse(200, data[0], ""));
+  } catch (error) {
+    console.log(error);
+    throw new ApiError(500, "Something went wrong!", error);
+  }
+});
+
+export { addBusiness, getBusinessData, getBusinessDataByID, myBusinessData };

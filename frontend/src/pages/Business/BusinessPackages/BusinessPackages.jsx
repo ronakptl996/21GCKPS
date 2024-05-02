@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./BusinessPackages.css";
-import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
+import HeroSectionHeader from "../../../components/HeroSectionHeader/HeroSectionHeader";
 import {
   Button,
   Chip,
@@ -23,7 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 
 const BusinessPackeages = () => {
-  // Edit Modal useState
+  // Modal useState
   const [open, setOpen] = useState(false);
   const [hour, setHour] = useState({
     open: "Start Time",

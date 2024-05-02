@@ -10,6 +10,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { convertToWebP, optimzeImage } from "../utils/optimizeImage.js";
+import { Business } from "../models/business.model.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -240,15 +241,19 @@ const getUserDetails = asyncHandler(async (req, res) => {
       .json(new ApiResponse(401, {}, "Unauthorized - Invalid User"));
   }
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { decoded, matrimonialProfiles: req.user.matrimonialProfiles },
-        ""
-      )
-    );
+  const businessData = await Business.find({ createdBy: decoded?._id });
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        decoded,
+        matrimonialProfiles: req.user.matrimonialProfiles,
+        myBusiness: businessData.length,
+      },
+      ""
+    )
+  );
 });
 
 const getUser = asyncHandler(async (req, res) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
+import HeroSectionHeader from "../../../components/HeroSectionHeader/HeroSectionHeader";
 import "./Business.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";

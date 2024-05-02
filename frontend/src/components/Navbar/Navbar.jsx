@@ -257,6 +257,15 @@ const Navbar = () => {
                                   My Profile
                                 </NavLink>
                               </li>
+                              {loggedInUserDetails?.myBusiness > 0 && (
+                                <>
+                                  <li className="navbar-item">
+                                    <NavLink to={`my-business`}>
+                                      My Business
+                                    </NavLink>
+                                  </li>
+                                </>
+                              )}
                               {loggedInUserDetails?.decoded?.isAdmin ==
                                 "true" && (
                                 <li className="navbar-item">
