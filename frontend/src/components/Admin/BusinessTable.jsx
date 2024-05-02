@@ -109,7 +109,7 @@ const TablePaginationActions = (props) => {
   );
 };
 
-const BusinessTable = ({ data, header, handleDelete }) => {
+const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -121,6 +121,7 @@ const BusinessTable = ({ data, header, handleDelete }) => {
     openMeridiem: "AM/PM",
     closeMeridiem: "AM/PM",
   });
+
   const [provideServices, setProvideServices] = useState("");
   const [modalForm, setModalForm] = useState({
     businessId: "",
@@ -218,13 +219,6 @@ const BusinessTable = ({ data, header, handleDelete }) => {
       businessVisitingCard: data?.businessVisitingCard,
       businessLogo: data?.businessLogo,
     }));
-  };
-
-  // ^ Edit Business details handler
-  const handleEdit = () => {
-    modalForm.openingHours = `${hour.open} ${hour.openMeridiem} to ${hour.close} ${hour.closeMeridiem}`;
-
-    console.log(modalForm);
   };
 
   return (
@@ -673,7 +667,10 @@ const BusinessTable = ({ data, header, handleDelete }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleEdit}>
+          <Button
+            variant="contained"
+            onClick={() => handleEdit(modalForm, hour)}
+          >
             Edit
           </Button>
         </DialogActions>
@@ -727,7 +724,7 @@ const BusinessTable = ({ data, header, handleDelete }) => {
                   )}
                   <TableCell align="right">{item.packageType}</TableCell>
                   <TableCell align="right">
-                    {pathname !== "/my-business" && (
+                    {handleDelete && (
                       <Button
                         size="small"
                         variant="outlined"
@@ -738,7 +735,7 @@ const BusinessTable = ({ data, header, handleDelete }) => {
                       </Button>
                     )}
 
-                    {pathname === "/my-business" && (
+                    {handleEdit && (
                       <Button
                         size="small"
                         variant="outlined"

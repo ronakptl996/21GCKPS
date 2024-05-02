@@ -229,4 +229,40 @@ const myBusinessData = asyncHandler(async (req, res) => {
   }
 });
 
-export { addBusiness, getBusinessData, getBusinessDataByID, myBusinessData };
+const editMyBusinessData = asyncHandler(async (req, res) => {
+  const { businessId } = req.body;
+
+  if (!businessId) {
+    throw new ApiError(401, "Unable to update data");
+  }
+
+  try {
+    const updatedData = await Business.findByIdAndUpdate(businessId, req.body, {
+      new: true,
+    });
+
+    if (!updatedData) {
+      throw new ApiError(501, "Error while updating business detail!");
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          updatedData,
+          "Business details updated successfully!"
+        )
+      );
+  } catch (error) {
+    throw new ApiError(501, error || "Something went wrong!");
+  }
+});
+
+export {
+  addBusiness,
+  getBusinessData,
+  getBusinessDataByID,
+  myBusinessData,
+  editMyBusinessData,
+};
