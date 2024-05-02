@@ -272,25 +272,28 @@ const Navbar = () => {
                                   <NavLink to={`/admin`}>Admin</NavLink>
                                 </li>
                               )}
-                              {loggedInUserDetails?.matrimonialProfiles &&
-                                loggedInUserDetails?.matrimonialProfiles
-                                  ?.length > 0 &&
-                                loggedInUserDetails?.matrimonialProfiles.map(
-                                  (matrimonialProfileUser) => (
-                                    <>
-                                      <li className="matrimonialProfile-navbar">
-                                        Matrimonial Profile
-                                      </li>
-                                      <li className="navbar-item">
+                              {loggedInUserDetails?.matrimonialProfiles
+                                ?.length > 0 && (
+                                <>
+                                  <li className="matrimonialProfile-navbar">
+                                    <p>Matrimonial Profile</p>
+                                  </li>
+                                  {loggedInUserDetails?.matrimonialProfiles.map(
+                                    (matrimonialProfileUser) => (
+                                      <li
+                                        className="navbar-item"
+                                        key={matrimonialProfileUser._id}
+                                      >
                                         <NavLink
                                           to={`matrimonial-profile/${matrimonialProfileUser._id}`}
                                         >
                                           {matrimonialProfileUser.fullName}
                                         </NavLink>
                                       </li>
-                                    </>
-                                  )
-                                )}
+                                    )
+                                  )}
+                                </>
+                              )}
                             </ul>
                           </div>
                         )}
