@@ -19,7 +19,7 @@ const businessSchema = Schema({
   yearOfEstablishment: { type: Number },
   businessCategory: { type: String },
   isApproved: { type: Boolean, default: false },
-  packageType: { type: String, enum: ["FREE", "ELITE", "PREMIER"] },
+  packageType: { type: String, enum: ["FREE", "ELITE", "PREMIUM"] },
   createdBy: { type: Schema.Types.ObjectId, ref: "Family" },
   expiryDate: { type: Date, required: true },
 });

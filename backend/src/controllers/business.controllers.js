@@ -93,7 +93,7 @@ const getBusinessData = asyncHandler(async (req, res) => {
           packagePriority: {
             $switch: {
               branches: [
-                { case: { $eq: ["$packageType", "PREMIER"] }, then: 1 },
+                { case: { $eq: ["$packageType", "PREMIUM"] }, then: 1 },
                 { case: { $eq: ["$packageType", "ELITE"] }, then: 2 },
                 { case: { $eq: ["$packageType", "FREE"] }, then: 3 },
               ],
