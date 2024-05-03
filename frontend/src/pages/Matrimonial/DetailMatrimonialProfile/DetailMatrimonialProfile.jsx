@@ -837,13 +837,13 @@ const DetailMatrimonialProfile = () => {
             </div>
             <div className="social-btn">
               <div className="social-btn-wrapper facebook">
-                <FacebookOutlined /> <span>Facebook</span>
+                <FacebookOutlined />
               </div>
               <div className="social-btn-wrapper instagram">
-                <Instagram /> <span>Instagram</span>
+                <Instagram />
               </div>
               <div className="social-btn-wrapper whatsapp">
-                <WhatsApp /> <span>WhatsApp</span>
+                <WhatsApp />
               </div>
             </div>
           </div>
@@ -880,7 +880,8 @@ const DetailMatrimonialProfile = () => {
                     <div>
                       <img src={CityImage} alt="city image" />
                       <span>
-                        City: <strong>{user?.address}</strong>
+                        <span style={{ fontSize: "13px" }}>City</span>{" "}
+                        <strong>{user?.address}</strong>
                       </span>
                     </div>
                   </li>
@@ -888,7 +889,8 @@ const DetailMatrimonialProfile = () => {
                     <div>
                       <img src={AgeImage} alt="age image" />
                       <span>
-                        Age: <strong>{dobFormat(user?.dob)}</strong>
+                        <span style={{ fontSize: "13px" }}>Age</span>{" "}
+                        <strong>{dobFormat(user?.dob)}</strong>
                       </span>
                     </div>
                   </li>
@@ -896,7 +898,8 @@ const DetailMatrimonialProfile = () => {
                     <div>
                       <img src={EducationImage} alt="Education image" />
                       <span>
-                        Education: <strong>{user?.education}</strong>
+                        <span style={{ fontSize: "13px" }}>Education</span>{" "}
+                        <strong>{user?.education}</strong>
                       </span>
                     </div>
                   </li>
@@ -904,7 +907,8 @@ const DetailMatrimonialProfile = () => {
                     <div>
                       <img src={JobImage} alt="Job image" />
                       <span>
-                        Job: <strong>{user?.profession}</strong>
+                        <span style={{ fontSize: "13px" }}>Profession</span>{" "}
+                        <strong>{user?.profession}</strong>
                       </span>
                     </div>
                   </li>

@@ -29,36 +29,41 @@
 }
 
 .DetailMatrimonialProfile-user-img-wrapper .social-btn {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  position: fixed;
-  bottom: 0;
-  width: 50%;
-  z-index: -1;
-}
-
-.social-btn .social-btn-wrapper {
-  background: red;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  font-size: 20px;
+  position: fixed;
+  width: 50%;
+  bottom: 10%;
+  z-index: 1;
+}
+
+.social-btn .social-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.social-btn .social-btn-wrapper:hover {
+  transform: scale(1.1);
+}
+
+.social-btn .social-btn-wrapper svg {
+  font-size: 30px;
+  margin: 0 10px;
 }
 
 .social-btn-wrapper.facebook {
-  background: #0866ff;
-  color: #fff;
+  color: #0867ffc9;
 }
 
 .social-btn-wrapper.instagram {
-  background: linear-gradient(85deg, #f9ce34, #ee2a7b, #6228d7);
-  color: #fff;
+  color: #ee2a7cc0;
 }
 
 .social-btn-wrapper.whatsapp {
-  background: #15d65d;
-  color: #fff;
+  color: #15d65cc9;
 }
 
 .social-btn .social-btn-wrapper span {
@@ -278,4 +283,46 @@ h3.heading-h3 {
 
 .matrimonial-header-details section img.matrimonial-profile {
   width: 60%;
+}
+
+@media screen and (max-width: 1000px) {
+  .DetailMatrimonialProfile .DetailMatrimonialProfile-inner {
+    grid-template-columns: 1fr;
+  }
+  .DetailMatrimonialProfile
+    .DetailMatrimonialProfile-user-img-wrapper
+    .user-profile-image {
+    position: relative;
+    width: 100%;
+  }
+  .DetailMatrimonialProfile-user-img-wrapper .social-btn {
+    position: relative;
+    width: 50%;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .Matrimonial-user-details-header ul {
+    justify-content: center;
+  }
+  .Matrimonial-user-personal-details ul li {
+    white-space: normal;
+  }
+  .Matrimonial-user-details-header ul li img {
+    width: 33px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .Matrimonial-user-details-header ul li img {
+    width: 25px;
+  }
+  .Matrimonial-user-details-header ul li div {
+    padding: 15px 7px;
+    min-width: 116px;
+  }
+  .Matrimonial-user-details-header ul li span strong {
+    font-size: 15px;
+  }
 }

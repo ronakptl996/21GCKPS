@@ -67,6 +67,8 @@
 .businessPackages-card-pricing .package-price span {
   font-size: 18px;
   display: inline;
+  color: #616060;
+  font-weight: 100;
 }
 
 .businessPackages-card .cart-btn {
