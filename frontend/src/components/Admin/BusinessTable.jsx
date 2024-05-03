@@ -485,7 +485,7 @@ const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
           )}
 
           {/* // ^UPLOAD DATA FOR PREMIER PACKAGE */}
-          {modalForm.packageType === "PREMIER" && (
+          {modalForm.packageType === "PREMIUM" && (
             <>
               <div style={{ display: "flex" }}>
                 <TextField

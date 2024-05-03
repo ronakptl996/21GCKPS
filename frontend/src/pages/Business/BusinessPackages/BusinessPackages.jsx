@@ -381,7 +381,7 @@ const BusinessPackeages = () => {
           )}
 
           {/* // ^UPLOAD DATA FOR PREMIER PACKAGE */}
-          {modalForm.packageType === "PREMIER" && (
+          {modalForm.packageType === "PREMIUM" && (
             <>
               <div style={{ display: "flex" }}>
                 <TextField
@@ -601,17 +601,21 @@ const BusinessPackeages = () => {
                 Visiting Card Upload
               </li>
               <li>
-                <CloseIcon fontSize="small" />
+                <DoneIcon fontSize="small" />
                 Business Name
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Business Contact
+                <DoneIcon fontSize="small" /> Business Contact
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Business Email Id
+                <DoneIcon fontSize="small" /> Business Email Id
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Busines Address
+                <DoneIcon fontSize="small" /> Busines Address
+              </li>
+              <li>
+                <DoneIcon fontSize="small" />
+                Business Category
               </li>
               <li>
                 <CloseIcon fontSize="small" /> Business Photo Upload
@@ -629,12 +633,6 @@ const BusinessPackeages = () => {
                 <CloseIcon fontSize="small" /> Social Media Profiles
               </li>
               <li>
-                <CloseIcon fontSize="small" /> GSTIN
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> WhatsApp
-              </li>
-              <li>
                 <CloseIcon fontSize="small" /> Quick Information
               </li>
               <li>
@@ -645,13 +643,81 @@ const BusinessPackeages = () => {
                 <CloseIcon fontSize="small" />
                 Year of Establishment
               </li>
+            </ul>
+          </div>
+          <button className="cart-btn" onClick={() => openModal("FREE")}>
+            Choose Plan
+          </button>
+        </div>
+        <div className="businessPackages-card premium">
+          <div className="package-top">
+            <div className="businessPackages-card-header">
+              <p className="pricing">
+                <p className="save-pricing">PREMIUM</p>
+              </p>
+              <p className="price-desc">
+                Everything you need to create your website
+              </p>
+            </div>
+            <div className="businessPackages-card-pricing">
+              <div className="package-price">
+                ₹1500.00 <span>/mo</span>
+              </div>
+            </div>
+          </div>
+          <div className="packages-features">
+            <h3>What is included</h3>
+            <ul>
               <li>
-                <CloseIcon fontSize="small" />
+                <DoneIcon fontSize="small" />
+                Visiting Card Upload
+              </li>
+              <li>
+                <DoneIcon fontSize="small" />
+                Business Name
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Business Contact
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Business Email Id
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Busines Address
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Business Photo Upload
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Services/ Product Listing
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Opening Hours
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Website URL
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Social Media Profiles
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Quick Information
+              </li>
+              <li>
+                <DoneIcon fontSize="small" />
+                Detailed Information
+              </li>
+              <li>
+                <DoneIcon fontSize="small" />
+                Year of Establishment
+              </li>
+              <li>
+                <DoneIcon fontSize="small" />
                 Business Category
               </li>
             </ul>
           </div>
-          <button className="cart-btn" onClick={() => openModal("FREE")}>
+          <button className="cart-btn" onClick={() => openModal("PREMIUM")}>
             Choose Plan
           </button>
         </div>
@@ -679,26 +745,33 @@ const BusinessPackeages = () => {
                 Visiting Card Upload
               </li>
               <li>
-                <CloseIcon fontSize="small" />
+                <DoneIcon fontSize="small" />
                 Business Name
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Business Contact
+                <DoneIcon fontSize="small" /> Business Contact
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Business Email Id
+                <DoneIcon fontSize="small" /> Business Email Id
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Busines Address
+                <DoneIcon fontSize="small" /> Busines Address
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Business Photo Upload
+                <DoneIcon fontSize="small" />
+                Business Category
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Services/ Product Listing
+                <DoneIcon fontSize="small" /> Business Photo Upload
               </li>
               <li>
-                <CloseIcon fontSize="small" /> Opening Hours
+                <DoneIcon fontSize="small" /> Services/ Product Listing
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Opening Hours
+              </li>
+              <li>
+                <DoneIcon fontSize="small" /> Quick Information
               </li>
               <li>
                 <CloseIcon fontSize="small" /> Website URL
@@ -707,107 +780,16 @@ const BusinessPackeages = () => {
                 <CloseIcon fontSize="small" /> Social Media Profiles
               </li>
               <li>
-                <CloseIcon fontSize="small" /> GSTIN
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> WhatsApp
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Quick Information
-              </li>
-              <li>
                 <CloseIcon fontSize="small" />
                 Detailed Information
               </li>
               <li>
                 <CloseIcon fontSize="small" />
                 Year of Establishment
-              </li>
-              <li>
-                <CloseIcon fontSize="small" />
-                Business Category
               </li>
             </ul>
           </div>
           <button className="cart-btn" onClick={() => openModal("ELITE")}>
-            Choose Plan
-          </button>
-        </div>
-        <div className="businessPackages-card">
-          <div className="package-top">
-            <div className="businessPackages-card-header">
-              <p className="pricing">
-                <p className="save-pricing">Premier</p>
-              </p>
-              <p className="price-desc">
-                Everything you need to create your website
-              </p>
-            </div>
-            <div className="businessPackages-card-pricing">
-              <div className="package-price">
-                ₹1500.00 <span>/mo</span>
-              </div>
-            </div>
-          </div>
-          <div className="packages-features">
-            <h3>What is included</h3>
-            <ul>
-              <li>
-                <DoneIcon fontSize="small" />
-                Visiting Card Upload
-              </li>
-              <li>
-                <CloseIcon fontSize="small" />
-                Business Name
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Business Contact
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Business Email Id
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Busines Address
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Business Photo Upload
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Services/ Product Listing
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Opening Hours
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Website URL
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Social Media Profiles
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> GSTIN
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> WhatsApp
-              </li>
-              <li>
-                <CloseIcon fontSize="small" /> Quick Information
-              </li>
-              <li>
-                <CloseIcon fontSize="small" />
-                Detailed Information
-              </li>
-              <li>
-                <CloseIcon fontSize="small" />
-                Year of Establishment
-              </li>
-              <li>
-                <CloseIcon fontSize="small" />
-                Business Category
-              </li>
-            </ul>
-          </div>
-          <button className="cart-btn" onClick={() => openModal("PREMIER")}>
             Choose Plan
           </button>
         </div>

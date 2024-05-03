@@ -1,17 +1,28 @@
 .businessPackages-wrapper {
   padding: 50px 150px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-around;
 }
 
 .businessPackages-wrapper .businessPackages-card {
-  padding: 25px;
+  border-radius: 10px;
+  padding: 25px 50px;
   border: 1px solid #e7e7e7;
   margin: 0 20px;
   text-align: center;
   cursor: pointer;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s;
+}
+
+.businessPackages-wrapper .businessPackages-card:hover {
+  transform: scale(1.01);
+}
+
+.businessPackages-card.premium {
+  border: 1px solid #97401e58;
+  box-shadow: none;
 }
 
 .businessPackages-card-header h3 {
@@ -141,4 +152,38 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   margin-top: 20px;
+}
+
+@media screen and (max-width: 1250px) {
+  .businessPackages-wrapper {
+    padding: 50px 66px;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .businessPackages-wrapper {
+    padding: 50px 0;
+  }
+  .businessPackages-wrapper .businessPackages-card {
+    padding: 25px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .businessPackages-card-pricing .package-price {
+    font-size: 32px;
+  }
+  .businessPackages-wrapper {
+    flex-wrap: wrap;
+  }
+  .businessPackages-wrapper .businessPackages-card {
+    width: 350px;
+    margin-bottom: 40px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .businessPackages-wrapper .businessPackages-card {
+    width: 300px;
+  }
 }
