@@ -1,3 +1,4 @@
+import fs from "fs";
 import { Business } from "../../models/business.model.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
@@ -189,7 +190,7 @@ const getAdminUnapprovedBusinessDetails = asyncHandler(async (req, res) => {
   }
 });
 
-// *Fetch Business detail isApproved: false
+// *Delete Business details
 const deleteBusinessDetails = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
@@ -203,6 +204,46 @@ const deleteBusinessDetails = asyncHandler(async (req, res) => {
     if (!data) {
       throw new ApiError(500, "Business data not found!");
     }
+
+    // Remove logo image from folder
+    if (data.businessLogo) {
+      const imagePath = `./temp/business/${data.businessLogo}`;
+      // Remove File from folder
+      fs.access(imagePath, fs.constants.F_OK, (err) => {
+        if (err) {
+          console.error(`${imagePath} does not exist`);
+          return;
+        }
+
+        // File exists, so proceed with deletion
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error(`Error deleting ${imagePath}: ${err}`);
+            return;
+          }
+          console.log(`${imagePath} has been deleted successfully`);
+        });
+      });
+    }
+
+    // Remove visiting card image from folder
+    const imagePath = `./temp/business/${data.businessVisitingCard}`;
+    // Remove File from folder
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
+
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
 
     return res
       .status(200)
