@@ -12,6 +12,7 @@
 
 .villageWiseCommitteeCards-Wrapper .comeeti-carousel-img {
   height: 150px;
+  margin-bottom: 20px;
 }
 
 .villageWiseCommitteeCards-Wrapper .comeeti-carousel-img img {
@@ -23,6 +24,7 @@
   font-family: "Roboto";
   font-size: 19px;
   margin: 10px 0;
+  color: #000000d4;
 }
 
 .villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-info p {

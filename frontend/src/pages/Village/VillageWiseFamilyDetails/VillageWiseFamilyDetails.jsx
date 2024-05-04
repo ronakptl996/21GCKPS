@@ -5,6 +5,7 @@ import CallIcon from "@mui/icons-material/Call";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Pagination, Stack } from "@mui/material";
 import VillageWiseCommiteeMemberCard from "../../../components/VillageWiseCommitteCard";
+import { toast } from "react-toastify";
 
 const villageWiseFamilyDetails = () => {
   const [page, setPage] = useState(1);
@@ -18,14 +19,13 @@ const villageWiseFamilyDetails = () => {
         `/api/users/village/${villageName}?page=${page}&limit=10`
       );
       const data = await response.json();
-      console.log(data.data);
       if (data && data.success) {
         const { totalFamilyDataLength, familyData } = data.data;
         setVillageFamilyData(familyData);
         setTotalFamilyProfile(totalFamilyDataLength);
       }
     } catch (error) {
-      console.log(error);
+      toast.error("Unable to fetch Data");
     }
   };
 

@@ -6,7 +6,7 @@ const businessSchema = Schema({
   businessContact: { type: Number, required: true },
   businessEmail: { type: String, required: true },
   businessAddress: { type: String, required: true },
-  businessLogo: { type: String },
+  businessLogo: { type: String, default: null },
   businessVisitingCard: { type: String },
   provideServices: [String],
   openingHours: { type: String },

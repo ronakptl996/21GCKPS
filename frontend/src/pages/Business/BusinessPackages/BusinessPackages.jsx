@@ -107,10 +107,38 @@ const BusinessPackeages = () => {
       if (response.ok) {
         const result = await response.json();
         if (result && result.success) {
+          setOpen(false);
           toast.success("Business details add successfully");
-        } else {
-          toast.error("Error while purchase business package");
+          setModalForm({
+            businessOwner: "",
+            businessName: "",
+            businessContact: "",
+            businessEmail: "",
+            businessAddress: "",
+            businessLogo: "",
+            businessVisitingCard: "",
+            provideServices: [],
+            openingHours: "",
+            businessWebsite: "",
+            businessInstagramUsername: "",
+            businessTwitterUsername: "",
+            businessFacebookUsername: "",
+            quickInfo: "",
+            detailedInfo: "",
+            yearOfEstablishment: "",
+            businessCategory: "",
+            packageType: "",
+          });
+          
+          setHour({
+            open: "Start Time",
+            close: "Close Time",
+            openMeridiem: "AM/PM",
+            closeMeridiem: "AM/PM",
+          });
         }
+      } else {
+        toast.error("Error while purchase business package");
       }
     } catch (error) {
       toast.error("Something went wrong!");

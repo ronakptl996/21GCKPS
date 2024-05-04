@@ -36,9 +36,9 @@ const Business = () => {
             <div className="villageWiseFamilyDetails-card" key={data._id}>
               <div className="villageWiseFamilyDetails-image-wrapper">
                 <img
-                // src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
-                //   family.avatar
-                // }`}
+                  src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}${
+                    data.businessLogo
+                  }`}
                 />
               </div>
               <div className="villageWiseFamilyDetails-info">
@@ -59,6 +59,7 @@ const Business = () => {
               </div>
             </div>
           ))}
+        {businessData && businessData.length === 0 && <h2>No Business Data</h2>}
       </div>
     </section>
   );

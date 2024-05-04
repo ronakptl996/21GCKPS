@@ -10,50 +10,76 @@ const addBusiness = asyncHandler(async (req, res) => {
 
   const parsedBusinessData = JSON.parse(businessData);
 
-  const requiredFields = ["businessVisitingCard", "businessLogo"];
+  // package type ELITE or PREMIUM then upload multiple image
+  if (parsedBusinessData.packageType !== "FREE") {
+    const requiredFields = ["businessVisitingCard", "businessLogo"];
 
-  const missingFields = requiredFields.filter((field) => !req.files[field]);
+    const missingFields = requiredFields.filter((field) => !req.files[field]);
 
-  if (missingFields.length > 0) {
-    throw new ApiError(400, `${missingFields.join(", ")} files is missing`);
-  }
+    if (missingFields.length > 0) {
+      throw new ApiError(400, `${missingFields.join(", ")} files is missing`);
+    }
 
-  const businessVisitingCard = req.files["businessVisitingCard"][0];
-  const businessLogo = req.files["businessLogo"][0];
+    const businessVisitingCard = req.files["businessVisitingCard"][0];
+    const businessLogo = req.files["businessLogo"][0];
 
-  const filesToUpload = [
-    {
-      file: businessVisitingCard,
-      fieldName: "businessVisitingCard",
-      fileName: `${uuidv4()}-${
-        businessVisitingCard.originalname.split(".")[0]
-      }.webp`,
-    },
-    {
-      file: businessLogo,
-      fieldName: "businessLogo",
-      fileName: `${uuidv4()}-${businessLogo.originalname.split(".")[0]}.webp`,
-    },
-  ];
+    const filesToUpload = [
+      {
+        file: businessVisitingCard,
+        fieldName: "businessVisitingCard",
+        fileName: `${uuidv4()}-${
+          businessVisitingCard.originalname.split(".")[0]
+        }.webp`,
+      },
+      {
+        file: businessLogo,
+        fieldName: "businessLogo",
+        fileName: `${uuidv4()}-${businessLogo.originalname.split(".")[0]}.webp`,
+      },
+    ];
 
-  // ^Optimze and Upload Image
-  await Promise.all(
-    filesToUpload.map(async (file) => {
-      const optimzedImage = await convertToWebP(
-        file.file.buffer,
-        `business/${file.fileName}`
-      );
-      if (!optimzedImage) {
-        throw new ApiError(500, `Error while optimze ${file.fileName} image`);
-      } else {
-        if (file.fieldName.includes("businessVisitingCard")) {
-          parsedBusinessData.businessVisitingCard = file.fileName;
-        } else if (file.fieldName.includes("businessLogo")) {
-          parsedBusinessData.businessLogo = file.fileName;
+    // ^Optimze and Upload Image
+    await Promise.all(
+      filesToUpload.map(async (file) => {
+        const optimzedImage = await convertToWebP(
+          file.file.buffer,
+          `business/${file.fileName}`
+        );
+        if (!optimzedImage) {
+          throw new ApiError(500, `Error while optimze ${file.fileName} image`);
+        } else {
+          if (file.fieldName.includes("businessVisitingCard")) {
+            parsedBusinessData.businessVisitingCard = file.fileName;
+          } else if (file.fieldName.includes("businessLogo")) {
+            parsedBusinessData.businessLogo = file.fileName;
+          }
         }
-      }
-    })
-  );
+      })
+    );
+  } else {
+    // For Package Type is FREE
+    if (!req.files["businessVisitingCard"]) {
+      throw new ApiError(400, "Please upload business visiting card");
+    }
+
+    const businessVisitingCard = req.files["businessVisitingCard"][0];
+
+    const fileName = `${uuidv4()}-${
+      businessVisitingCard.originalname.split(".")[0]
+    }.webp`;
+
+    const optimzedImage = await convertToWebP(
+      businessVisitingCard.buffer,
+      `business/${fileName}`
+    );
+
+    if (!optimzedImage) {
+      throw new ApiError(500, `Error while optimze businessVisitingCard image`);
+    }
+
+    parsedBusinessData.businessVisitingCard = fileName;
+    parsedBusinessData.businessLogo = null;
+  }
 
   try {
     parsedBusinessData.expiryDate = new Date(
@@ -112,7 +138,9 @@ const getBusinessData = asyncHandler(async (req, res) => {
           _id: 1,
           businessOwner: 1,
           businessName: 1,
-          businessLogo: 1,
+          businessLogo: {
+            $ifNull: ["$businessLogo", "$businessVisitingCard"], // Use visiting card if logo is null or empty
+          },
           packageType: 1,
         },
       },
