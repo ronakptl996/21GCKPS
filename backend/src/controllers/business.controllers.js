@@ -1,3 +1,4 @@
+import fs from "fs";
 import { Business } from "../models/business.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -173,7 +174,7 @@ const getBusinessDataByID = asyncHandler(async (req, res) => {
   }
 });
 
-// ^User Businesses
+// ^GET User Businesses data
 const myBusinessData = asyncHandler(async (req, res) => {
   const userId = req?.user._id;
 
@@ -257,6 +258,7 @@ const myBusinessData = asyncHandler(async (req, res) => {
   }
 });
 
+// Update Business data
 const editMyBusinessData = asyncHandler(async (req, res) => {
   const { businessId } = req.body;
 
@@ -287,10 +289,84 @@ const editMyBusinessData = asyncHandler(async (req, res) => {
   }
 });
 
+// Update Business Image
+const updateBusinessImage = asyncHandler(async (req, res) => {
+  const { changedImageFor, businessId } = req.body;
+  const newImage = req.file;
+
+  if (!businessId) {
+    throw new ApiError(401, "Business Id is required!");
+  }
+
+  if (!changedImageFor) {
+    throw new ApiError(401, "changedImageFor is required!");
+  }
+
+  try {
+    const data = await Business.findById(businessId);
+
+    if (!data) {
+      throw new ApiError(501, "Business data not found!");
+    }
+
+    const newImagePath = `${uuidv4()}-${
+      newImage.originalname.split(".")[0]
+    }.webp`;
+
+    const isOptimzeImage = await convertToWebP(
+      req.file.buffer,
+      `business/${newImagePath}`
+    );
+    console.log("isOptimzeImage >", isOptimzeImage);
+
+    if (!isOptimzeImage) {
+      throw new ApiError(500, "Error while Optimze Image business");
+    }
+
+    // Update the business with the new image path
+    const updatedData = await Business.findByIdAndUpdate(
+      businessId,
+      { $set: { [changedImageFor]: newImagePath } },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      throw new ApiError(501, "Business data not found!");
+    }
+
+    // Delete old image
+    // Remove File from folder
+    const imagePath = `./temp/business/${data[changedImageFor]}`;
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`${imagePath} does not exist`);
+        return;
+      }
+
+      // File exists, so proceed with deletion
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting ${imagePath}: ${err}`);
+          return;
+        }
+        console.log(`${imagePath} has been deleted successfully`);
+      });
+    });
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedData, "Image updated successfully"));
+  } catch (error) {
+    console.log("Erorr in updating business image >>", error);
+    throw new ApiError(501, "Something went wrong!");
+  }
+});
+
 export {
   addBusiness,
   getBusinessData,
   getBusinessDataByID,
   myBusinessData,
   editMyBusinessData,
+  updateBusinessImage,
 };

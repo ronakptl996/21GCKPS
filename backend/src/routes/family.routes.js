@@ -18,10 +18,6 @@ import {
 } from "../controllers/family.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
-import {
-  editMyBusinessData,
-  myBusinessData,
-} from "../controllers/business.controllers.js";
 
 const router = Router();
 
@@ -46,10 +42,6 @@ router.route("/village/:villageName").get(verifyJwt, villageFamilyData);
 
 // Get Village wise commite data for Committe Card
 router.route("/committe-data").post(verifyJwt, getVillageWiseCommitteData);
-
-// ^User BUSINESS Route
-router.route("/my-business").get(verifyJwt, myBusinessData);
-router.route("/my-business/edit").patch(verifyJwt, editMyBusinessData);
 
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);

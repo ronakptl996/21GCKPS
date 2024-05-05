@@ -15,7 +15,7 @@ const MyBusiness = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/users/my-business");
+      const response = await fetch("/api/business/my-business");
 
       if (response.ok) {
         const result = await response.json();
@@ -39,7 +39,7 @@ const MyBusiness = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/users/my-business/edit", {
+      const response = await fetch("/api/business/my-business/edit", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(modalForm),
@@ -62,6 +62,40 @@ const MyBusiness = () => {
     }
   };
 
+  // Change Business Logo, Visiting Card Image
+  const changeBusinessImage = async (file, changedImageFor, businessId) => {
+    if (!file || !changedImageFor || !businessId) {
+      toast.error("File or changedImageFor or businessId is required!");
+    }
+
+    try {
+      dispatch(setLoading(true));
+      const formData = new FormData();
+      formData.append("avatar", file);
+      formData.append("changedImageFor", changedImageFor);
+      formData.append("businessId", businessId);
+
+      const response = await fetch("/api/business/my-business/update-image", {
+        method: "PATCH",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+
+        if (result && result.success) {
+          toast.success(result.message);
+        }
+      } else {
+        toast.error("Unable to update business image");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -78,6 +112,9 @@ const MyBusiness = () => {
             data={approvedBusinessData}
             header="Approved Business"
             handleEdit={(data, hour) => handleEdit(data, hour)}
+            changeBusinessImage={(file, changedImageFor, businessId) => {
+              changeBusinessImage(file, changedImageFor, businessId);
+            }}
           />
         )}
 

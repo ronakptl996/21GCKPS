@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -37,6 +38,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { toast } from "react-toastify";
+import { setLoading } from "../../features/auth/authSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -109,7 +112,13 @@ const TablePaginationActions = (props) => {
   );
 };
 
-const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
+const BusinessTable = ({
+  data,
+  header,
+  handleDelete,
+  handleEdit,
+  changeBusinessImage,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -146,6 +155,7 @@ const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
   });
 
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
 
   // Logic for pagination
   const emptyRows =
@@ -589,17 +599,18 @@ const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
             <Grid item xs={6}>
               <div className="businessmodal-image-wrapper">
                 <Button variant="outlined" size="small" component="label">
-                  Upload Visiting Card
+                  Upload New Visiting Card
                   <input
                     type="file"
                     hidden
                     name="businessVisitingCard"
-                    onChange={(e) => {
-                      setModalForm((prevState) => ({
-                        ...prevState,
-                        businessVisitingCard: e.target.files[0],
-                      }));
-                    }}
+                    onChange={(e) =>
+                      changeBusinessImage(
+                        e.target.files[0],
+                        "businessVisitingCard",
+                        modalForm.businessId
+                      )
+                    }
                   />
                 </Button>
                 {modalForm.businessVisitingCard ? (
@@ -614,7 +625,9 @@ const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
                   >
                     <img
                       alt="businessVisitingCard"
-                      src={modalForm.businessVisitingCard}
+                      src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}${
+                        modalForm.businessVisitingCard
+                      }`}
                     />
                   </div>
                 ) : (
@@ -630,17 +643,18 @@ const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
               {modalForm.packageType !== "FREE" && (
                 <div className="businessmodal-image-wrapper">
                   <Button variant="outlined" size="small" component="label">
-                    Upload Business Logo
+                    Upload New Business Logo
                     <input
                       type="file"
                       hidden
                       name="businessLogo"
-                      onChange={(e) => {
-                        setModalForm((prevState) => ({
-                          ...prevState,
-                          businessLogo: e.target.files[0],
-                        }));
-                      }}
+                      onChange={(e) =>
+                        changeBusinessImage(
+                          e.target.files[0],
+                          "businessLogo",
+                          modalForm.businessId
+                        )
+                      }
                     />
                   </Button>
                   {modalForm.businessLogo ? (
@@ -653,7 +667,12 @@ const BusinessTable = ({ data, header, handleDelete, handleEdit }) => {
                         }))
                       }
                     >
-                      <img alt="businessLogo" src={modalForm.businessLogo} />
+                      <img
+                        alt="businessLogo"
+                        src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}${
+                          modalForm.businessLogo
+                        }`}
+                      />
                     </div>
                   ) : (
                     <div className="businessmodal-image">
