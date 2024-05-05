@@ -12,7 +12,27 @@ const storage = multer.memoryStorage({
   },
 });
 
-export const upload = multer({ storage });
+// Function to validate image types
+const imageFileFilter = (req, file, cb) => {
+  const allowedMIMEtypes = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+  ]; // Add valid MIME types
+
+  if (allowedMIMEtypes.includes(file.mimetype)) {
+    cb(null, true); // Accept the file
+  } else {
+    const error = new Error(
+      "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+    );
+    error.status = 400; // Bad Request status
+    cb(error, false); // Reject the file
+  }
+};
+
+export const upload = multer({ storage, fileFilter: imageFileFilter });
 
 // AWS file upload
 const fileFilter = (req, file, cb) => {

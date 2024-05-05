@@ -30,3 +30,14 @@ export const isMatrimonialProfile = (matrimonialProfiles, profileId) => {
     return false;
   }
 };
+
+// Validate Image type
+export const validateImageType = (file) => {
+  const allowedImageTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+  ];
+  return allowedImageTypes.includes(file.type);
+};

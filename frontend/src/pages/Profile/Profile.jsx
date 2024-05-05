@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.css";
+import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -19,14 +20,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ImageIcon from "@mui/icons-material/Image";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
+import { validateImageType } from "../../helper/global";
+import { setLoading } from "../../features/auth/authSlice";
 
 const Profile = () => {
-  const [profile, setProfile] = useState();
   const [addDetails, setAddDetails] = useState("");
-
   const [headOfFamily, setHeadOfFamily] = useState({
     surname: "",
     firstname: "",
@@ -99,6 +98,7 @@ const Profile = () => {
   const { id, villageName } = useParams();
   console.log(villageName);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Add Son Details
   const addSonDaughterDetailHandler = (detail) => {
@@ -143,6 +143,7 @@ const Profile = () => {
 
     if (result.isConfirmed) {
       try {
+        dispatch(setLoading(true));
         const response = await fetch(`/api/users/delete-son-daughter`, {
           method: "DELETE",
           body: JSON.stringify({
@@ -154,62 +155,82 @@ const Profile = () => {
             "Content-Type": "application/json",
           },
         });
-        const data = await response.json();
-        if (data && data.success) {
-          toast.success(data.message);
-          fetchProfile();
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.success) {
+            toast.success(data.message);
+            fetchProfile();
+          }
         } else {
-          toast.error(data.message || "Error while delete details");
+          toast.error("Error while delete details");
         }
       } catch (error) {
         toast.error("Something went wrong!");
+      } finally {
+        dispatch(setLoading(false));
       }
     }
   };
 
-  // Modal Image Upload
+  // Modal New Image Upload
   const handleFileChange = (event, setAvatarFunction) => {
+    if (!event.target.files[0]) {
+      toast.error("No file selected");
+      return;
+    }
+
     const file = event.target.files[0];
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
     setAvatarFunction(file);
   };
 
   const fetchProfile = async () => {
     try {
       const response = await fetch(`/api/users/profile/${id}`);
-      const data = await response.json();
-      if (data.success) {
-        // setProfile(data.data);
-        const { daughterDetails, headOfFamily, sonDetails, wifeDetails } =
-          data.data;
 
-        setHeadOfFamily({
-          surname: headOfFamily.surname,
-          firstname: headOfFamily.firstname,
-          secondname: headOfFamily.secondname,
-          email: headOfFamily.email,
-          proffession: headOfFamily.proffession,
-          contact: headOfFamily.contact,
-          education: headOfFamily.education,
-          bloodGroup: headOfFamily.bloodGroup,
-          dob: headOfFamily.dob,
-          address: headOfFamily.address,
-          headOfFamilyAvatar: headOfFamily.headOfFamilyAvatar,
-        });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          const { daughterDetails, headOfFamily, sonDetails, wifeDetails } =
+            data.data;
 
-        setWifeDetails({
-          surname: wifeDetails.surname,
-          firstname: wifeDetails.firstname,
-          secondname: wifeDetails.secondname,
-          proffession: wifeDetails.proffession,
-          contact: wifeDetails.contact,
-          education: wifeDetails.education,
-          bloodGroup: wifeDetails.bloodGroup,
-          dob: wifeDetails.dob,
-          wifeAvatar: wifeDetails.wifeAvatar,
-        });
+          setHeadOfFamily({
+            surname: headOfFamily.surname,
+            firstname: headOfFamily.firstname,
+            secondname: headOfFamily.secondname,
+            email: headOfFamily.email,
+            proffession: headOfFamily.proffession,
+            contact: headOfFamily.contact,
+            education: headOfFamily.education,
+            bloodGroup: headOfFamily.bloodGroup,
+            dob: headOfFamily.dob,
+            address: headOfFamily.address,
+            headOfFamilyAvatar: headOfFamily.headOfFamilyAvatar,
+          });
 
-        setSonDetails(sonDetails);
-        setDaughterDetails(daughterDetails);
+          setWifeDetails({
+            surname: wifeDetails.surname,
+            firstname: wifeDetails.firstname,
+            secondname: wifeDetails.secondname,
+            proffession: wifeDetails.proffession,
+            contact: wifeDetails.contact,
+            education: wifeDetails.education,
+            bloodGroup: wifeDetails.bloodGroup,
+            dob: wifeDetails.dob,
+            wifeAvatar: wifeDetails.wifeAvatar,
+          });
+
+          setSonDetails(sonDetails);
+          setDaughterDetails(daughterDetails);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -221,6 +242,7 @@ const Profile = () => {
   // Edit Profile
   const handleEditProfile = async () => {
     try {
+      dispatch(setLoading(true));
       const response = await fetch(`/api/users/profile/update/${id}`, {
         method: "POST",
         body: JSON.stringify({
@@ -234,22 +256,39 @@ const Profile = () => {
         },
       });
 
-      const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-      if (data.success) {
-        toast.success(data.message);
-        fetchProfile();
+        if (data.success) {
+          toast.success(data.message);
+          fetchProfile();
+        }
       } else {
-        toast.error(data.message);
+        toast.error("Error while edit profile");
       }
     } catch (error) {
       toast.error("Something went wrong!");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   // Edit Profile Image
-  const changeImageHeadOfFamily = async (e, setAvatarTo, childObjectId) => {
+  const changeProfileImage = async (e, setAvatarTo, childObjectId) => {
     console.log("E >>", e.target.files[0], setAvatarTo, childObjectId);
+
+    if (!e.target.files[0]) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(e.target.files[0])) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
 
     const formData = new FormData();
 
@@ -259,23 +298,27 @@ const Profile = () => {
     formData.append("familyId", id);
 
     try {
+      dispatch(setLoading(true));
       const response = await fetch("/api/users/update-image", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-      console.log(data);
-      if (data && data.success) {
-        toast.success(data.message);
-        fetchProfile();
+        if (data && data.success) {
+          toast.success(data.message);
+          fetchProfile();
+        }
       } else {
-        toast.error(data.message || "Error while updating image");
+        toast.error("Error while updating image");
       }
     } catch (error) {
       console.log(error);
       toast.error(error || "Something went wrong!");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -345,22 +388,27 @@ const Profile = () => {
     );
 
     try {
+      dispatch(setLoading(true));
       const response = await fetch("/api/users/profile/add-new-son-daughter", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-      if (data && data.statusCode == 200 && data.success) {
-        toast.success(data.message);
-        fetchProfile();
-        clearModal();
+        if (data && data.success) {
+          toast.success(data.message);
+          fetchProfile();
+          clearModal();
+        }
       } else {
         toast.error("Error while add details!");
       }
     } catch (error) {
       toast.error("Something went wrong!");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -589,9 +637,7 @@ const Profile = () => {
                       type="file"
                       hidden
                       name="avatar"
-                      onChange={(e) =>
-                        changeImageHeadOfFamily(e, "headOfFamily")
-                      }
+                      onChange={(e) => changeProfileImage(e, "headOfFamily")}
                     />
                   </Button>
                 )}
@@ -800,9 +846,7 @@ const Profile = () => {
                       type="file"
                       hidden
                       name="avatar"
-                      onChange={(e) =>
-                        changeImageHeadOfFamily(e, "wifeDetails")
-                      }
+                      onChange={(e) => changeProfileImage(e, "wifeDetails")}
                     />
                   </Button>
                 )}
@@ -985,7 +1029,7 @@ const Profile = () => {
                           hidden
                           name="avatar"
                           onChange={(e) =>
-                            changeImageHeadOfFamily(e, "sonDetails", son._id)
+                            changeProfileImage(e, "sonDetails", son._id)
                           }
                         />
                       </Button>
@@ -1187,7 +1231,7 @@ const Profile = () => {
                           hidden
                           name="avatar"
                           onChange={(e) =>
-                            changeImageHeadOfFamily(
+                            changeProfileImage(
                               e,
                               "daughterDetails",
                               daughter._id

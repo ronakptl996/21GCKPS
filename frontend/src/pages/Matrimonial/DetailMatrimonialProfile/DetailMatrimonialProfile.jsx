@@ -32,6 +32,7 @@ import {
   dobFormat,
   indiaTimeFormat,
   isMatrimonialProfile,
+  validateImageType,
 } from "../../../helper/global.js";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -205,41 +206,56 @@ const DetailMatrimonialProfile = () => {
         body: JSON.stringify(modalForm),
       });
 
-      const data = await response.json();
-      console.log(data);
+      if (response.ok) {
+        const data = await response.json();
 
-      if (data && data.success && data.statusCode == 200) {
-        toast.success(data.message);
-        handleClose();
-        fetchProfile(id);
-      } else if (data.statusCode == 404) {
-        toast.error(data.message);
-        handleClose();
+        if (data && data.success) {
+          toast.success(data.message);
+          handleClose();
+          fetchProfile(id);
+        }
+      } else {
+        toast.error("Error while edit profile");
       }
     } catch (error) {
       toast.error("Something went wrong!");
-      handleClose();
     }
   };
 
   // Edit Image
   const changeImageModal = async (e) => {
-    dispatch(setLoading(true));
-    console.log(e.target.files[0]);
+    const file = e.target.files[0];
+
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("avatar", e.target.files[0]);
+    formData.append("avatar", file);
     formData.append("matrimonialId", modalForm.matrimonialId);
 
     try {
+      dispatch(setLoading(true));
       const response = await fetch("/api/matrimonial/edit-avatar", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-      if (data && data.success && data.statusCode == 200) {
-        toast.success(data.message);
+        if (data && data.success) {
+          toast.success(data.message);
+        }
       } else {
         toast.error("Error while updating image");
       }
@@ -254,15 +270,18 @@ const DetailMatrimonialProfile = () => {
   const fetchProfile = async (id) => {
     try {
       const response = await fetch(`/api/matrimonial/${id}`);
-      const data = await response.json();
-      if (data && data.success) {
-        setUser(data.data);
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.success) {
+          setUser(data.data);
+        }
       } else {
         toast.error("User not found!");
         navigate("/matrimonial-profile");
       }
     } catch (error) {
-      toast.error("User not found!");
+      toast.error("Something went wrong!");
       navigate("/matrimonial-profile");
     }
   };
@@ -791,31 +810,6 @@ const DetailMatrimonialProfile = () => {
               </div>
             </div>
           </div>
-          {/* <div className="avatar-wrapper modal-avatar-wrapper">
-            <Button variant="outlined" component="label">
-              Upload New Photo
-              <input
-                type="file"
-                hidden
-                name="donationImage"
-                onChange={changeImageModal}
-              />
-            </Button>
-            {modalForm.donationImage ? (
-              <div className="modal-committee-image-wrapper">
-                <img
-                  alt={modalForm.name}
-                  src={`${import.meta.env.VITE_BACKEND_URL}${
-                    modalForm.donationImage
-                  }`}
-                />
-              </div>
-            ) : (
-              <div className="modal-committee-image-wrapper">
-                <ImageIcon />
-              </div>
-            )}
-          </div> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

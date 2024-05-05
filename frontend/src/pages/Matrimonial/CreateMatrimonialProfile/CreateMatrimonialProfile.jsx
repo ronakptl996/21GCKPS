@@ -20,6 +20,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "./CreateMatrimonialProfile.css";
 import HeroSectionHeader from "../../../components/HeroSectionHeader/HeroSectionHeader";
 import { toast } from "react-toastify";
+import { validateImageType } from "../../../helper/global";
 
 const CreateMatrimonialProfile = () => {
   const [interestInputValue, setInterestInputValue] = useState("");
@@ -137,6 +138,19 @@ const CreateMatrimonialProfile = () => {
   };
 
   const handleSubmit = async () => {
+    if (!matrimonialImage) {
+      toast.error("Please upload image");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(matrimonialImage)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     const data = {
       profileDetail,
       sonDetails,
@@ -194,7 +208,7 @@ const CreateMatrimonialProfile = () => {
         toast.error("Error, while creating profile");
       }
     } catch (e) {
-      toast.error("Error, while creating profile");
+      toast.error("Something went wrong!");
     }
   };
 

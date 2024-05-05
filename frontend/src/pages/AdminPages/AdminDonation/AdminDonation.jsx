@@ -13,6 +13,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ImageIcon from "@mui/icons-material/Image";
 import Swal from "sweetalert2";
+import { validateImageType } from "../../../helper/global";
 
 const AdminDonation = () => {
   const [donationData, setDonationData] = useState([]);
@@ -54,6 +55,14 @@ const AdminDonation = () => {
       return;
     }
 
+    // Validate image type
+    if (!validateImageType(donationImage)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     const formData = new FormData();
     formData.append("donationImage", donationImage);
     formData.append("name", name);
@@ -68,6 +77,12 @@ const AdminDonation = () => {
       body: formData,
     });
 
+    if (!response.ok) {
+      dispatch(setLoading(false));
+      toast.error("Error while add donation detail");
+      return;
+    }
+
     let data = await response.json();
 
     if (data.success) {
@@ -81,9 +96,6 @@ const AdminDonation = () => {
         totalQty: "",
         price: "",
       }));
-    } else {
-      dispatch(setLoading(false));
-      toast.error("Error while add donation detail");
     }
   };
 
@@ -91,8 +103,11 @@ const AdminDonation = () => {
   const fetchDetails = async () => {
     try {
       const response = await fetch("/api/admin/donation");
-      const data = await response.json();
-      setDonationData(data.data);
+
+      if (response.ok) {
+        const data = await response.json();
+        setDonationData(data.data);
+      }
     } catch (error) {
       console.log(`Error while fetching donation data`);
     }
@@ -141,21 +156,23 @@ const AdminDonation = () => {
         body: JSON.stringify(formData),
       });
 
-      let data = await response.json();
-      if (data.success) {
-        toast.success(data.message);
-        setModalForm({
-          name: "",
-          totalQty: "",
-          contact: "",
-          description: "",
-          donationImage: "",
-          donationId: "",
-          price: "",
-        });
-        setOpen(false);
-        fetchDetails();
-        dispatch(setLoading(false));
+      if (response.ok) {
+        let data = await response.json();
+        if (data.success) {
+          toast.success(data.message);
+          setModalForm({
+            name: "",
+            totalQty: "",
+            contact: "",
+            description: "",
+            donationImage: "",
+            donationId: "",
+            price: "",
+          });
+          setOpen(false);
+          fetchDetails();
+          dispatch(setLoading(false));
+        }
       } else {
         dispatch(setLoading(false));
         throw new Error("Error while edit donation detail");
@@ -172,28 +189,46 @@ const AdminDonation = () => {
 
   // Change Image
   const changeImageModal = async (e) => {
+    const file = e.target.files[0];
+
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     dispatch(setLoading(true));
     const formData = new FormData();
-    formData.append("donationImage", e.target.files[0]);
+    formData.append("donationImage", file);
     formData.append("donationId", modalForm.donationId);
 
-    const response = await fetch("/api/admin/edit-donation-image", {
-      method: "PATCH",
-      body: formData,
-    });
+    try {
+      const response = await fetch("/api/admin/edit-donation-image", {
+        method: "PATCH",
+        body: formData,
+      });
 
-    const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-    if (data.success) {
+        if (data.success) {
+          dispatch(setLoading(false));
+          toast.success(data.message);
+        }
+      } else {
+        toast.error("Error while updating image");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
       dispatch(setLoading(false));
-      toast.success(data.message);
-      setModalForm((prevState) => ({
-        ...prevState,
-        image: data.data.image,
-      }));
-    } else {
-      dispatch(setLoading(false));
-      toast.error("Error while updating image");
     }
   };
 
@@ -216,14 +251,16 @@ const AdminDonation = () => {
           body: JSON.stringify({ donationId }),
         });
 
-        let data = await response.json();
-        if (data.success) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Data has been deleted.",
-            icon: "success",
-          });
-          fetchDetails();
+        if (response.ok) {
+          let data = await response.json();
+          if (data.success) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Data has been deleted.",
+              icon: "success",
+            });
+            fetchDetails();
+          }
         }
       } catch (error) {
         toast.error(error || "Error while deleting user!");

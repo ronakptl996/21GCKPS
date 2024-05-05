@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { setLoading } from "../../../features/auth/authSlice";
 import HeroSectionHeader from "../../../components/HeroSectionHeader/HeroSectionHeader";
 import BusinessTable from "../../../components/Admin/BusinessTable";
+import { validateImageType } from "../../../helper/global";
 
 const MyBusiness = () => {
   const [approvedBusinessData, setApprovedBusinessData] = useState([]);
@@ -64,8 +65,22 @@ const MyBusiness = () => {
 
   // Change Business Logo, Visiting Card Image
   const changeBusinessImage = async (file, changedImageFor, businessId) => {
-    if (!file || !changedImageFor || !businessId) {
-      toast.error("File or changedImageFor or businessId is required!");
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
+    if (!changedImageFor || !businessId) {
+      toast.error("changedImageFor or businessId is required!");
+      return;
     }
 
     try {

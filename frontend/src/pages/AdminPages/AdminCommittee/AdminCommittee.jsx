@@ -20,6 +20,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoading } from "../../../features/auth/authSlice";
+import { validateImageType } from "../../../helper/global";
 
 const AdminCommittee = () => {
   const [name, setName] = useState("");
@@ -54,6 +55,14 @@ const AdminCommittee = () => {
       return;
     }
 
+    // Validate image type
+    if (!validateImageType(avatar)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     const formData = new FormData();
 
     formData.append("name", name);
@@ -69,16 +78,18 @@ const AdminCommittee = () => {
         body: formData,
       });
 
-      const data = await response.json();
-      if (data.success) {
-        toast.success(data.message);
-        setName("");
-        setVillage("");
-        setAvatar("");
-        setCommittee("Choose Committee");
-        setMobile("");
-        fetchCommitteeDetails();
-        dispatch(setLoading(false));
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          toast.success(data.message);
+          setName("");
+          setVillage("");
+          setAvatar("");
+          setCommittee("Choose Committee");
+          setMobile("");
+          fetchCommitteeDetails();
+          dispatch(setLoading(false));
+        }
       } else {
         dispatch(setLoading(false));
         throw new Error("Error while add committee detail");
@@ -109,14 +120,16 @@ const AdminCommittee = () => {
           body: JSON.stringify({ userId: id }),
         });
 
-        let data = await response.json();
-        if (data.success) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "User details has been deleted.",
-            icon: "success",
-          });
-          fetchCommitteeDetails();
+        if (response.ok) {
+          let data = await response.json();
+          if (data.success) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "User details has been deleted.",
+              icon: "success",
+            });
+            fetchCommitteeDetails();
+          }
         }
       } catch (error) {
         toast.error(error || "Error while deleting user!");
@@ -125,10 +138,18 @@ const AdminCommittee = () => {
   };
 
   const fetchCommitteeDetails = async () => {
-    const response = await fetch("/api/admin/committee");
+    try {
+      const response = await fetch("/api/admin/committee");
 
-    const data = await response.json();
-    setCommitteeDetails(data.data);
+      if (response.ok) {
+        const data = await response.json();
+        setCommitteeDetails(data.data);
+      } else {
+        toast.error("Error while fetching committee details");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
   };
 
   // Edit Modal Button handler
@@ -160,27 +181,29 @@ const AdminCommittee = () => {
         body: JSON.stringify(formData),
       });
 
-      let data = await response.json();
-      if (data.success) {
-        dispatch(setLoading(false));
-        toast.success(data.message);
-        setModalForm({
-          name: "",
-          village: "",
-          mobile: "",
-          committeeName: "Choose Committee",
-          avatar: "",
-          userId: "",
-        });
-        setOpen(false);
-        fetchCommitteeDetails();
+      if (response.ok) {
+        let data = await response.json();
+        if (data.success) {
+          dispatch(setLoading(false));
+          toast.success(data.message);
+          setModalForm({
+            name: "",
+            village: "",
+            mobile: "",
+            committeeName: "Choose Committee",
+            avatar: "",
+            userId: "",
+          });
+          setOpen(false);
+          fetchCommitteeDetails();
+        }
       } else {
-        dispatch(setLoading(false));
         throw new Error("Error while edit committee detail");
       }
     } catch (error) {
-      dispatch(setLoading(false));
       toast.error(error || "Something went wrong while edit committee detail");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -198,28 +221,45 @@ const AdminCommittee = () => {
   };
 
   const changeImageModal = async (e) => {
+    const file = e.target.files[0];
+
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     dispatch(setLoading(true));
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
     formData.append("userId", modalForm.userId);
 
-    const response = await fetch("/api/admin/edit-committee-avatar", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("/api/admin/edit-committee-avatar", {
+        method: "POST",
+        body: formData,
+      });
 
-    const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-    if (data.success) {
+        if (data.success) {
+          toast.success(data.message);
+        }
+      } else {
+        toast.error("Error while updating avatar");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
       dispatch(setLoading(false));
-      toast.success(data.message);
-      setModalForm((prevState) => ({
-        ...prevState,
-        avatar: data.data.avatar,
-      }));
-    } else {
-      dispatch(setLoading(false));
-      toast.error("Error while updating avatar");
     }
   };
 

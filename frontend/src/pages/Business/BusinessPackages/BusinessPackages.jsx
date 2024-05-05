@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./BusinessPackages.css";
+import { useDispatch } from "react-redux";
 import HeroSectionHeader from "../../../components/HeroSectionHeader/HeroSectionHeader";
 import {
   Button,
@@ -21,6 +22,8 @@ import DoneIcon from "@mui/icons-material/Done";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
+import { validateImageType } from "../../../helper/global";
+import { setLoading } from "../../../features/auth/authSlice";
 
 const BusinessPackeages = () => {
   // Modal useState
@@ -52,6 +55,8 @@ const BusinessPackeages = () => {
     businessCategory: "",
     packageType: "",
   });
+
+  const dispatch = useDispatch();
 
   // *OPEN MODAL
   const openModal = (packageType) => {
@@ -89,7 +94,49 @@ const BusinessPackeages = () => {
 
   // *Submit Modal Form
   const handleSubmit = async () => {
-    console.log(modalForm);
+    // Package type FREE then upload businessVisitingCard
+    if (modalForm.packageType == "FREE") {
+      if (!modalForm.businessVisitingCard) {
+        toast.error("Please upload business visiting card");
+        return;
+      }
+
+      // Validate image type
+      if (!validateImageType(modalForm.businessVisitingCard)) {
+        toast.error(
+          "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+        );
+        return;
+      }
+    }
+
+    // Package type ELITE | PREMIUM then upload businessVisitingCard and businessLogo
+    else if (modalForm.packageType !== "FREE") {
+      if (!modalForm.businessVisitingCard) {
+        toast.error("Please upload business visiting card");
+        return;
+      }
+
+      if (!modalForm.businessLogo) {
+        toast.error("Please upload business logo");
+        return;
+      }
+
+      // Validate image type
+      if (!validateImageType(modalForm.businessVisitingCard)) {
+        toast.error(
+          "Invalid visiting card file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+        );
+        return;
+      }
+
+      if (!validateImageType(modalForm.businessLogo)) {
+        toast.error(
+          "Invalid logo file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+        );
+        return;
+      }
+    }
 
     modalForm.openingHours = `${hour.open} ${hour.openMeridiem} to ${hour.close} ${hour.closeMeridiem}`;
 
@@ -99,6 +146,7 @@ const BusinessPackeages = () => {
     formData.append("businessData", JSON.stringify(modalForm));
 
     try {
+      dispatch(setLoading(true));
       const response = await fetch("/api/business/add", {
         method: "POST",
         body: formData,
@@ -107,42 +155,48 @@ const BusinessPackeages = () => {
       if (response.ok) {
         const result = await response.json();
         if (result && result.success) {
-          setOpen(false);
           toast.success("Business details add successfully");
-          setModalForm({
-            businessOwner: "",
-            businessName: "",
-            businessContact: "",
-            businessEmail: "",
-            businessAddress: "",
-            businessLogo: "",
-            businessVisitingCard: "",
-            provideServices: [],
-            openingHours: "",
-            businessWebsite: "",
-            businessInstagramUsername: "",
-            businessTwitterUsername: "",
-            businessFacebookUsername: "",
-            quickInfo: "",
-            detailedInfo: "",
-            yearOfEstablishment: "",
-            businessCategory: "",
-            packageType: "",
-          });
-          
-          setHour({
-            open: "Start Time",
-            close: "Close Time",
-            openMeridiem: "AM/PM",
-            closeMeridiem: "AM/PM",
-          });
+          closeModal();
         }
       } else {
         toast.error("Error while purchase business package");
       }
     } catch (error) {
       toast.error("Something went wrong!");
+    } finally {
+      dispatch(setLoading(false));
     }
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+    setModalForm({
+      businessOwner: "",
+      businessName: "",
+      businessContact: "",
+      businessEmail: "",
+      businessAddress: "",
+      businessLogo: "",
+      businessVisitingCard: "",
+      provideServices: [],
+      openingHours: "",
+      businessWebsite: "",
+      businessInstagramUsername: "",
+      businessTwitterUsername: "",
+      businessFacebookUsername: "",
+      quickInfo: "",
+      detailedInfo: "",
+      yearOfEstablishment: "",
+      businessCategory: "",
+      packageType: "",
+    });
+
+    setHour({
+      open: "Start Time",
+      close: "Close Time",
+      openMeridiem: "AM/PM",
+      closeMeridiem: "AM/PM",
+    });
   };
 
   return (
@@ -597,12 +651,13 @@ const BusinessPackeages = () => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={closeModal}>Cancel</Button>
           <Button variant="contained" onClick={handleSubmit}>
             Submit
           </Button>
         </DialogActions>
       </Dialog>
+
       <HeroSectionHeader heading="Select Your Business Packages" />
       <div className="businessPackages-wrapper">
         <div className="businessPackages-card">
