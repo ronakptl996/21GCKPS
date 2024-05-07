@@ -1,8 +1,8 @@
 .admin-sidebar-section {
   position: fixed;
-  top: 18vh;
+  top: 13vh;
   width: 13rem;
-  height: 82vh;
+  height: calc(100vh - 13vh);
   background: #fff;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   z-index: 10;
@@ -25,5 +25,5 @@
 }
 
 .admin-sidebar-inner ul li a.active {
-  background: #5d5b5b29;
+  background: rgb(204 163 55 / 64%);
 }

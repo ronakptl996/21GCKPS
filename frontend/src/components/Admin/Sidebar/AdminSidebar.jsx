@@ -9,7 +9,7 @@ const AdminSidebar = () => {
         <ul>
           <li>
             <NavLink to="/admin" end>
-              Home
+              Dashboard
             </NavLink>
           </li>
           <li>

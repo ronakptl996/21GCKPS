@@ -12,10 +12,7 @@ const AdminNavbar = () => {
       <div className="admin-navbar-items">
         <ul>
           <li>
-            <NavLink to="/admin">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/admin">We</NavLink>
+            <NavLink to="/home">Home</NavLink>
           </li>
         </ul>
       </div>
