@@ -23,12 +23,14 @@ export const indiaTimeFormat = (time) => {
 };
 
 export const isMatrimonialProfile = (matrimonialProfiles, profileId) => {
+  console.log("isMatrimonialProfile >>>", matrimonialProfiles);
+  console.log("isMatrimonialProfile >>>", profileId);
   for (const profile of matrimonialProfiles) {
     if (profile._id === profileId) {
       return true;
     }
-    return false;
   }
+  return false;
 };
 
 // Validate Image type
