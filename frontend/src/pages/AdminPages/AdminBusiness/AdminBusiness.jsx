@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import BusinessTable from "../../../components/Admin/BusinessTable";
 import "./AdminBusiness.css";
+import BusinessTable from "../../../components/Admin/BusinessTable";
 
 const AdminBusiness = () => {
-  const [approvedBusiness, setApprovedBusiness] = useState([]);
-  const [unApprovedBusiness, setUnpprovedBusiness] = useState([]);
-  const [approvedExpiredBusiness, setApprovedExpiredBusiness] = useState([]);
+  const [allBusinessDetails, setallBusinessDetails] = useState({
+    approved: [],
+    expired: [],
+    unapproved: [],
+  });
 
-  const fetchApprovedData = async () => {
+  const fetchAllBusinessDetails = async () => {
     try {
-      const response = await fetch("/api/admin/business/approve");
+      const response = await fetch("/api/admin/business");
       if (response.ok) {
         const result = await response.json();
-        setApprovedBusiness(result.data);
+        setallBusinessDetails(result.data[0]);
       } else {
         toast.error("Error fetching approved business data");
       }
@@ -24,38 +27,8 @@ const AdminBusiness = () => {
     }
   };
 
-  const fetchApprovedExpiredData = async () => {
-    try {
-      const response = await fetch("/api/admin/business/expire");
-      if (response.ok) {
-        const result = await response.json();
-        setApprovedExpiredBusiness(result.data);
-      } else {
-        toast.error("Error fetching approve expire business data");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Something went wrong!");
-    }
-  };
-
-  const fetchUnapprovedData = async () => {
-    try {
-      const response = await fetch("/api/admin/business/unapprove");
-      if (response.ok) {
-        const result = await response.json();
-        setUnpprovedBusiness(result.data);
-      } else {
-        toast.error("Error fetching unapprove business data");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Something went wrong!");
-    }
-  };
-
   // ^Delete Business Details
-  const handleDelete = async (id, listType) => {
+  const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -81,61 +54,51 @@ const AdminBusiness = () => {
               icon: "success",
             });
 
-            if (listType === "approved") {
-              fetchApprovedData();
-            } else if (listType === "expired") {
-              fetchApprovedExpiredData();
-            } else if (listType === "unapproved") {
-              fetchUnapprovedData();
-            }
+            fetchAllBusinessDetails();
           }
         } else {
           toast.error("Error while deleting business details");
         }
       } catch (error) {
-        toast.success("Something went wrong!");
+        toast.error("Something went wrong!");
       }
     }
   };
 
   useEffect(() => {
-    fetchApprovedData(); // Fetch Approved Data on component mount
-    fetchApprovedExpiredData();
-    fetchUnapprovedData();
+    fetchAllBusinessDetails();
   }, []);
 
   if (
-    approvedBusiness &&
-    approvedBusiness.length == 0 &&
-    approvedExpiredBusiness &&
-    approvedExpiredBusiness.length == 0 &&
-    unApprovedBusiness &&
-    unApprovedBusiness.length == 0
+    allBusinessDetails &&
+    allBusinessDetails.approved.length == 0 &&
+    allBusinessDetails.expired.length == 0 &&
+    allBusinessDetails.unapproved.length == 0
   ) {
     return <h1>No data found</h1>;
   }
 
   return (
     <section className="admin-businesses">
-      {approvedBusiness && approvedBusiness.length > 0 && (
+      {allBusinessDetails && allBusinessDetails?.approved?.length > 0 && (
         <BusinessTable
-          data={approvedBusiness}
+          data={allBusinessDetails.approved}
           header="Approved Business"
-          handleDelete={(id) => handleDelete(id, "approved")}
+          handleDelete={(id) => handleDelete(id)}
         />
       )}
-      {approvedExpiredBusiness && approvedExpiredBusiness.length > 0 && (
+      {allBusinessDetails && allBusinessDetails?.expired?.length > 0 && (
         <BusinessTable
-          data={approvedExpiredBusiness}
+          data={allBusinessDetails.expired}
           header="Expired Business"
-          handleDelete={(id) => handleDelete(id, "expired")}
+          handleDelete={(id) => handleDelete(id)}
         />
       )}
-      {unApprovedBusiness && unApprovedBusiness.length > 0 && (
+      {allBusinessDetails && allBusinessDetails?.unapproved?.length > 0 && (
         <BusinessTable
-          data={unApprovedBusiness}
+          data={allBusinessDetails.unapproved}
           header="Unapproved Business"
-          handleDelete={(id) => handleDelete(id, "unapproved")}
+          handleDelete={(id) => handleDelete(id)}
         />
       )}
     </section>

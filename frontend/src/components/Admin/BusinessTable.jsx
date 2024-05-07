@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -38,8 +37,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { toast } from "react-toastify";
-import { setLoading } from "../../features/auth/authSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -155,7 +152,6 @@ const BusinessTable = ({
   });
 
   const { pathname } = useLocation();
-  const dispatch = useDispatch();
 
   // Logic for pagination
   const emptyRows =

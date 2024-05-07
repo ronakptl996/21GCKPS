@@ -31,9 +31,7 @@ import {
 } from "../controllers/adminController/family.controllers.js";
 import {
   deleteBusinessDetails,
-  getAdminApprovedBusinessDetails,
-  getAdminExpiredBusinessDetails,
-  getAdminUnapprovedBusinessDetails,
+  getAllBusinessDetails,
 } from "../controllers/adminController/business.controller.js";
 
 const router = Router();
@@ -80,9 +78,7 @@ router
 router.route("/statictics").get(verifyJwtAdmin, adminStatictics);
 
 // ^ ADMIN Business Route
-router.route("/business/approve").get(getAdminApprovedBusinessDetails);
-router.route("/business/expire").get(getAdminExpiredBusinessDetails);
-router.route("/business/unapprove").get(getAdminUnapprovedBusinessDetails);
+router.route("/business").get(getAllBusinessDetails);
 router.route("/business/delete/:id").delete(deleteBusinessDetails);
 
 export default router;
