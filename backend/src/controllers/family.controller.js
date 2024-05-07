@@ -268,7 +268,10 @@ const getUser = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new ApiResponse(200, userDetails, ""));
   } catch (error) {
-    throw new ApiError(500, "Error while fetching User details");
+    throw new ApiError(
+      500,
+      error?.message || "Error while fetching User details"
+    );
   }
 });
 

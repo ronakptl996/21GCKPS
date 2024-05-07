@@ -231,9 +231,11 @@ const Profile = () => {
           setSonDetails(sonDetails);
           setDaughterDetails(daughterDetails);
         }
+      } else {
+        return await response.json();
       }
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
       toast.error("User details not found!");
       navigate("/home");
     }
