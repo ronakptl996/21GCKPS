@@ -3,6 +3,7 @@
   background-image: url("../../assets/jobs.jpg");
   background-repeat: no-repeat;
   background-position: center;
+  min-height: 100vh;
 }
 
 .jobs-wrapper::before {
@@ -21,7 +22,7 @@
   z-index: 10;
   padding: 200px;
   width: 60%;
-  color: #ffffffbd;
+  color: #fff;
 }
 
 .job-description h2 {

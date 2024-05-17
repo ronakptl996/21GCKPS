@@ -57,8 +57,8 @@ const villageWiseFamilyDetails = () => {
       </div>
       <div className="villageWiseFamilyDetails-wrapper">
         {villageFamilyData &&
-          villageFamilyData.length > 0 &&
-          villageFamilyData.map((family) => (
+          villageFamilyData?.length > 0 &&
+          villageFamilyData?.map((family) => (
             <div className="villageWiseFamilyDetails-card" key={family._id}>
               <div className="villageWiseFamilyDetails-image-wrapper">
                 <img
@@ -90,7 +90,7 @@ const villageWiseFamilyDetails = () => {
             </div>
           ))}
 
-        {villageFamilyData.length == 0 && <h2>No family details found</h2>}
+        {villageFamilyData?.length == 0 && <h2>No family details found</h2>}
       </div>
 
       {totalFamilyProfile > 10 && (

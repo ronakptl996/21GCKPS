@@ -815,7 +815,11 @@ const Register = () => {
               })}
 
               <div className="add-son-details-wrapper">
-                <Button onClick={addSonDetailHandler} variant="outlined">
+                <Button
+                  onClick={addSonDetailHandler}
+                  variant="outlined"
+                  size="small"
+                >
                   + Add Son Details
                 </Button>
               </div>
@@ -1008,8 +1012,12 @@ const Register = () => {
               })}
 
               <div className="add-son-details-wrapper">
-                <Button onClick={addDaughterDetailHandler} variant="outlined">
-                  + Add Daughter
+                <Button
+                  onClick={addDaughterDetailHandler}
+                  variant="outlined"
+                  size="small"
+                >
+                  + Add Daughter Details
                 </Button>
               </div>
             </div>

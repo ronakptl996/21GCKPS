@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import {
   setIsLoggedIn,
   setLoggedInUserDetails,
+  setLoading,
 } from "../../features/auth/authSlice";
 
 const Login = () => {
@@ -18,6 +19,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      dispatch(setLoading(true));
       let data = await fetch("/api/users/login", {
         method: "POST",
         headers: {
@@ -26,7 +28,6 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
       let response = await data.json();
-      console.log(response);
 
       if (response.success) {
         toast.success(response.message);
@@ -38,6 +39,8 @@ const Login = () => {
       }
     } catch (error) {
       toast.error("Something went wrong while login!!");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 

@@ -948,6 +948,18 @@ const villageFamilyData = asyncHandler(async (req, res) => {
       throw new ApiError(404, "No data found for the specified village!");
     }
 
+    if (data && data?.length == 0) {
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            { totalFamilyDataLength: [], familyData: [] },
+            "No family details"
+          )
+        );
+    }
+
     // Extracting the totalFamilyDataLength and familyData from the result
     const { totalFamilyDataLength, familyData } = data[0];
 
