@@ -18,6 +18,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      toast.error("Please fill the field");
+      return;
+    }
     try {
       dispatch(setLoading(true));
       let data = await fetch("/api/users/login", {
