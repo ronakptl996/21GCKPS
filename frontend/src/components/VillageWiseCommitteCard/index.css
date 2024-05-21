@@ -34,6 +34,26 @@
   font-size: 14px;
 }
 
+.no-data-found {
+  width: 100%;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.no-data-found img {
+  width: 250px;
+  border-radius: 10px;
+}
+
+.no-data-found h3 {
+  font-family: "Roboto";
+  color: #000000ba;
+  margin-top: 10px;
+}
+
 @media (max-width: 1150px) {
   .villageWiseCommitteeCards-Wrapper {
     grid-template-columns: repeat(3, 1fr);
@@ -67,6 +87,9 @@
   }
   .villageWiseCommitteeCards-Wrapper .village-wise-comeeti-carousel-info p {
     font-size: 13px;
+  }
+  .no-data-found img {
+    width: 175px;
   }
 }
 

@@ -35,10 +35,9 @@ const VillageWiseCommiteeMemberCard = () => {
 
   return (
     <>
-      <div className="villageWiseCommitteeCards-Wrapper">
-        {committeeMemberData &&
-          committeeMemberData.length > 0 &&
-          committeeMemberData.map((member) => (
+      {committeeMemberData && committeeMemberData.length > 0 && (
+        <div className="villageWiseCommitteeCards-Wrapper">
+          {committeeMemberData.map((member) => (
             <div
               className="village-wise-comeeti-carousel-card"
               key={member._id}
@@ -56,9 +55,17 @@ const VillageWiseCommiteeMemberCard = () => {
               </div>
             </div>
           ))}
-
-        {committeeMemberData.length == 0 && <h3>No Committee member added</h3>}
-      </div>
+        </div>
+      )}
+      {committeeMemberData.length == 0 && (
+        <div className="no-data-found">
+          <img
+            src="../../../src/assets/images/no-data.jpg"
+            alt="No data found"
+          />
+          <h3>No data found!</h3>
+        </div>
+      )}
     </>
   );
 };

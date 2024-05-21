@@ -51,14 +51,13 @@ const villageWiseFamilyDetails = () => {
       {/* Village Family Card */}
       <div className="villageWiseFamily-header">
         <h1>
-          {villageName.slice(0, 1).toUpperCase()}
+          All {villageName.slice(0, 1).toUpperCase()}
           {villageName.slice(1)} Family
         </h1>
       </div>
-      <div className="villageWiseFamilyDetails-wrapper">
-        {villageFamilyData &&
-          villageFamilyData?.length > 0 &&
-          villageFamilyData?.map((family) => (
+      {villageFamilyData && villageFamilyData?.length > 0 && (
+        <div className="villageWiseFamilyDetails-wrapper">
+          {villageFamilyData?.map((family) => (
             <div className="villageWiseFamilyDetails-card" key={family._id}>
               <div className="villageWiseFamilyDetails-image-wrapper">
                 <img
@@ -89,9 +88,18 @@ const villageWiseFamilyDetails = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
 
-        {villageFamilyData?.length == 0 && <h2>No family details found</h2>}
-      </div>
+      {villageFamilyData?.length == 0 && (
+        <div className="no-data-found">
+          <img
+            src="../../../src/assets/images/no-data.jpg"
+            alt="No data found"
+          />
+          <h3>Empty family details!</h3>
+        </div>
+      )}
 
       {totalFamilyProfile > 10 && (
         <div>
