@@ -4,11 +4,13 @@ import { toast } from "react-toastify";
 import { Button, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
 import {
   setIsLoggedIn,
   setLoggedInUserDetails,
   setLoading,
 } from "../../features/auth/authSlice";
+import { signInSchema } from "../../schemas";
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -17,21 +19,32 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      toast.error("Please fill the field");
-      return;
-    }
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const { values, handleBlur, handleChange, errors, handleSubmit, touched } =
+    useFormik({
+      validationSchema: signInSchema,
+      initialValues: initialValues,
+      onSubmit: async (values) => {
+        console.log("USEFORMIK >>", values);
+        await handleLogin(values);
+      },
+    });
+
+  const handleLogin = async (data) => {
     try {
       dispatch(setLoading(true));
-      let data = await fetch("/api/users/login", {
+      let result = await fetch("/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(data),
       });
-      let response = await data.json();
+      let response = await result.json();
 
       if (response.success) {
         toast.success(response.message);
@@ -77,8 +90,12 @@ const Login = () => {
                 label="Email *"
                 type="email"
                 variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.email && errors.email ? true : false}
+                helperText={touched.email && errors.email}
               />
               <TextField
                 fullWidth
@@ -86,9 +103,13 @@ const Login = () => {
                 label="Password *"
                 type="password"
                 variant="outlined"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 style={{ marginTop: "10px" }}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                error={touched.password && errors.password ? true : false}
+                helperText={touched.password && errors.password}
               />
 
               <div>
@@ -99,7 +120,7 @@ const Login = () => {
                   fullWidth
                   style={{ background: "#a7732b", marginTop: "10px" }}
                   variant="contained"
-                  onClick={handleLogin}
+                  onClick={handleSubmit}
                 >
                   Login
                 </Button>
