@@ -15,6 +15,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
+import { validateImageType } from "../../helper/global";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -77,11 +78,37 @@ const Register = () => {
 
   const handleFileChange = (event, setAvatarFunction) => {
     const file = event.target.files[0];
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
     setAvatarFunction(file);
   };
 
   const handleSonFileChange = (event, index) => {
     const file = event.target.files[0];
+
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     setSonDetails((prevDetails) => {
       const newDetails = [...prevDetails];
       newDetails[index].sonAvatar = file;
@@ -91,6 +118,19 @@ const Register = () => {
 
   const handleDaughterFileChange = (event, index) => {
     const file = event.target.files[0];
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
+
+    // Validate image type
+    if (!validateImageType(file)) {
+      toast.error(
+        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+      );
+      return;
+    }
+
     setDaughterDetails((prevDetails) => {
       const newDetails = [...prevDetails];
       newDetails[index].daughterAvatar = file;
@@ -476,7 +516,7 @@ const Register = () => {
 
           {/* Wife Details */}
           <div className="job-details">
-            <label>Wife Name*</label>
+            <label>Wife Details*</label>
             <div className="register-input-wrapper">
               <TextField
                 id="outlined-basic"
