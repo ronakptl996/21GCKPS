@@ -76,6 +76,7 @@ const Register = () => {
     },
   ]);
 
+  // avatar image validation
   const handleFileChange = (event, setAvatarFunction) => {
     const file = event.target.files[0];
     if (!file) {
@@ -91,51 +92,6 @@ const Register = () => {
       return;
     }
     setAvatarFunction(file);
-  };
-
-  const handleSonFileChange = (event, index) => {
-    const file = event.target.files[0];
-
-    if (!file) {
-      toast.error("No file selected");
-      return;
-    }
-
-    // Validate image type
-    if (!validateImageType(file)) {
-      toast.error(
-        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
-      );
-      return;
-    }
-
-    setSonDetails((prevDetails) => {
-      const newDetails = [...prevDetails];
-      newDetails[index].sonAvatar = file;
-      return newDetails;
-    });
-  };
-
-  const handleDaughterFileChange = (event, index) => {
-    const file = event.target.files[0];
-    if (!file) {
-      toast.error("No file selected");
-      return;
-    }
-
-    // Validate image type
-    if (!validateImageType(file)) {
-      toast.error(
-        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
-      );
-      return;
-    }
-
-    setDaughterDetails((prevDetails) => {
-      const newDetails = [...prevDetails];
-      newDetails[index].daughterAvatar = file;
-      return newDetails;
-    });
   };
 
   const handleSonDetailChange = (index, field, value) => {
@@ -828,8 +784,15 @@ const Register = () => {
                               type="file"
                               hidden
                               name="sonAvatar"
-                              onChange={(e) => handleSonFileChange(e, index)}
-                              // onChange={(e) => setAvatar(e.target.files[0])}
+                              onChange={(e) =>
+                                handleFileChange(e, (file) =>
+                                  handleSonDetailChange(
+                                    index,
+                                    "sonAvatar",
+                                    file
+                                  )
+                                )
+                              }
                             />
                           </Button>
                           {sonDetails[index].sonAvatar && (
@@ -1018,9 +981,15 @@ const Register = () => {
                             <input
                               type="file"
                               hidden
-                              name="sonAvatar"
+                              name="daughterAvatar"
                               onChange={(e) =>
-                                handleDaughterFileChange(e, index)
+                                handleFileChange(e, (file) =>
+                                  handleDaughterDetailChange(
+                                    index,
+                                    "daughterAvatar",
+                                    file
+                                  )
+                                )
                               }
                               // onChange={(e) => setAvatar(e.target.files[0])}
                             />
