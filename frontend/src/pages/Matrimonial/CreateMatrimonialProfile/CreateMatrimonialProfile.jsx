@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
 import {
   Button,
   FormControl,
@@ -12,6 +13,7 @@ import {
   TextField,
   Chip,
   Stack,
+  FormHelperText,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -21,6 +23,7 @@ import "./CreateMatrimonialProfile.css";
 import HeroSectionHeader from "../../../components/HeroSectionHeader/HeroSectionHeader";
 import { toast } from "react-toastify";
 import { validateImageType } from "../../../helper/global";
+import { matrimonialSchema } from "../../../schemas";
 
 const CreateMatrimonialProfile = () => {
   const [interestInputValue, setInterestInputValue] = useState("");
@@ -57,6 +60,48 @@ const CreateMatrimonialProfile = () => {
       education: "",
     },
   ]);
+
+  const initialValues = {
+    matrimonialImage: "",
+    profileDetail: {
+      fullName: "",
+      fatherName: "",
+      motherName: "",
+      education: "",
+      profession: "",
+      gender: "Select Gender",
+      achievement: "",
+      facebookUserName: "",
+      instagramUserName: "",
+      contact: "",
+      bloodGroup: "o+",
+      address: "",
+      interest: [],
+      hobby: [],
+      dob: "",
+      yourSelf: "",
+      maternalUncle: "",
+      mamaVillageName: "",
+    },
+    sonDetails: [
+      {
+        surname: "",
+        firstname: "",
+        secondname: "",
+        profession: "",
+        education: "",
+      },
+    ],
+  };
+
+  const { errors, handleBlur, handleSubmit, handleChange, values, touched } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: matrimonialSchema,
+      onSubmit: (values) => {
+        console.log(values);
+      },
+    });
 
   const addSonDetailHandler = () => {
     setSonDetails((prevDetails) => [
@@ -137,80 +182,98 @@ const CreateMatrimonialProfile = () => {
     });
   };
 
-  const handleSubmit = async () => {
-    if (!matrimonialImage) {
-      toast.error("Please upload image");
+  // image validation
+  const handleFileChange = (event, setAvatarFunction) => {
+    const file = event.target.files[0];
+    if (!file) {
+      toast.error("No file selected");
       return;
     }
 
     // Validate image type
-    if (!validateImageType(matrimonialImage)) {
+    if (!validateImageType(file)) {
       toast.error(
         "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
       );
       return;
     }
-
-    const data = {
-      profileDetail,
-      sonDetails,
-    };
-
-    const formData = new FormData();
-
-    formData.append("data", JSON.stringify(data));
-    formData.append("matrimonialImage", matrimonialImage);
-
-    try {
-      // dispatch(setLoading(true));
-      let response = await fetch("/api/add-matrimonial", {
-        method: "POST",
-        body: formData,
-      });
-
-      let data = await response.json();
-      console.log(data);
-      if (data.success) {
-        toast.success(data.message);
-        setProfileDetail({
-          fullName: "",
-          fatherName: "",
-          motherName: "",
-          education: "",
-          profession: "",
-          gender: "Select Gender",
-          achievement: "",
-          facebookUserName: "",
-          instagramUserName: "",
-          contact: "",
-          bloodGroup: "o+",
-          address: "",
-          interest: [],
-          hobby: [],
-          dob: "",
-          yourSelf: "",
-          maternalUncle: "",
-          mamaVillageName: "",
-        });
-        setSonDetails([
-          {
-            surname: "",
-            firstname: "",
-            secondname: "",
-            profession: "",
-            education: "",
-          },
-        ]);
-        setMatrimonialImage("");
-      } else if (!data.success && data.statusCode >= 400) {
-        toast.error(data.message);
-      } else {
-        toast.error("Error, while creating profile");
-      }
-    } catch (e) {
-      toast.error("Something went wrong!");
-    }
+    setAvatarFunction(file);
   };
+
+  // const handleSubmit = async () => {
+  //   if (!matrimonialImage) {
+  //     toast.error("Please upload image");
+  //     return;
+  //   }
+
+  //   // Validate image type
+  //   if (!validateImageType(matrimonialImage)) {
+  //     toast.error(
+  //       "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+  //     );
+  //     return;
+  //   }
+
+  //   const data = {
+  //     profileDetail,
+  //     sonDetails,
+  //   };
+
+  //   const formData = new FormData();
+
+  //   formData.append("data", JSON.stringify(data));
+  //   formData.append("matrimonialImage", matrimonialImage);
+
+  //   try {
+  //     // dispatch(setLoading(true));
+  //     let response = await fetch("/api/add-matrimonial", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     let data = await response.json();
+  //     console.log(data);
+  //     if (data.success) {
+  //       toast.success(data.message);
+  //       setProfileDetail({
+  //         fullName: "",
+  //         fatherName: "",
+  //         motherName: "",
+  //         education: "",
+  //         profession: "",
+  //         gender: "Select Gender",
+  //         achievement: "",
+  //         facebookUserName: "",
+  //         instagramUserName: "",
+  //         contact: "",
+  //         bloodGroup: "o+",
+  //         address: "",
+  //         interest: [],
+  //         hobby: [],
+  //         dob: "",
+  //         yourSelf: "",
+  //         maternalUncle: "",
+  //         mamaVillageName: "",
+  //       });
+  //       setSonDetails([
+  //         {
+  //           surname: "",
+  //           firstname: "",
+  //           secondname: "",
+  //           profession: "",
+  //           education: "",
+  //         },
+  //       ]);
+  //       setMatrimonialImage("");
+  //     } else if (!data.success && data.statusCode >= 400) {
+  //       toast.error(data.message);
+  //     } else {
+  //       toast.error("Error, while creating profile");
+  //     }
+  //   } catch (e) {
+  //     toast.error("Something went wrong!");
+  //   }
+  // };
 
   return (
     <>
@@ -228,12 +291,19 @@ const CreateMatrimonialProfile = () => {
                   id="outlined-basic"
                   label="Fullname"
                   variant="outlined"
-                  value={profileDetail.fullName}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      fullName: e.target.value,
-                    }))
+                  name="profileDetail.fullName"
+                  value={values.profileDetail.fullName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.fullName &&
+                    errors?.profileDetail?.fullName
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.fullName &&
+                    errors?.profileDetail?.fullName
                   }
                 />
                 <TextField
@@ -241,12 +311,19 @@ const CreateMatrimonialProfile = () => {
                   label="Father Full Name"
                   type="text"
                   variant="outlined"
-                  value={profileDetail.fatherName}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      fatherName: e.target.value,
-                    }))
+                  name="profileDetail.fatherName"
+                  value={values.profileDetail.fatherName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.fatherName &&
+                    errors?.profileDetail?.fatherName
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.fatherName &&
+                    errors?.profileDetail?.fatherName
                   }
                 />
                 <TextField
@@ -254,12 +331,19 @@ const CreateMatrimonialProfile = () => {
                   label="Mother Full Name"
                   type="text"
                   variant="outlined"
-                  value={profileDetail.motherName}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      motherName: e.target.value,
-                    }))
+                  name="profileDetail.motherName"
+                  value={values.profileDetail.motherName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.motherName &&
+                    errors?.profileDetail?.motherName
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.motherName &&
+                    errors?.profileDetail?.motherName
                   }
                 />
               </div>
@@ -268,12 +352,19 @@ const CreateMatrimonialProfile = () => {
                   id="outlined-basic"
                   label="Education"
                   variant="outlined"
-                  value={profileDetail.education}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      education: e.target.value,
-                    }))
+                  name="profileDetail.education"
+                  value={values.profileDetail.education}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.education &&
+                    errors?.profileDetail?.education
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.education &&
+                    errors?.profileDetail?.education
                   }
                 />
                 <TextField
@@ -281,29 +372,40 @@ const CreateMatrimonialProfile = () => {
                   label="Profession"
                   type="text"
                   variant="outlined"
-                  value={profileDetail.profession}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      profession: e.target.value,
-                    }))
+                  name="profileDetail.profession"
+                  value={values.profileDetail.profession}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.profession &&
+                    errors?.profileDetail?.profession
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.profession &&
+                    errors?.profileDetail?.profession
                   }
                 />
-                <FormControl>
+                <FormControl
+                  error={
+                    touched?.profileDetail?.gender &&
+                    errors?.profileDetail?.gender
+                      ? true
+                      : false
+                  }
+                >
                   <InputLabel id={`demo-simple-select-label`}>
                     Select Gender
                   </InputLabel>
                   <Select
                     labelId={`demo-simple-select-label`}
                     id={`demo-simple-select`}
-                    value={profileDetail.gender}
                     label="Select Gender"
-                    onChange={(e) =>
-                      setProfileDetail((prevState) => ({
-                        ...prevState,
-                        gender: e.target.value,
-                      }))
-                    }
+                    name="profileDetail.gender"
+                    value={values.profileDetail.gender}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   >
                     <MenuItem value="Select Gender" disabled>
                       Select Gender
@@ -311,6 +413,12 @@ const CreateMatrimonialProfile = () => {
                     <MenuItem value="male">Male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
                   </Select>
+                  {touched?.profileDetail?.gender &&
+                    errors?.profileDetail?.gender && (
+                      <FormHelperText>
+                        {errors?.profileDetail?.gender}
+                      </FormHelperText>
+                    )}
                 </FormControl>
               </div>
               <div className="register-input-wrapper">
@@ -318,36 +426,57 @@ const CreateMatrimonialProfile = () => {
                   id="outlined-basic"
                   label="Achievement"
                   variant="outlined"
-                  value={profileDetail.achievement}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      achievement: e.target.value,
-                    }))
+                  name="profileDetail.achievement"
+                  value={values.profileDetail.achievement}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.achievement &&
+                    errors?.profileDetail?.achievement
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.achievement &&
+                    errors?.profileDetail?.achievement
                   }
                 />
                 <TextField
                   id="outlined-basic"
                   label="Facebook Username"
                   variant="outlined"
-                  value={profileDetail.facebookUserName}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      facebookUserName: e.target.value,
-                    }))
+                  name="profileDetail.facebookUserName"
+                  value={values.profileDetail.facebookUserName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.facebookUserName &&
+                    errors?.profileDetail?.facebookUserName
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.facebookUserName &&
+                    errors?.profileDetail?.facebookUserName
                   }
                 />
                 <TextField
                   id="outlined-basic"
                   label="Instagram Username"
                   variant="outlined"
-                  value={profileDetail.instagramUserName}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      instagramUserName: e.target.value,
-                    }))
+                  name="profileDetail.instagramUserName"
+                  value={values.profileDetail.instagramUserName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.instagramUserName &&
+                    errors?.profileDetail?.instagramUserName
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.instagramUserName &&
+                    errors?.profileDetail?.instagramUserName
                   }
                 />
               </div>
@@ -365,7 +494,11 @@ const CreateMatrimonialProfile = () => {
                       type="file"
                       hidden
                       name="matrimonialImage"
-                      onChange={(e) => setMatrimonialImage(e.target.files[0])}
+                      onChange={(e) => {
+                        handleFileChange(e, (file) =>
+                          setMatrimonialImage(file)
+                        );
+                      }}
                     />
                   </Button>
                   {matrimonialImage && (
@@ -385,29 +518,40 @@ const CreateMatrimonialProfile = () => {
                   label="Contact No."
                   type="number"
                   variant="outlined"
-                  value={profileDetail.contact}
-                  onChange={(e) =>
-                    setProfileDetail((prevState) => ({
-                      ...prevState,
-                      contact: e.target.value,
-                    }))
+                  name="profileDetail.contact"
+                  value={values.profileDetail.contact}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={
+                    touched?.profileDetail?.contact &&
+                    errors?.profileDetail?.contact
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    touched?.profileDetail?.contact &&
+                    errors?.profileDetail?.contact
                   }
                 />
-                <FormControl>
+                <FormControl
+                  error={
+                    touched?.profileDetail?.bloodGroup &&
+                    errors?.profileDetail?.bloodGroup
+                      ? true
+                      : false
+                  }
+                >
                   <InputLabel id={`demo-simple-select-label`}>
                     Blood Group
                   </InputLabel>
                   <Select
                     labelId={`demo-simple-select-label`}
                     id={`demo-simple-select`}
-                    value={profileDetail.bloodGroup}
                     label="Blood Group"
-                    onChange={(e) =>
-                      setProfileDetail((prevState) => ({
-                        ...prevState,
-                        bloodGroup: e.target.value,
-                      }))
-                    }
+                    name="profileDetail.bloodGroup"
+                    value={values.profileDetail.bloodGroup}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   >
                     <MenuItem value="o+">O+</MenuItem>
                     <MenuItem value="o-">O-</MenuItem>
@@ -419,6 +563,12 @@ const CreateMatrimonialProfile = () => {
                     <MenuItem value="ab-">AB-</MenuItem>
                     <MenuItem value="ab">AB</MenuItem>
                   </Select>
+                  {touched?.profileDetail?.bloodGroup &&
+                    errors?.profileDetail?.bloodGroup && (
+                      <FormHelperText>
+                        {errors?.profileDetail?.bloodGroup}
+                      </FormHelperText>
+                    )}
                 </FormControl>
               </div>
               <div className="register-input-wrapper">
