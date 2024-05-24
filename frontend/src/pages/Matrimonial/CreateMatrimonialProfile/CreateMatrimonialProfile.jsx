@@ -77,7 +77,6 @@ const CreateMatrimonialProfile = () => {
     initialValues: initialValues,
     validationSchema: matrimonialSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log("values >>>", values);
       await submitForm(values, resetForm);
     },
   });

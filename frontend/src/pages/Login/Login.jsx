@@ -13,9 +13,6 @@ import {
 import { signInSchema } from "../../schemas";
 
 const Login = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,7 +26,6 @@ const Login = () => {
       validationSchema: signInSchema,
       initialValues: initialValues,
       onSubmit: async (values) => {
-        console.log("USEFORMIK >>", values);
         await handleLogin(values);
       },
     });
