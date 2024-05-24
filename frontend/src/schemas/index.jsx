@@ -18,13 +18,21 @@ export const matrimonialSchema = Yup.object().shape({
     achievement: Yup.string(),
     facebookUserName: Yup.string().required("Username is required"),
     instagramUserName: Yup.string().required("Username is required"),
-    contact: Yup.string().required("Contact is required"),
+    contact: Yup.string()
+      .matches(/^[0-9]{10}$/, "Number must be exactly 10 digits")
+      .required("Contact number is required"),
     bloodGroup: Yup.string().required("Blood group is required"),
-    address: Yup.string().required("Address is required"),
-    interest: Yup.array().of(Yup.string()),
-    hobby: Yup.array().of(Yup.string()),
+    address: Yup.string().required("Village name is required"),
+    interest: Yup.array()
+      .of(Yup.string().min(1, "Interest cannot be empty"))
+      .min(1, "At least one interest is required"),
+    hobby: Yup.array()
+      .of(Yup.string().min(1, "Hobby cannot be empty"))
+      .min(1, "At least one Hobby is required"),
     dob: Yup.date().required("Date of birth is required"),
-    yourSelf: Yup.string().required("This field is required"),
+    yourSelf: Yup.string()
+      .required("This field is required")
+      .min(50, "Description must be at least 50 characters"),
     maternalUncle: Yup.string().required("Maternal uncle name is required"),
     mamaVillageName: Yup.string().required("Mama village name is required"),
   }),
