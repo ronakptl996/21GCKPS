@@ -1,23 +1,28 @@
 import React, { useState } from "react";
+import "./index.css";
 import {
   Button,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import "./index.css";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useFormik } from "formik";
+import { setLoading } from "../../features/auth/authSlice";
+import { jobPosterValidationSchema } from "../../schemas";
 
 const JobPoster = () => {
-  const [jobDetails, setJobDetails] = useState({
+  const dispatch = useDispatch();
+
+  const initialValues = {
     jobTitle: "",
     jobLocation: "",
     jobDescription: "",
-    minExperience: "6 Months",
+    minExperience: "Fresher",
     maxExperience: "1 Year",
     salary: "",
     opening: "",
@@ -26,88 +31,43 @@ const JobPoster = () => {
     companyEmail: "",
     companyIndustry: "",
     companyAddress: "",
-    createdBy: "",
-  });
+  };
 
-  const { loggedInUserDetails } = useSelector((store) => store.auth);
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: jobPosterValidationSchema,
+      onSubmit: async (values, { resetForm }) => {
+        console.log("VALUES >>", values);
+        await handleForm(values, resetForm);
+      },
+    });
 
-  const handleSubmit = async () => {
-    setJobDetails((prevState) => ({
-      ...prevState,
-      createdBy: loggedInUserDetails._id,
-    }));
-
-    const {
-      jobTitle,
-      jobLocation,
-      jobDescription,
-      minExperience,
-      maxExperience,
-      salary,
-      opening,
-      companyName,
-      companyContact,
-      companyEmail,
-      companyIndustry,
-      companyAddress,
-      createdBy,
-    } = jobDetails;
-    if (
-      [
-        jobTitle,
-        jobLocation,
-        jobDescription,
-        minExperience,
-        maxExperience,
-        salary,
-        opening,
-        companyName,
-        companyContact,
-        companyEmail,
-        companyIndustry,
-        companyAddress,
-        createdBy,
-      ].some((field) => field == "")
-    ) {
-      toast.error("Please, Fill Job field");
-      return;
-    }
-
+  const handleForm = async (formData, resetForm) => {
     try {
+      dispatch(setLoading(true));
       const response = await fetch("/api/job/add-job", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(jobDetails),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      console.log(data);
       if (data.success) {
         toast.success(data.message);
-        setJobDetails({
-          jobTitle: "",
-          jobLocation: "",
-          jobDescription: "",
-          minExperience: "6 Months",
-          maxExperience: "1 Year",
-          salary: "",
-          opening: "",
-          companyName: "",
-          companyContact: "",
-          companyEmail: "",
-          companyIndustry: "",
-          companyAddress: "",
-          createdBy: "",
-        });
+        resetForm();
       } else {
         toast.error("Error, while add job details");
       }
     } catch (error) {
-      toast.error("Error, while add job details");
+      toast.error("Something went wrong!");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
+
   return (
     <div className="register-form job-poster-form">
       <div className="form-header jobposter-header">
@@ -123,13 +83,12 @@ const JobPoster = () => {
             label="Job Title *"
             type="text"
             variant="outlined"
-            value={jobDetails.jobTitle}
-            onChange={(e) =>
-              setJobDetails((prevState) => ({
-                ...prevState,
-                jobTitle: e.target.value,
-              }))
-            }
+            name="jobTitle"
+            value={values.jobTitle}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.jobTitle && Boolean(errors?.jobTitle)}
+            helperText={touched?.jobTitle && errors?.jobTitle}
           />
           <TextField
             fullWidth
@@ -138,13 +97,12 @@ const JobPoster = () => {
             label="Job Location *"
             type="text"
             variant="outlined"
-            value={jobDetails.jobLocation}
-            onChange={(e) =>
-              setJobDetails((prevState) => ({
-                ...prevState,
-                jobLocation: e.target.value,
-              }))
-            }
+            name="jobLocation"
+            value={values.jobLocation}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.jobLocation && Boolean(errors?.jobLocation)}
+            helperText={touched?.jobLocation && errors?.jobLocation}
           />
           <TextField
             fullWidth
@@ -154,21 +112,22 @@ const JobPoster = () => {
             type="text"
             variant="outlined"
             multiline
-            rows={2}
-            maxRows={4}
-            value={jobDetails.jobDescription}
-            onChange={(e) =>
-              setJobDetails((prevState) => ({
-                ...prevState,
-                jobDescription: e.target.value,
-              }))
-            }
+            minRows={2}
+            name="jobDescription"
+            value={values.jobDescription}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.jobDescription && Boolean(errors?.jobDescription)}
+            helperText={touched?.jobDescription && errors?.jobDescription}
           />
         </div>
         <div className="job-details">
           <label>Candidate Requirement *</label>
           <div className="input-select-wrapper">
-            <FormControl fullWidth>
+            <FormControl
+              fullWidth
+              error={touched?.minExperience && Boolean(errors?.minExperience)}
+            >
               <InputLabel id="demo-simple-select-label">
                 Minimum Experience
               </InputLabel>
@@ -177,16 +136,12 @@ const JobPoster = () => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Minimum Experience"
-                value={jobDetails.minExperience}
-                onChange={(e) =>
-                  setJobDetails((prevState) => ({
-                    ...prevState,
-                    minExperience: e.target.value,
-                  }))
-                }
+                name="minExperience"
+                value={values.minExperience}
+                onChange={handleChange}
+                onBlur={handleBlur}
               >
                 <MenuItem value="Fresher">Fresher</MenuItem>
-                <MenuItem value="6 Months">6 Months</MenuItem>
                 <MenuItem value="1 Year">1 Year</MenuItem>
                 <MenuItem value="2 Years">2 Years</MenuItem>
                 <MenuItem value="3 Years">3 Years</MenuItem>
@@ -198,8 +153,14 @@ const JobPoster = () => {
                 <MenuItem value="9 Years">9 Years</MenuItem>
                 <MenuItem value="10 Years">10 Years</MenuItem>
               </Select>
+              {touched?.minExperience && errors?.minExperience && (
+                <FormHelperText>{errors?.minExperience}</FormHelperText>
+              )}
             </FormControl>
-            <FormControl fullWidth>
+            <FormControl
+              fullWidth
+              error={touched?.maxExperience && Boolean(errors?.maxExperience)}
+            >
               <InputLabel id="demo-simple-select-label">
                 Maximum Experience
               </InputLabel>
@@ -208,16 +169,12 @@ const JobPoster = () => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Maximum Experience"
-                value={jobDetails.maxExperience}
-                onChange={(e) =>
-                  setJobDetails((prevState) => ({
-                    ...prevState,
-                    maxExperience: e.target.value,
-                  }))
-                }
+                name="maxExperience"
+                value={values.maxExperience}
+                onChange={handleChange}
+                onBlur={handleBlur}
               >
                 <MenuItem value="Fresher">Fresher</MenuItem>
-                <MenuItem value="6 Months">6 Months</MenuItem>
                 <MenuItem value="1 Year">1 Year</MenuItem>
                 <MenuItem value="2 Years">2 Years</MenuItem>
                 <MenuItem value="3 Years">3 Years</MenuItem>
@@ -231,6 +188,9 @@ const JobPoster = () => {
                 <MenuItem value="12 Years">12 Years</MenuItem>
                 <MenuItem value="15 Years">15 Years</MenuItem>
               </Select>
+              {touched?.maxExperience && errors?.maxExperience && (
+                <FormHelperText>{errors?.maxExperience}</FormHelperText>
+              )}
             </FormControl>
           </div>
 
@@ -241,13 +201,12 @@ const JobPoster = () => {
             label="Monthly Salary *"
             type="number"
             variant="outlined"
-            value={jobDetails.salary}
-            onChange={(e) =>
-              setJobDetails((prevState) => ({
-                ...prevState,
-                salary: e.target.value,
-              }))
-            }
+            name="salary"
+            value={values.salary}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.salary && Boolean(errors?.salary)}
+            helperText={touched?.salary && errors?.salary}
           />
           <TextField
             fullWidth
@@ -256,13 +215,12 @@ const JobPoster = () => {
             label="No Of Openings *"
             type="number"
             variant="outlined"
-            value={jobDetails.opening}
-            onChange={(e) =>
-              setJobDetails((prevState) => ({
-                ...prevState,
-                opening: e.target.value,
-              }))
-            }
+            name="opening"
+            value={values.opening}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.opening && Boolean(errors?.opening)}
+            helperText={touched?.opening && errors?.opening}
           />
         </div>
 
@@ -276,13 +234,12 @@ const JobPoster = () => {
               label="Your Phone Number"
               type="number"
               variant="outlined"
-              value={jobDetails.companyContact}
-              onChange={(e) =>
-                setJobDetails((prevState) => ({
-                  ...prevState,
-                  companyContact: e.target.value,
-                }))
-              }
+              name="companyContact"
+              value={values.companyContact}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched?.companyContact && Boolean(errors?.companyContact)}
+              helperText={touched?.companyContact && errors?.companyContact}
             />
             <TextField
               fullWidth
@@ -290,13 +247,12 @@ const JobPoster = () => {
               label="Email id"
               type="email"
               variant="outlined"
-              value={jobDetails.companyEmail}
-              onChange={(e) =>
-                setJobDetails((prevState) => ({
-                  ...prevState,
-                  companyEmail: e.target.value,
-                }))
-              }
+              name="companyEmail"
+              value={values.companyEmail}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched?.companyEmail && Boolean(errors?.companyEmail)}
+              helperText={touched?.companyEmail && errors?.companyEmail}
             />
           </div>
           <div className="input-job-wrapper">
@@ -306,26 +262,26 @@ const JobPoster = () => {
               id="outlined-basic"
               label="Company Name"
               variant="outlined"
-              value={jobDetails.companyName}
-              onChange={(e) =>
-                setJobDetails((prevState) => ({
-                  ...prevState,
-                  companyName: e.target.value,
-                }))
-              }
+              name="companyName"
+              value={values.companyName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched?.companyName && Boolean(errors?.companyName)}
+              helperText={touched?.companyName && errors?.companyName}
             />
             <TextField
               fullWidth
               id="outlined-basic"
               label="Company Industry"
               variant="outlined"
-              value={jobDetails.companyIndustry}
-              onChange={(e) =>
-                setJobDetails((prevState) => ({
-                  ...prevState,
-                  companyIndustry: e.target.value,
-                }))
+              name="companyIndustry"
+              value={values.companyIndustry}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={
+                touched?.companyIndustry && Boolean(errors?.companyIndustry)
               }
+              helperText={touched?.companyIndustry && errors?.companyIndustry}
             />
           </div>
           <TextField
@@ -336,15 +292,13 @@ const JobPoster = () => {
             type="text"
             variant="outlined"
             multiline
-            rows={2}
-            maxRows={4}
-            value={jobDetails.companyAddress}
-            onChange={(e) =>
-              setJobDetails((prevState) => ({
-                ...prevState,
-                companyAddress: e.target.value,
-              }))
-            }
+            minRows={2}
+            name="companyAddress"
+            value={values.companyAddress}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.companyAddress && Boolean(errors?.companyAddress)}
+            helperText={touched?.companyAddress && errors?.companyAddress}
           />
           <div>
             <Button

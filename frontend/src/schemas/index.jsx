@@ -113,3 +113,87 @@ export const businessPackage = Yup.object().shape({
       .min(200, "Detailed Info must be at least 200 characters"),
   }),
 });
+
+// Job Poster Validation
+export const jobPosterValidationSchema = Yup.object().shape({
+  jobTitle: Yup.string()
+    .required("Job Title is required")
+    .max(100, "Job Title cannot exceed 100 characters"),
+  jobLocation: Yup.string()
+    .required("Job Location is required")
+    .max(150, "Job Location cannot exceed 150 characters"),
+  jobDescription: Yup.string()
+    .required("Job Description is required")
+    .min(10, "Job Description must be at least 10 characters long"),
+  minExperience: Yup.string()
+    .required("Minimum Experience is required")
+    .oneOf(
+      [
+        "Fresher",
+        "1 Year",
+        "2 Years",
+        "3 Years",
+        "4 Years",
+        "5 Years",
+        "6 Years",
+        "7 Years",
+        "8 Years",
+        "9 Years",
+        "10 Years",
+      ],
+      "Invalid experience format"
+    ),
+  maxExperience: Yup.string()
+    .required("Maximum Experience is required")
+    .oneOf(
+      [
+        "Fresher",
+        "1 Year",
+        "2 Years",
+        "3 Years",
+        "4 Years",
+        "5 Years",
+        "6 Years",
+        "7 Years",
+        "8 Years",
+        "9 Years",
+        "10 Years",
+        "12 Years",
+        "15 Years",
+      ],
+      "Invalid experience format"
+    )
+    .test(
+      "is-greater",
+      "Maximum Experience must be greater than Minimum Experience",
+      function (value) {
+        const { minExperience } = this.parent;
+        if (minExperience === "Fresher" || value === "Fresher") return true; // Allow Fresher as valid
+        const minValue = parseInt(minExperience);
+        const maxValue = parseInt(value);
+        return Number(maxValue) > Number(minValue);
+      }
+    ),
+  salary: Yup.string()
+    .required("Salary is required")
+    .matches(/^\d+$/, "Salary must be a number"),
+  opening: Yup.number()
+    .required("Number of Openings is required")
+    .integer("Number of Openings must be an integer")
+    .positive("Number of Openings must be greater than zero"),
+  companyName: Yup.string()
+    .required("Company Name is required")
+    .max(100, "Company Name cannot exceed 100 characters"),
+  companyContact: Yup.string()
+    .required("Company Contact is required")
+    .matches(/^\d{10}$/, "Company Contact must be a 10-digit number"),
+  companyEmail: Yup.string()
+    .required("Company Email is required")
+    .email("Enter a valid email address"),
+  companyIndustry: Yup.string()
+    .required("Company Industry is required")
+    .max(100, "Company Industry cannot exceed 100 characters"),
+  companyAddress: Yup.string()
+    .required("Company Address is required")
+    .max(250, "Company Address cannot exceed 250 characters"),
+});

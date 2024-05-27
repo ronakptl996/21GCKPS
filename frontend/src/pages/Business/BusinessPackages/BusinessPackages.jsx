@@ -103,6 +103,7 @@ const BusinessPackages = () => {
 
   // *OPEN MODAL
   const openModal = (packageType) => {
+    console.log("PACKAGETYPE >>", packageType);
     setFieldValue("packageType", packageType);
     setOpen(true);
   };

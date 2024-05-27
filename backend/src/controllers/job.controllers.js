@@ -4,7 +4,10 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const addJob = asyncHandler(async (req, res) => {
+  req.body.createdBy = req.user._id;
+
   const jobDetails = await Job.create(req.body);
+
   if (!jobDetails) {
     throw new ApiError(500, "Something went wrong while add Job details");
   }
