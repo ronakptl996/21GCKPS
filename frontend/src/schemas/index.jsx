@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import dayjs from "dayjs";
 
 export const signInSchema = Yup.object({
   email: Yup.string().email().required("Please enter your email"),
@@ -196,4 +197,54 @@ export const jobPosterValidationSchema = Yup.object().shape({
   companyAddress: Yup.string()
     .required("Company Address is required")
     .max(250, "Company Address cannot exceed 250 characters"),
+});
+
+// ^ADMIN FORM VALIDATION
+export const committeeValidationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Name is required")
+    .max(100, "Name cannot exceed 100 characters"),
+  village: Yup.string().required("Village is required"),
+  mobile: Yup.string()
+    .required("Number is required")
+    .matches(/^\d{10}$/, "Mobile must be a 10-digit number"),
+  committee: Yup.string().required("Committee is required"),
+});
+
+export const donationValidationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Product/Service is required")
+    .max(100, "Product/Service cannot exceed 100 characters"),
+  totalQty: Yup.number()
+    .required("Qty is required")
+    .integer("Qty must be an integer")
+    .positive("Qty must be greater than zero"),
+  contact: Yup.string()
+    .required("Mobile No. is required")
+    .matches(/^\d{10}$/, "Mobile No. must be a 10-digit number"),
+  price: Yup.number()
+    .required("Price is required")
+    .integer("Price must be an integer")
+    .positive("Price must be greater than zero"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(50, "Description must be at least 50 characters long"),
+});
+
+export const festivalValidationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  address: Yup.string().required("Address is required"),
+  fromDate: Yup.date()
+    .required("Start date is required")
+    .nullable()
+    .test("is-future-date", "Start date must be in the future", (value) => {
+      return dayjs(value).isAfter(dayjs());
+    }),
+  toDate: Yup.date()
+    .required("End date is required")
+    .nullable()
+    .min(Yup.ref("fromDate"), "End date must be after start date"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(50, "Description must be at least 50 characters long"),
 });

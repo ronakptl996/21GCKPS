@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import "./AdminFestival.css";
+import { Button, FormHelperText, TextField } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { useFormik } from "formik";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import "./AdminFestival.css";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import { setLoading } from "../../../features/auth/authSlice";
-import { useDispatch } from "react-redux";
+import { festivalValidationSchema } from "../../../schemas";
 
 const AdminFestival = () => {
   const [festivalsData, setFestivalsData] = useState([]);
@@ -39,18 +41,25 @@ const AdminFestival = () => {
 
   const dispatch = useDispatch();
 
-  // Add Festival Details
-  const handleSubmit = async () => {
-    const { name, address, fromDate, toDate, description } = inputFestivalData;
-    if (
-      [name, address, fromDate, toDate, description].some(
-        (field) => field == "" || field == {}
-      )
-    ) {
-      toast.error("Please, Fill festival field");
-      return;
-    }
+  const initialValues = {
+    name: "",
+    address: "",
+    fromDate: "",
+    toDate: "",
+    description: "",
+  };
 
+  const { errors, values, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema: festivalValidationSchema,
+      onSubmit: async (values, { resetForm }) => {
+        await handleForm(values, resetForm);
+      },
+    });
+
+  // Add Festival Details
+  const handleForm = async (formData, resetForm) => {
     try {
       dispatch(setLoading(true));
       const response = await fetch("/api/admin/add-festival", {
@@ -58,26 +67,25 @@ const AdminFestival = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(inputFestivalData),
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        toast.error("Error while add festival details");
+        return;
+      }
 
       const data = await response.json();
 
       if (data.success) {
-        dispatch(setLoading(false));
         toast.success(data.message);
-        setInputFestivalData(() => ({
-          name: "",
-          address: "",
-          fromDate: "",
-          toDate: "",
-          description: "",
-        }));
+        resetForm();
         fetchFestivalData();
       }
     } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
       dispatch(setLoading(false));
-      toast.error("Error while add festival details");
     }
   };
 
@@ -298,63 +306,62 @@ const AdminFestival = () => {
               id="outlined-basic"
               label="Festival Name"
               variant="outlined"
-              value={inputFestivalData.name}
-              onChange={(e) => {
-                setInputFestivalData((prevState) => ({
-                  ...prevState,
-                  name: e.target.value,
-                }));
-              }}
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.name && Boolean(errors.name)}
+              helperText={touched.name && errors.name}
             />
             <TextField
               id="outlined-basic"
               label="Festival Address"
               variant="outlined"
-              value={inputFestivalData.address}
-              onChange={(e) => {
-                setInputFestivalData((prevState) => ({
-                  ...prevState,
-                  address: e.target.value,
-                }));
-              }}
+              name="address"
+              value={values.address}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.address && Boolean(errors.address)}
+              helperText={touched.address && errors.address}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="From Date"
-                value={inputFestivalData.fromDate}
-                onChange={(date) => {
-                  setInputFestivalData((prevState) => ({
-                    ...prevState,
-                    fromDate: new Date(date),
-                  }));
-                }}
-              />
-            </LocalizationProvider>
-          </div>
-          <div className="admin-festival-input-wrapper">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="To Date"
-                value={inputFestivalData.toDate}
-                onChange={(date) => {
-                  setInputFestivalData((prevState) => ({
-                    ...prevState,
-                    toDate: new Date(date),
-                  }));
-                }}
-              />
-            </LocalizationProvider>
             <TextField
               id="outlined-basic"
               label="Description"
               variant="outlined"
-              value={inputFestivalData.description}
-              onChange={(e) => {
-                setInputFestivalData((prevState) => ({
-                  ...prevState,
-                  description: e.target.value,
-                }));
-              }}
+              name="description"
+              value={values.description}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.description && Boolean(errors.description)}
+              helperText={touched.description && errors.description}
+            />
+          </div>
+          <div className="admin-festival-input-wrapper">
+            <TextField
+              margin="dense"
+              label="Start Date"
+              variant="outlined"
+              type="date"
+              name="fromDate"
+              InputLabelProps={{ shrink: true }}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.fromDate}
+              error={touched.fromDate && Boolean(errors.fromDate)}
+              helperText={touched.fromDate && errors.fromDate}
+            />
+            <TextField
+              margin="dense"
+              label="End Date"
+              variant="outlined"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              name="toDate"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.toDate}
+              error={touched.toDate && Boolean(errors.toDate)}
+              helperText={touched.toDate && errors.toDate}
             />
           </div>
           <div className="committee-btn">

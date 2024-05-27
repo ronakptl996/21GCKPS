@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./AdminCommittee.css";
 import { toast } from "react-toastify";
+import { useFormik } from "formik";
 import {
   Button,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -18,16 +20,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ImageIcon from "@mui/icons-material/Image";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Swal from "sweetalert2";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLoading } from "../../../features/auth/authSlice";
 import { validateImageType } from "../../../helper/global";
+import { committeeValidationSchema } from "../../../schemas";
 
 const AdminCommittee = () => {
-  const [name, setName] = useState("");
-  const [village, setVillage] = useState("");
-  const [mobile, setMobile] = useState("");
   const [avatar, setAvatar] = useState("");
-  const [committee, setCommittee] = useState("Choose Committee");
   const [committeeDetails, setCommitteeDetails] = useState();
 
   // Edit Modal useState
@@ -42,19 +41,25 @@ const AdminCommittee = () => {
   });
 
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((store) => store.auth);
 
-  // Add Committee Detail
-  const handleSubmit = async () => {
-    if (
-      [name, village, mobile, avatar, committee].some(
-        (field) => field == "" || field == {}
-      )
-    ) {
-      toast.error("Please, Fill committee field");
-      return;
-    }
+  const initialValues = {
+    name: "",
+    village: "",
+    mobile: "",
+    committee: "",
+  };
 
+  const { errors, values, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema: committeeValidationSchema,
+      onSubmit: async (values, { resetForm }) => {
+        await handleForm(values, resetForm);
+      },
+    });
+
+  // Add Committee Details
+  const handleForm = async (data, resetForm) => {
     // Validate image type
     if (!validateImageType(avatar)) {
       toast.error(
@@ -65,11 +70,11 @@ const AdminCommittee = () => {
 
     const formData = new FormData();
 
-    formData.append("name", name);
-    formData.append("village", village);
-    formData.append("mobile", mobile);
+    formData.append("name", data.name);
+    formData.append("village", data.village);
+    formData.append("mobile", data.mobile);
+    formData.append("committeeName", data.committee);
     formData.append("avatar", avatar);
-    formData.append("committeeName", committee);
 
     try {
       dispatch(setLoading(true));
@@ -79,24 +84,20 @@ const AdminCommittee = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          toast.success(data.message);
-          setName("");
-          setVillage("");
+        const result = await response.json();
+        if (result.success) {
+          toast.success(result.message);
+          resetForm();
           setAvatar("");
-          setCommittee("Choose Committee");
-          setMobile("");
           fetchCommitteeDetails();
-          dispatch(setLoading(false));
         }
       } else {
-        dispatch(setLoading(false));
         throw new Error("Error while add committee detail");
       }
     } catch (error) {
-      dispatch(setLoading(false));
       toast.error(error || "Something went wrong while add committee detail");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -155,7 +156,7 @@ const AdminCommittee = () => {
   // Edit Modal Button handler
   const handleEdit = async () => {
     const { name, village, mobile, committeeName, userId } = modalForm;
-    console.log("userID:::", userId);
+
     if (
       [name, village, mobile, committeeName].some(
         (field) => field == "" || field == {}
@@ -165,7 +166,7 @@ const AdminCommittee = () => {
       return;
     }
 
-    let formData = {
+    const formData = {
       name,
       village,
       mobile,
@@ -175,14 +176,14 @@ const AdminCommittee = () => {
 
     try {
       dispatch(setLoading(true));
-      let response = await fetch("/api/admin/edit-committee", {
+      const response = await fetch("/api/admin/edit-committee", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        let data = await response.json();
+        const data = await response.json();
         if (data.success) {
           dispatch(setLoading(false));
           toast.success(data.message);
@@ -208,7 +209,6 @@ const AdminCommittee = () => {
   };
 
   const handleClickOpen = (user) => {
-    console.log(user);
     setOpen(true);
     setModalForm({
       name: user.name,
@@ -369,7 +369,7 @@ const AdminCommittee = () => {
               </Select>
             </FormControl>
             <div className="avatar-wrapper modal-avatar-wrapper">
-              <Button variant="outlined" component="label">
+              <Button variant="outlined" size="small" component="label">
                 Upload New Photo
                 <input
                   type="file"
@@ -412,10 +412,18 @@ const AdminCommittee = () => {
               id="outlined-basic"
               label="Name"
               variant="outlined"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.name && Boolean(errors.name)}
+              helperText={touched.name && errors.name}
             />
-            <FormControl fullWidth variant="outlined">
+            <FormControl
+              fullWidth
+              variant="outlined"
+              error={touched?.village && Boolean(errors?.village)}
+            >
               <InputLabel id="demo-simple-select-label">
                 Village Name
               </InputLabel>
@@ -424,11 +432,12 @@ const AdminCommittee = () => {
                 id="demo-simple-select"
                 name="village"
                 label="Village Name"
-                value={village}
-                onChange={(e) => setVillage(e.target.value)}
+                value={values.village}
+                onChange={handleChange}
+                onBlur={handleBlur}
               >
                 <MenuItem value="Choose Village" disabled>
-                  Choose Village
+                  Select Village
                 </MenuItem>
                 <MenuItem value="moraj">Moraj</MenuItem>
                 <MenuItem value="jinaj">Jinaj</MenuItem>
@@ -437,14 +446,21 @@ const AdminCommittee = () => {
                 <MenuItem value="piploi">Piploi</MenuItem>
                 <MenuItem value="malu">Malu</MenuItem>
               </Select>
+              {touched?.village && errors?.village && (
+                <FormHelperText>{errors?.village}</FormHelperText>
+              )}
             </FormControl>
             <TextField
               id="outlined-basic"
               label="Mobile No."
               variant="outlined"
               type="number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
+              name="mobile"
+              value={values.mobile}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.mobile && Boolean(errors.mobile)}
+              helperText={touched.mobile && errors.mobile}
             />
           </div>
           <div className="admin-donation-input-wrapper">
@@ -464,19 +480,23 @@ const AdminCommittee = () => {
                 </div>
               )}
             </div>
-            <FormControl>
+            <FormControl
+              error={touched?.committee && Boolean(errors?.committee)}
+            >
               <InputLabel id="demo-simple-select-label">
-                Choose Committee
+                Select Committee
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={committee}
-                label="Choose Committee"
-                onChange={(e) => setCommittee(e.target.value)}
+                label="Select Committee"
+                name="committee"
+                value={values.committee}
+                onChange={handleChange}
+                onBlur={handleBlur}
               >
-                <MenuItem value="Choose Committee" disabled>
-                  Choose Committee
+                <MenuItem value="Choose Village" disabled>
+                  Select Committee
                 </MenuItem>
                 <MenuItem value="Account Committee">Account Committee</MenuItem>
                 <MenuItem value="Education Committee">
@@ -489,6 +509,9 @@ const AdminCommittee = () => {
                 <MenuItem value="Mahila Committee">Mahila Committee</MenuItem>
                 <MenuItem value="Yuvak Committee">Yuvak Committee</MenuItem>
               </Select>
+              {touched?.committee && errors?.committee && (
+                <FormHelperText>{errors?.committee}</FormHelperText>
+              )}
             </FormControl>
           </div>
           <div className="committee-btn" style={{ display: "flex" }}>

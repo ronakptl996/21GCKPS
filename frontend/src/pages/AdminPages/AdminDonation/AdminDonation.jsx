@@ -1,6 +1,7 @@
 import "./AdminDonation.css";
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
 import { Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -14,17 +15,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ImageIcon from "@mui/icons-material/Image";
 import Swal from "sweetalert2";
 import { validateImageType } from "../../../helper/global";
+import { donationValidationSchema } from "../../../schemas";
 
 const AdminDonation = () => {
   const [donationData, setDonationData] = useState([]);
-  const [donationDetail, setDonationDetail] = useState({
-    name: "",
-    totalQty: "",
-    contact: "",
-    description: "",
-    donationImage: "",
-    price: "",
-  });
+  const [donationImage, setDonationImage] = useState("");
 
   // Edit Modal useState
   const [open, setOpen] = useState(false);
@@ -39,22 +34,30 @@ const AdminDonation = () => {
   });
 
   const dispatch = useDispatch();
-  // const { isLoading } = useSelector((store) => store.auth);
+
+  const initialValues = {
+    name: "",
+    totalQty: "",
+    contact: "",
+    description: "",
+    price: "",
+  };
+
+  const { errors, values, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema: donationValidationSchema,
+      onSubmit: async (values, { resetForm }) => {
+        await handleForm(values, resetForm);
+      },
+    });
 
   // Add Donation
-  const handleSubmit = async () => {
-    const { name, totalQty, contact, description, price, donationImage } =
-      donationDetail;
-
-    if (
-      [name, totalQty, contact, description, donationImage, price].some(
-        (field) => field == "" || field == {}
-      )
-    ) {
-      alert("Please, fill donation field");
+  const handleForm = async (data, resetForm) => {
+    if (!donationImage) {
+      toast.error("Donation image is required");
       return;
     }
-
     // Validate image type
     if (!validateImageType(donationImage)) {
       toast.error(
@@ -65,37 +68,35 @@ const AdminDonation = () => {
 
     const formData = new FormData();
     formData.append("donationImage", donationImage);
-    formData.append("name", name);
-    formData.append("totalQty", totalQty);
-    formData.append("contact", contact);
-    formData.append("description", description);
-    formData.append("price", price);
+    formData.append("name", data.name);
+    formData.append("totalQty", data.totalQty);
+    formData.append("contact", data.contact);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
 
-    dispatch(setLoading(true));
-    const response = await fetch("/api/admin/add-donation", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      dispatch(setLoading(true));
+      const response = await fetch("/api/admin/add-donation", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
+        toast.error("Error while add donation detail");
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(data.message);
+        resetForm();
+        setDonationImage("");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
       dispatch(setLoading(false));
-      toast.error("Error while add donation detail");
-      return;
-    }
-
-    let data = await response.json();
-
-    if (data.success) {
-      dispatch(setLoading(false));
-      toast.success(data.message);
-      setDonationDetail(() => ({
-        name: "",
-        contact: "",
-        description: "",
-        donationImage: "",
-        totalQty: "",
-        price: "",
-      }));
     }
   };
 
@@ -344,6 +345,8 @@ const AdminDonation = () => {
             label="Description"
             type="text"
             fullWidth
+            multiline
+            minRows={2}
             variant="standard"
             onChange={(e) => {
               setModalForm((prevState) => ({
@@ -354,7 +357,7 @@ const AdminDonation = () => {
             value={modalForm.description}
           />
           <div className="avatar-wrapper modal-avatar-wrapper">
-            <Button variant="outlined" component="label">
+            <Button variant="outlined" size="small" component="label">
               Upload New Photo
               <input
                 type="file"
@@ -396,39 +399,36 @@ const AdminDonation = () => {
             id="outlined-basic"
             label="Product/Service"
             variant="outlined"
-            value={donationDetail.name}
-            onChange={(e) => {
-              setDonationDetail((prevState) => ({
-                ...prevState,
-                name: e.target.value,
-              }));
-            }}
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.name && Boolean(errors?.name)}
+            helperText={touched?.name && errors?.name}
           />
           <TextField
             type="number"
             id="outlined-basic"
             label="Total Qty."
             variant="outlined"
-            value={donationDetail.totalQty}
-            onChange={(e) => {
-              setDonationDetail((prevState) => ({
-                ...prevState,
-                totalQty: e.target.value,
-              }));
-            }}
+            name="totalQty"
+            value={values.totalQty}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.totalQty && Boolean(errors?.totalQty)}
+            helperText={touched?.totalQty && errors?.totalQty}
           />
           <TextField
             id="outlined-basic"
             label="Mobile No."
             variant="outlined"
             type="number"
-            value={donationDetail.contact}
-            onChange={(e) => {
-              setDonationDetail((prevState) => ({
-                ...prevState,
-                contact: e.target.value,
-              }));
-            }}
+            name="contact"
+            value={values.contact}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.contact && Boolean(errors?.contact)}
+            helperText={touched?.contact && errors?.contact}
           />
         </div>
         <div className="admin-donation-input-wrapper">
@@ -439,27 +439,17 @@ const AdminDonation = () => {
                 type="file"
                 name="donationImage"
                 hidden
-                onChange={(e) => {
-                  setDonationDetail((prevState) => ({
-                    ...prevState,
-                    donationImage: e.target.files[0],
-                  }));
-                }}
+                onChange={(e) => setDonationImage(e.target.files[0])}
               />
             </Button>
-            {donationDetail.donationImage && (
+            {donationImage && (
               <div
                 className="donation-image"
-                onClick={() => {
-                  setDonationDetail((prevState) => ({
-                    ...prevState,
-                    donationImage: "",
-                  }));
-                }}
+                onClick={() => setDonationImage("")}
               >
                 <img
                   alt="donation image"
-                  src={URL.createObjectURL(donationDetail.donationImage)}
+                  src={URL.createObjectURL(donationImage)}
                 />
               </div>
             )}
@@ -469,25 +459,23 @@ const AdminDonation = () => {
             label="Price (in rupee₹)"
             type="number"
             variant="outlined"
-            value={donationDetail.price}
-            onChange={(e) => {
-              setDonationDetail((prevState) => ({
-                ...prevState,
-                price: e.target.value,
-              }));
-            }}
+            name="price"
+            value={values.price}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.price && Boolean(errors?.price)}
+            helperText={touched?.price && errors?.price}
           />
           <TextField
             id="outlined-basic"
             label="Description"
             variant="outlined"
-            value={donationDetail.description}
-            onChange={(e) => {
-              setDonationDetail((prevState) => ({
-                ...prevState,
-                description: e.target.value,
-              }));
-            }}
+            name="description"
+            value={values.description}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched?.description && Boolean(errors?.description)}
+            helperText={touched?.description && errors?.description}
           />
         </div>
         <div className="committee-btn">
@@ -539,7 +527,11 @@ const AdminDonation = () => {
                     <td>{data.totalQty}</td>
                     <td>{data.price}₹</td>
                     <td>{data.contact}</td>
-                    <td>{data.description}</td>
+                    <td>
+                      {data.description.length > 50
+                        ? data.description.slice(0, 50) + "..."
+                        : data.description}
+                    </td>
                     <td className="button">
                       <Button
                         variant="outlined"

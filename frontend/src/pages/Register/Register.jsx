@@ -231,12 +231,12 @@ const Register = () => {
         });
       });
 
-      let response = await fetch("/api/users/register", {
+      const response = await fetch("/api/users/register", {
         method: "POST",
         body: formData,
       });
 
-      let data = await response.json();
+      const data = await response.json();
       console.log(data);
 
       if (data.statusCode == 401) {
@@ -248,7 +248,6 @@ const Register = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.log(`Error while register user!! ${error}`);
       toast.error("Something went wrong!");
     }
   };
