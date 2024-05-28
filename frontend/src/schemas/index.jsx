@@ -59,60 +59,72 @@ export const businessPackage = Yup.object().shape({
   businessCategory: Yup.string().required("Business Category is required"),
   packageType: Yup.string().required("Package Type is required"),
   provideServices: Yup.array().when("packageType", {
-    is: (val) => val === "ELITE" || val === "PREMIUM",
-    then: Yup.array().min(1, "At least one service is required"),
+    is: ["ELITE", "PREMIUM"],
+    then: Yup.array()
+      .min(1, "At least one service is required")
+      .of(Yup.string().required("Service is required")),
   }),
   quickInfo: Yup.string().when("packageType", {
-    is: (val) => val === "ELITE" || val === "PREMIUM",
+    is: ["ELITE", "PREMIUM"],
     then: Yup.string().required("Quick Info is required"),
   }),
   hour: Yup.object().shape({
-    open: Yup.string().when("packageType", {
-      is: (val) => val === "ELITE" || val === "PREMIUM",
-      then: Yup.string().required("Open time is required"),
-    }),
-    openMeridiem: Yup.string().when("packageType", {
-      is: (val) => val === "ELITE" || val === "PREMIUM",
-      then: Yup.string().required("Open Meridiem is required"),
-    }),
-    close: Yup.string().when("packageType", {
-      is: (val) => val === "ELITE" || val === "PREMIUM",
-      then: Yup.string().required("Close time is required"),
-    }),
-    closeMeridiem: Yup.string().when("packageType", {
-      is: (val) => val === "ELITE" || val === "PREMIUM",
-      then: Yup.string().required("Close Meridiem is required"),
-    }),
+    open: Yup.string(),
+    // .when("packageType", {
+    //   is: (val) => val === "ELITE" || val === "PREMIUM",
+    //   then: Yup.string().required("Open time is required"),
+    // })
+    openMeridiem: Yup.string(),
+    // .when("packageType", {
+    //   is: (val) => val === "ELITE" || val === "PREMIUM",
+    //   then: Yup.string().required("Open Meridiem is required"),
+    // })
+    close: Yup.string(),
+    // .when("packageType", {
+    //   is: (val) => val === "ELITE" || val === "PREMIUM",
+    //   then: Yup.string().required("Close time is required"),
+    // })
+    closeMeridiem: Yup.string(),
+    // .when("packageType", {
+    //   is: (val) => val === "ELITE" || val === "PREMIUM",
+    //   then: Yup.string().required("Close Meridiem is required"),
+    // })
   }),
-  businessWebsite: Yup.string().when("packageType", {
-    is: "PREMIUM",
-    then: Yup.string().url("Invalid URL").required("Website URL is required"),
-  }),
-  yearOfEstablishment: Yup.number().when("packageType", {
-    is: "PREMIUM",
-    then: Yup.number()
-      .required("Year of Establishment is required")
-      .min(1900)
-      .max(new Date().getFullYear(), "Invalid Year"),
-  }),
-  businessInstagramUsername: Yup.string().when("packageType", {
-    is: "PREMIUM",
-    then: Yup.string().required("Instagram Username is required"),
-  }),
-  businessTwitterUsername: Yup.string().when("packageType", {
-    is: "PREMIUM",
-    then: Yup.string().required("Twitter Username is required"),
-  }),
-  businessFacebookUsername: Yup.string().when("packageType", {
-    is: "PREMIUM",
-    then: Yup.string().required("Facebook Username is required"),
-  }),
-  detailedInfo: Yup.string().when("packageType", {
-    is: "PREMIUM",
-    then: Yup.string()
-      .required("Detailed Info is required")
-      .min(200, "Detailed Info must be at least 200 characters"),
-  }),
+  businessWebsite: Yup.string(),
+  // .when("packageType", {
+  //   is: "PREMIUM",
+  //   then: Yup.string().url("Invalid URL").required("Website URL is required"),
+  // })
+  yearOfEstablishment: Yup.number(),
+  // .when("packageType", {
+  //   is: "PREMIUM",
+  //   then: Yup.number()
+  //     .required("Year of Establishment is required")
+  //     .min(1900)
+  //     .max(new Date().getFullYear(), "Invalid Year"),
+  // })
+  businessInstagramUsername: Yup.string(),
+  // .when("packageType", {
+  //   is: "PREMIUM",
+  //   then: Yup.string().required("Instagram Username is required"),
+  // })
+  businessTwitterUsername: Yup.string(),
+  // .when("packageType", {
+  //   is: "PREMIUM",
+  //   then: Yup.string().required("Twitter Username is required"),
+  // })
+  businessFacebookUsername: Yup.string(),
+  // .when("packageType", {
+  //   is: "PREMIUM",
+  //   then: Yup.string().required("Facebook Username is required"),
+  // })
+  detailedInfo: Yup.string(),
+  // .when("packageType", {
+  //   is: "PREMIUM",
+  //   then: Yup.string()
+  //     .required("Detailed Info is required")
+  //     .min(200, "Detailed Info must be at least 200 characters"),
+  // })
 });
 
 // Job Poster Validation

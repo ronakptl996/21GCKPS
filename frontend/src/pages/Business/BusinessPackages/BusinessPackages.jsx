@@ -100,6 +100,7 @@ const BusinessPackages = () => {
   });
 
   console.log("ERRORS >>", errors);
+  console.log("touched >>> ====", touched);
 
   // *OPEN MODAL
   const openModal = (packageType) => {
@@ -369,7 +370,7 @@ const BusinessPackages = () => {
           </FormControl>
 
           {/* // ^UPLOAD DATA FOR ELITE PACKAGE */}
-          {values?.packageType && values?.packageType !== "FREE" && (
+          {values?.packageType !== "FREE" && (
             <>
               <div className="businessPackage-services">
                 <TextField

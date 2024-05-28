@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Committee from "../../../components/Committee";
 import { fetchCommitteeDetails } from "../../../features/admin/adminSlice";
