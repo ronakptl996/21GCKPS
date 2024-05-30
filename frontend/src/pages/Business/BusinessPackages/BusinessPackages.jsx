@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./BusinessPackages.css";
 import { useDispatch } from "react-redux";
 import HeroSectionHeader from "../../../components/HeroSectionHeader/HeroSectionHeader";
-import { useFormik } from "formik";
 import {
   Button,
   Chip,
@@ -11,7 +10,6 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
-  FormHelperText,
   Grid,
   Input,
   InputLabel,
@@ -26,9 +24,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 import { validateImageType } from "../../../helper/global";
 import { setLoading } from "../../../features/auth/authSlice";
-import { businessPackage } from "../../../schemas";
 
-const BusinessPackages = () => {
+const BusinessPackeages = () => {
   // Modal useState
   const [open, setOpen] = useState(false);
   const [hour, setHour] = useState({
@@ -59,153 +56,117 @@ const BusinessPackages = () => {
     packageType: "",
   });
 
-  const initialValues = {
-    inputBusinessService: "",
-    businessOwner: "",
-    businessName: "",
-    businessContact: "",
-    businessEmail: "",
-    businessAddress: "",
-    businessLogo: "",
-    businessVisitingCard: "",
-    provideServices: [],
-    openingHours: "",
-    businessWebsite: "",
-    businessInstagramUsername: "",
-    businessTwitterUsername: "",
-    businessFacebookUsername: "",
-    quickInfo: "",
-    detailedInfo: "",
-    yearOfEstablishment: "",
-    businessCategory: "",
-    packageType: "",
-  };
-
   const dispatch = useDispatch();
-
-  const {
-    values,
-    errors,
-    touched,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-  } = useFormik({
-    initialValues: initialValues,
-    validationSchema: businessPackage,
-    onSubmit: async (values) => {
-      console.log("VALUES >>> ", values);
-    },
-  });
-
-  console.log("ERRORS >>", errors);
-  console.log("touched >>> ====", touched);
 
   // *OPEN MODAL
   const openModal = (packageType) => {
-    console.log("PACKAGETYPE >>", packageType);
-    setFieldValue("packageType", packageType);
+    setModalForm((prevState) => ({
+      ...prevState,
+      packageType: packageType,
+    }));
     setOpen(true);
   };
 
-  // *Provide Service Chip
+  // *Interest Chip
   const handleProvideServiceAddChip = () => {
     if (
-      values.inputBusinessService.trim() !== "" &&
-      !values.provideServices.includes(values.inputBusinessService)
+      provideServices.trim() !== "" &&
+      !modalForm.provideServices.includes(provideServices)
     ) {
-      setFieldValue("provideServices", [
-        ...values.provideServices,
-        values.inputBusinessService,
-      ]);
-      setFieldValue("inputBusinessService", "");
+      // setChips((prevChips) => [...prevChips, inputValue]);
+      setModalForm((prevState) => ({
+        ...prevState,
+        provideServices: [...modalForm.provideServices, provideServices],
+      }));
+      setProvideServices("");
     }
   };
 
   // *Delete handleServicesDeleteChip
   const handleServicesDeleteChip = (chipToDelete) => {
-    setFieldValue(
-      "provideServices",
-      values.provideServices.filter((chip) => chip !== chipToDelete)
-    );
+    setModalForm((prevState) => ({
+      ...prevState,
+      provideServices: [
+        ...modalForm.provideServices.filter((chip) => chip !== chipToDelete),
+      ],
+    }));
   };
 
   // *Submit Modal Form
-  // const handleSubmit = async () => {
-  //   // Package type FREE then upload businessVisitingCard
-  //   if (modalForm.packageType == "FREE") {
-  //     if (!modalForm.businessVisitingCard) {
-  //       toast.error("Please upload business visiting card");
-  //       return;
-  //     }
+  const handleSubmit = async () => {
+    // Package type FREE then upload businessVisitingCard
+    if (modalForm.packageType == "FREE") {
+      if (!modalForm.businessVisitingCard) {
+        toast.error("Please upload business visiting card");
+        return;
+      }
 
-  //     // Validate image type
-  //     if (!validateImageType(modalForm.businessVisitingCard)) {
-  //       toast.error(
-  //         "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
-  //       );
-  //       return;
-  //     }
-  //   }
+      // Validate image type
+      if (!validateImageType(modalForm.businessVisitingCard)) {
+        toast.error(
+          "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+        );
+        return;
+      }
+    }
 
-  //   // Package type ELITE | PREMIUM then upload businessVisitingCard and businessLogo
-  //   else if (modalForm.packageType !== "FREE") {
-  //     if (!modalForm.businessVisitingCard) {
-  //       toast.error("Please upload business visiting card");
-  //       return;
-  //     }
+    // Package type ELITE | PREMIUM then upload businessVisitingCard and businessLogo
+    else if (modalForm.packageType !== "FREE") {
+      if (!modalForm.businessVisitingCard) {
+        toast.error("Please upload business visiting card");
+        return;
+      }
 
-  //     if (!modalForm.businessLogo) {
-  //       toast.error("Please upload business logo");
-  //       return;
-  //     }
+      if (!modalForm.businessLogo) {
+        toast.error("Please upload business logo");
+        return;
+      }
 
-  //     // Validate image type
-  //     if (!validateImageType(modalForm.businessVisitingCard)) {
-  //       toast.error(
-  //         "Invalid visiting card file type. Only JPEG, PNG, GIF, and WEBP are allowed."
-  //       );
-  //       return;
-  //     }
+      // Validate image type
+      if (!validateImageType(modalForm.businessVisitingCard)) {
+        toast.error(
+          "Invalid visiting card file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+        );
+        return;
+      }
 
-  //     if (!validateImageType(modalForm.businessLogo)) {
-  //       toast.error(
-  //         "Invalid logo file type. Only JPEG, PNG, GIF, and WEBP are allowed."
-  //       );
-  //       return;
-  //     }
-  //   }
+      if (!validateImageType(modalForm.businessLogo)) {
+        toast.error(
+          "Invalid logo file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+        );
+        return;
+      }
+    }
 
-  //   modalForm.openingHours = `${hour.open} ${hour.openMeridiem} to ${hour.close} ${hour.closeMeridiem}`;
+    modalForm.openingHours = `${hour.open} ${hour.openMeridiem} to ${hour.close} ${hour.closeMeridiem}`;
 
-  //   const formData = new FormData();
-  //   formData.append("businessVisitingCard", modalForm.businessVisitingCard);
-  //   formData.append("businessLogo", modalForm.businessLogo);
-  //   formData.append("businessData", JSON.stringify(modalForm));
+    const formData = new FormData();
+    formData.append("businessVisitingCard", modalForm.businessVisitingCard);
+    formData.append("businessLogo", modalForm.businessLogo);
+    formData.append("businessData", JSON.stringify(modalForm));
 
-  //   try {
-  //     dispatch(setLoading(true));
-  //     const response = await fetch("/api/business/add", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
+    try {
+      dispatch(setLoading(true));
+      const response = await fetch("/api/business/add", {
+        method: "POST",
+        body: formData,
+      });
 
-  //     if (response.ok) {
-  //       const result = await response.json();
-  //       if (result && result.success) {
-  //         toast.success("Business details add successfully");
-  //         closeModal();
-  //       }
-  //     } else {
-  //       toast.error("Error while purchase business package");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Something went wrong!");
-  //   } finally {
-  //     dispatch(setLoading(false));
-  //   }
-  // };
+      if (response.ok) {
+        const result = await response.json();
+        if (result && result.success) {
+          toast.success("Business details add successfully");
+          closeModal();
+        }
+      } else {
+        toast.error("Error while purchase business package");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   const closeModal = () => {
     setOpen(false);
@@ -243,7 +204,7 @@ const BusinessPackages = () => {
       {/* Dialog Form */}
       <Dialog fullWidth open={open} onClose={() => setOpen(false)}>
         <DialogTitle style={{ fontWeight: "600" }}>
-          {`Create Your ${values?.packageType} Business Listing`}
+          {`Create Your ${modalForm.packageType} Business Listing`}
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -252,14 +213,13 @@ const BusinessPackages = () => {
             type="text"
             fullWidth
             variant="standard"
-            name="businessOwner"
-            value={values.businessOwner}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={
-              touched?.businessOwner && errors?.businessOwner ? true : false
-            }
-            helperText={touched?.businessOwner && errors?.businessOwner}
+            onChange={(e) => {
+              setModalForm((prevState) => ({
+                ...prevState,
+                businessOwner: e.target.value,
+              }));
+            }}
+            value={modalForm.businessOwner}
           />
           <TextField
             margin="dense"
@@ -267,12 +227,13 @@ const BusinessPackages = () => {
             type="text"
             fullWidth
             variant="standard"
-            name="businessName"
-            value={values.businessName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={touched?.businessName && errors?.businessName ? true : false}
-            helperText={touched?.businessName && errors?.businessName}
+            onChange={(e) => {
+              setModalForm((prevState) => ({
+                ...prevState,
+                businessName: e.target.value,
+              }));
+            }}
+            value={modalForm.businessName}
           />
           <div style={{ display: "flex" }}>
             <TextField
@@ -282,16 +243,13 @@ const BusinessPackages = () => {
               type="number"
               fullWidth
               variant="standard"
-              name="businessContact"
-              value={values.businessContact}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={
-                touched?.businessContact && errors?.businessContact
-                  ? true
-                  : false
-              }
-              helperText={touched?.businessContact && errors?.businessContact}
+              onChange={(e) => {
+                setModalForm((prevState) => ({
+                  ...prevState,
+                  businessContact: e.target.value,
+                }));
+              }}
+              value={modalForm.businessContact}
             />
             <TextField
               margin="dense"
@@ -299,14 +257,13 @@ const BusinessPackages = () => {
               type="email"
               fullWidth
               variant="standard"
-              name="businessEmail"
-              value={values.businessEmail}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={
-                touched?.businessEmail && errors?.businessEmail ? true : false
-              }
-              helperText={touched?.businessEmail && errors?.businessEmail}
+              onChange={(e) => {
+                setModalForm((prevState) => ({
+                  ...prevState,
+                  businessEmail: e.target.value,
+                }));
+              }}
+              value={modalForm.businessEmail}
             />
           </div>
           <TextField
@@ -315,25 +272,15 @@ const BusinessPackages = () => {
             type="text"
             fullWidth
             variant="standard"
-            name="businessAddress"
-            value={values.businessAddress}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={
-              touched?.businessAddress && errors?.businessAddress ? true : false
-            }
-            helperText={touched?.businessAddress && errors?.businessAddress}
+            onChange={(e) => {
+              setModalForm((prevState) => ({
+                ...prevState,
+                businessAddress: e.target.value,
+              }));
+            }}
+            value={modalForm.businessAddress}
           />
-          <FormControl
-            margin="dense"
-            fullWidth
-            variant="standard"
-            error={
-              touched?.businessCategory && errors?.businessCategory
-                ? true
-                : false
-            }
-          >
+          <FormControl margin="dense" fullWidth variant="standard">
             <InputLabel id="demo-simple-select-label">
               Choose Business Category
             </InputLabel>
@@ -341,10 +288,13 @@ const BusinessPackages = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Choose Business Category"
-              name="businessCategory"
-              value={values.businessCategory}
-              onChange={handleChange}
-              onBlur={handleBlur}
+              onChange={(e) => {
+                setModalForm((prevState) => ({
+                  ...prevState,
+                  businessCategory: e.target.value,
+                }));
+              }}
+              value={modalForm.businessCategory}
             >
               <MenuItem value="Choose Business Category" disabled>
                 Choose Business Category
@@ -364,39 +314,26 @@ const BusinessPackages = () => {
               <MenuItem value="Hospitality">Hospitality</MenuItem>
               <MenuItem value="Other">Other</MenuItem>
             </Select>
-            {touched?.businessCategory && errors?.businessCategory && (
-              <FormHelperText>{errors?.businessCategory}</FormHelperText>
-            )}
           </FormControl>
 
           {/* // ^UPLOAD DATA FOR ELITE PACKAGE */}
-          {values?.packageType !== "FREE" && (
+          {modalForm.packageType !== "FREE" && (
             <>
               <div className="businessPackage-services">
                 <TextField
                   variant="standard"
                   label="Type and press Enter to add a service (e.g., 'Cleaning', 'Maintenance')"
-                  name="inputBusinessService"
-                  value={values.inputBusinessService}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  value={provideServices}
+                  onChange={(e) => setProvideServices(e.target.value)}
                   onKeyPress={(event) => {
                     if (event.key === "Enter") {
                       event.preventDefault();
                       handleProvideServiceAddChip();
                     }
                   }}
-                  error={
-                    touched?.provideServices && errors?.provideServices
-                      ? true
-                      : false
-                  }
-                  helperText={
-                    touched?.provideServices && errors?.provideServices
-                  }
                 />
                 <Stack direction="row" spacing={1} mt={1}>
-                  {values?.provideServices?.map((chip, index) => (
+                  {modalForm?.provideServices?.map((chip, index) => (
                     <Chip
                       key={index}
                       size="small"
@@ -526,7 +463,7 @@ const BusinessPackages = () => {
           )}
 
           {/* // ^UPLOAD DATA FOR PREMIER PACKAGE */}
-          {values?.packageType === "PREMIUM" && (
+          {modalForm.packageType === "PREMIUM" && (
             <>
               <div style={{ display: "flex" }}>
                 <TextField
@@ -670,7 +607,7 @@ const BusinessPackages = () => {
 
             <Grid item xs={6}>
               {/* IMAGE FOR BUSINESS LOGO */}
-              {values?.packageType !== "FREE" && (
+              {modalForm.packageType !== "FREE" && (
                 <div className="businessmodal-image-wrapper">
                   <Button variant="outlined" size="small" component="label">
                     Upload Business Logo
@@ -944,4 +881,4 @@ const BusinessPackages = () => {
   );
 };
 
-export default BusinessPackages;
+export default BusinessPackeages;
