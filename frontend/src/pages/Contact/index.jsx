@@ -1,15 +1,31 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
 import "./index.css";
+import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import { Button, Grid, TextField } from "@mui/material";
+import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
 import { fetchLoggedInUserDetails } from "../../features/auth/authSlice";
-import { Button, TextField } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { contactValidationSchema } from "../../schemas";
 
 const Contact = () => {
   const dispatch = useDispatch();
+
+  const initialValues = {
+    name: "",
+    mobile: "",
+    email: "",
+    message: "",
+  };
+
+  const { errors, values, handleBlur, handleSubmit, handleChange, touched } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: contactValidationSchema,
+      onSubmit: async (values, { resetForm }) => {
+        console.log("values >>", values);
+        // await submitForm(values, resetForm);
+      },
+    });
 
   useEffect(() => {
     dispatch(fetchLoggedInUserDetails());
@@ -64,59 +80,70 @@ const Contact = () => {
             <div className="input-wrapper">
               <TextField
                 id="outlined-basic"
-                label="Fullname"
+                label="Fullname *"
                 variant="outlined"
-                // value={headOfFamily.surname}
-                // onChange={(e) =>
-                //   setHeadOfFamily((prevState) => ({
-                //     ...prevState,
-                //     surname: e.target.value,
-                //   }))
-                // }
+                fullWidth
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched?.name && Boolean(errors?.name)}
+                helperText={touched?.name && errors?.name}
               />
+            </div>
+            <div className="input-wrapper">
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Email *"
+                    type="email"
+                    variant="outlined"
+                    fullWidth
+                    name="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched?.email && Boolean(errors?.email)}
+                    helperText={touched?.email && errors?.email}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Phone No. *"
+                    variant="outlined"
+                    type="number"
+                    fullWidth
+                    name="mobile"
+                    value={values.mobile}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched?.mobile && Boolean(errors?.mobile)}
+                    helperText={touched?.mobile && errors?.mobile}
+                  />
+                </Grid>
+              </Grid>
             </div>
             <div className="input-wrapper">
               <TextField
                 id="outlined-basic"
-                label="Phone No."
+                label="Message *"
+                type="text"
                 variant="outlined"
-                // value={headOfFamily.surname}
-                // onChange={(e) =>
-                //   setHeadOfFamily((prevState) => ({
-                //     ...prevState,
-                //     surname: e.target.value,
-                //   }))
-                // }
+                fullWidth
+                multiline
+                minRows={2}
+                name="message"
+                value={values.message}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched?.message && Boolean(errors?.message)}
+                helperText={touched?.message && errors?.message}
               />
-            </div>
-            <div className="input-wrapper">
-              <TextField
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                // value={headOfFamily.surname}
-                // onChange={(e) =>
-                //   setHeadOfFamily((prevState) => ({
-                //     ...prevState,
-                //     surname: e.target.value,
-                //   }))
-                // }
-              />
-            </div>
-            <div className="input-wrapper">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Choose your DOB"
-                  // value={headOfFamily.dob} // Set the value prop to the 'dob' property in your state
-                  // onChange={handleDateChange} // Pass the handleDateChange function
-                  // renderInput={(params) => (
-                  //   <TextField {...params} variant="outlined" />
-                  // )}
-                />
-              </LocalizationProvider>
             </div>
             <Button
-              // onClick={handleSubmit}
+              onClick={handleSubmit}
               fullWidth
               style={{ background: "#a7732b", marginTop: "10px" }}
               variant="contained"
