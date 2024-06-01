@@ -1,10 +1,21 @@
 import React, { useState } from "react";
 import "./index.css";
 import { toast } from "react-toastify";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useFormik } from "formik";
+import { ErrorMessage, useFormik } from "formik";
 import {
   setIsLoggedIn,
   setLoggedInUserDetails,
@@ -13,6 +24,8 @@ import {
 import { signInSchema } from "../../schemas";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,6 +42,11 @@ const Login = () => {
         await handleLogin(values);
       },
     });
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleLogin = async (data) => {
     try {
@@ -93,7 +111,7 @@ const Login = () => {
                 error={touched.email && errors.email ? true : false}
                 helperText={touched.email && errors.email}
               />
-              <TextField
+              {/* <TextField
                 fullWidth
                 id="outlined-basic"
                 label="Password *"
@@ -106,7 +124,41 @@ const Login = () => {
                 style={{ marginTop: "10px" }}
                 error={touched.password && errors.password ? true : false}
                 helperText={touched.password && errors.password}
-              />
+              /> */}
+              <FormControl
+                fullWidth
+                sx={{ my: 1 }}
+                variant="outlined"
+                error={touched.password && Boolean(errors.password)}
+              >
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  fullWidth
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+                {touched?.password && errors?.password && (
+                  <FormHelperText>{errors?.password}</FormHelperText>
+                )}
+              </FormControl>
 
               <div>
                 <p className="forgot-password">
