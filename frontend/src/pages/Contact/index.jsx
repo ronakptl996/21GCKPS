@@ -6,6 +6,7 @@ import { Button, Grid, TextField } from "@mui/material";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
 import { fetchLoggedInUserDetails } from "../../features/auth/authSlice";
 import { contactValidationSchema } from "../../schemas";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const dispatch = useDispatch();
@@ -23,9 +24,31 @@ const Contact = () => {
       validationSchema: contactValidationSchema,
       onSubmit: async (values, { resetForm }) => {
         console.log("values >>", values);
-        // await submitForm(values, resetForm);
+        await submitForm(values, resetForm);
       },
     });
+
+  const submitForm = async (data, resetForm) => {
+    try {
+      const result = await fetch("/api/help", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const response = await result.json();
+      if (result.ok && response.success) {
+        toast.success(response.message);
+        resetForm();
+      } else if (response.statusCode === 404 || !response.success) {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchLoggedInUserDetails());
@@ -96,7 +119,7 @@ const Contact = () => {
                 <Grid item xs={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Email *"
+                    label="Email * (Head of family)"
                     type="email"
                     variant="outlined"
                     fullWidth
@@ -111,7 +134,7 @@ const Contact = () => {
                 <Grid item xs={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Phone No. *"
+                    label="Phone No. * (Head of family)"
                     variant="outlined"
                     type="number"
                     fullWidth
@@ -148,7 +171,7 @@ const Contact = () => {
               style={{ background: "#a7732b", marginTop: "10px" }}
               variant="contained"
             >
-              Register
+              Submit
             </Button>
           </form>
         </div>

@@ -24,9 +24,7 @@ import donationPaymentRoute from "./routes/donationPayment.routes.js";
 import donorRoute from "./routes/donor.routes.js";
 import jobRoute from "./routes/job.routes.js";
 import businessRoute from "./routes/business.routes.js";
-import multer from "multer";
-import { ApiError } from "./utils/ApiError.js";
-import { log } from "console";
+import helpRoute from "./routes/help.routes.js";
 
 // User Route
 app.use("/api/users", familyRoute);
@@ -47,13 +45,7 @@ app.use("/api/job", jobRoute);
 // Business Route
 app.use("/api/business", businessRoute);
 
-// // Handle Multer Error
-// app.use((error, req, res, next) => {
-//   if (error instanceof multer.MulterError) {
-//     if (error.code === "LIMIT_UNEXPECTED_FILE") {
-//       throw new ApiError(400, "File must be an image");
-//     }
-//   }
-// });
+// Contact Us Route
+app.use("/api/help", helpRoute);
 
 export { app };

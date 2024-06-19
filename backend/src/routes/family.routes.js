@@ -43,6 +43,9 @@ router.route("/village/:villageName").get(verifyJwt, villageFamilyData);
 // Get Village wise commite data for Committe Card
 router.route("/committe-data").post(verifyJwt, getVillageWiseCommitteData);
 
+// Contact Us
+router.route("/contact").post()
+
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/verify-otp").post(verifyOtp);

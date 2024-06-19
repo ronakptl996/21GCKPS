@@ -151,8 +151,8 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);
 
-  if (!password && !email) {
-    throw new ApiError(400, "username or email is required");
+  if (!password || !email) {
+    throw new ApiError(400, "User details is required");
   }
 
   const user = await Family.findOne({ "headOfFamily.email": email });
