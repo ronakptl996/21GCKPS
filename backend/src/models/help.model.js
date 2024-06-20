@@ -5,7 +5,12 @@ const helpSchema = new Schema({
   mobile: { type: Number, required: true },
   email: { type: String, required: true },
   message: { type: String, required: true },
-  status: { type: String, default: "Pending" },
+  status: {
+    type: String,
+    default: "Pending",
+    enum: ["Pending", , "Approved", "Rejected"],
+  },
+  reason: { type: String, default: "" },
   resolvedBy: { type: Schema.Types.ObjectId, ref: "Family" },
 });
 
