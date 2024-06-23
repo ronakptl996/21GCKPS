@@ -21,6 +21,11 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
+router.route("/get").get((req, res) => {
+  res.json({
+    message: "server running",
+  });
+});
 // Update User Profile
 router
   .route("/update-image")
@@ -42,9 +47,6 @@ router.route("/village/:villageName").get(verifyJwt, villageFamilyData);
 
 // Get Village wise commite data for Committe Card
 router.route("/committe-data").post(verifyJwt, getVillageWiseCommitteData);
-
-// Contact Us
-router.route("/contact").post()
 
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);
