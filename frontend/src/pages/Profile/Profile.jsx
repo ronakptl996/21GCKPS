@@ -626,7 +626,7 @@ const Profile = () => {
               <div className="headOfFamily-avatar changeAvatar">
                 {headOfFamily.headOfFamilyAvatar && (
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                    src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
                       headOfFamily.headOfFamilyAvatar
                     }`}
                     alt={headOfFamily.firstname}
@@ -836,7 +836,7 @@ const Profile = () => {
             <div className="headOfFamily-wrapper">
               <div className="headOfFamily-avatar changeAvatar">
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
                     wifeDetails.wifeAvatar
                   }`}
                   alt={wifeDetails.firstname}
@@ -1018,7 +1018,7 @@ const Profile = () => {
                 <div className="headOfFamily-wrapper">
                   <div className="headOfFamily-avatar changeAvatar">
                     <img
-                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
                         son.sonAvatar
                       }`}
                       alt={son.firstname}
@@ -1220,7 +1220,7 @@ const Profile = () => {
                 <div className="headOfFamily-wrapper" key={daughter.firstname}>
                   <div className="headOfFamily-avatar changeAvatar">
                     <img
-                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
                         daughter.daughterAvatar
                       }`}
                       alt={daughter.firstname}

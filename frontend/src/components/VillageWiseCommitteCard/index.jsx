@@ -44,7 +44,7 @@ const VillageWiseCommiteeMemberCard = () => {
             >
               <div className="comeeti-carousel-img">
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL}${member.avatar}`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/${member.avatar}`}
                   alt={member.name}
                 />
               </div>

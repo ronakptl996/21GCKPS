@@ -36,7 +36,7 @@ const Business = () => {
             <div className="villageWiseFamilyDetails-card" key={data._id}>
               <div className="villageWiseFamilyDetails-image-wrapper">
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}${
+                  src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}/${
                     data.businessLogo
                   }`}
                 />

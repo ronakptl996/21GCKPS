@@ -70,7 +70,7 @@ const CommitteeTable = () => {
                                 <img
                                   src={`${
                                     import.meta.env.VITE_BACKEND_URL
-                                  }${value}`}
+                                  }/${value}`}
                                   alt={value}
                                   className="committeeAvatar"
                                 />

@@ -347,7 +347,7 @@ const DetailMatrimonialProfile = () => {
             <section>
               <img
                 className="matrimonial-profile"
-                src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}${
+                src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}/${
                   modalForm?.photo
                 }`}
                 alt={modalForm.fullName}
@@ -823,7 +823,7 @@ const DetailMatrimonialProfile = () => {
           <div className="DetailMatrimonialProfile-user-img-wrapper">
             <div className="user-profile-image">
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}${
+                src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}/${
                   user?.photo
                 }`}
                 alt={user?.fullName}

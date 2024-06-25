@@ -11,7 +11,7 @@ const MatrimonialUserCard = ({ user }) => {
     <div className="search-user-box-wrapper" key={user._id}>
       <div className="search-box-img">
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}${user.photo}`}
+          src={`${import.meta.env.VITE_BACKEND_URL_MATRIMONIAL}/${user.photo}`}
           alt={user.fullName}
         />
       </div>

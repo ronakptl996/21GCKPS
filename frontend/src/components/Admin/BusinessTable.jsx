@@ -621,7 +621,7 @@ const BusinessTable = ({
                   >
                     <img
                       alt="businessVisitingCard"
-                      src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}${
+                      src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}/${
                         modalForm.businessVisitingCard
                       }`}
                     />
@@ -665,7 +665,7 @@ const BusinessTable = ({
                     >
                       <img
                         alt="businessLogo"
-                        src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}${
+                        src={`${import.meta.env.VITE_BACKEND_URL_BUSINESS}/${
                           modalForm.businessLogo
                         }`}
                       />

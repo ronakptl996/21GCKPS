@@ -384,7 +384,7 @@ const AdminCommittee = () => {
                   <img
                     alt={modalForm.name}
                     width={"250px"}
-                    src={`${import.meta.env.VITE_BACKEND_URL}${
+                    src={`${import.meta.env.VITE_BACKEND_URL}/${
                       modalForm.avatar
                     }`}
                   />
@@ -549,7 +549,7 @@ const AdminCommittee = () => {
                         {user.avatar ? (
                           <img
                             className="userAvatar"
-                            src={`${import.meta.env.VITE_BACKEND_URL}${
+                            src={`${import.meta.env.VITE_BACKEND_URL}/${
                               user.avatar
                             }`}
                             alt={user.name}

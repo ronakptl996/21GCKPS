@@ -61,7 +61,7 @@ const villageWiseFamilyDetails = () => {
             <div className="villageWiseFamilyDetails-card" key={family._id}>
               <div className="villageWiseFamilyDetails-image-wrapper">
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}${
+                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
                     family.avatar
                   }`}
                 />
