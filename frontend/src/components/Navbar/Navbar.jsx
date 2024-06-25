@@ -224,10 +224,14 @@ const Navbar = () => {
                     <NavLink to="/job-posting">Job</NavLink>
                   </li>
                   <li className="navbar-item">
-                    <NavLink to="/festivals">Festivals</NavLink>
+                    <NavLink to="/festivals" end>
+                      Festivals
+                    </NavLink>
                   </li>
                   <li className="navbar-item">
-                    <NavLink to="/donation">Donation List</NavLink>
+                    <NavLink to="/donation" end>
+                      Donation List
+                    </NavLink>
                   </li>
                   {loggedInUserDetails && (
                     <>
