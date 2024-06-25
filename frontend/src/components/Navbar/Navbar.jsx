@@ -122,7 +122,7 @@ const Navbar = () => {
             <ul>
               {isAuth && (
                 <li className="navbar-item">
-                  <NavLink to="/">Home</NavLink>
+                  <NavLink to="/home">Home</NavLink>
                 </li>
               )}
               <li className="navbar-item">
@@ -148,7 +148,7 @@ const Navbar = () => {
                         Management Loby
                       </li>
                     ) : (
-                      <NavLink to="#">Management Loby</NavLink>
+                      <a>Management Loby</a>
                     )}
                     {isOpen && (
                       <div className="dropdown-content">
@@ -188,9 +188,6 @@ const Navbar = () => {
                   <li className="navbar-item">
                     <NavLink to="/matrimonial">Matrimonial</NavLink>
                   </li>
-                  {/* <li className="navbar-item">
-                    <NavLink to="/business">Business</NavLink>
-                  </li> */}
                   <li
                     className="navbar-item dropdown"
                     onMouseEnter={toggleDropdown}
@@ -206,7 +203,7 @@ const Navbar = () => {
                         Business
                       </li>
                     ) : (
-                      <NavLink to="#">Business</NavLink>
+                      <a>Business</a>
                     )}
                     {isOpen && (
                       <div className="dropdown-content">
@@ -249,7 +246,7 @@ const Navbar = () => {
                             Profiles
                           </li>
                         ) : (
-                          <NavLink to="#">Profiles</NavLink>
+                          <a>Profiles</a>
                         )}
                         {isOpen && (
                           <div className="dropdown-content">
