@@ -1,7 +1,10 @@
 nav {
-  padding: 10px 100px;
+  padding: 0px 100px;
   position: sticky;
   top: 0;
+  height: 85px;
+  display: flex;
+  align-items: center;
   background: #fff;
   z-index: 1001;
   box-shadow: rgba(51, 51, 51, 0.14) 0px 11px 11px -11px;
@@ -9,6 +12,7 @@ nav {
 
 .container {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
 }
@@ -18,7 +22,12 @@ nav {
 }
 
 .logo img {
-  width: 100px;
+  width: 130px;
+  position: relative;
+  background: white;
+  top: 25px;
+  padding: 10px;
+  border-radius: 99px;
 }
 
 .menu-icon {
@@ -35,6 +44,7 @@ nav {
   cursor: pointer;
   list-style: none;
   font-family: "Poppins";
+  margin: 0 10px;
 }
 
 /* for logout & mobile responsive for li in dropdown */
@@ -44,12 +54,18 @@ li.openNav-li-dropdown {
 }
 
 .navbar-item-wrapper ul li > a {
-  padding: 10px;
+  padding: 10px 0;
   display: inline-block;
   color: #000;
   text-decoration: none;
   transition: all 0.2s;
   font-family: "Roboto";
+}
+
+li.navbar-item a.active,
+li.navbar-item a.active::before {
+  color: rgb(167, 115, 43);
+  width: 100%;
 }
 
 .navbar-item-wrapper li > a::before {
@@ -92,13 +108,26 @@ li.openNav-li-dropdown {
 
 @media (min-width: 1200px) and (max-width: 1290px) {
   nav {
-    padding: 10px 40px;
+    padding: 0px 40px;
   }
 }
 @media (max-width: 1200px) {
   .menu-icon {
     display: block;
     cursor: pointer;
+  }
+
+  .li-btn {
+    width: 100%;
+  }
+
+  .li-btn a {
+    width: 100%;
+  }
+
+  .li-btn button {
+    width: 100% !important;
+    margin-left: 0 !important;
   }
 
   .nav-elements {

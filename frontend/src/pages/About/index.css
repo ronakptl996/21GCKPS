@@ -1,16 +1,19 @@
 .about-hero-section {
   position: relative;
-  background-image: url("../../assets/images/about-banner.jpeg");
   height: 30rem;
-  padding: 150px 200px;
+  padding: 150px 100px;
+  background-image: url("../../assets/images/about-banner.jpeg");
   display: grid;
 }
 
-.about-hero-section::before {
+.about-hero-section::after {
   content: "";
   position: absolute;
-  background: #000;
-  opacity: 0.7;
+  background: linear-gradient(
+    127deg,
+    rgb(0, 0, 0) 35%,
+    rgba(255, 255, 255, 0) 70%
+  );
   width: 100%;
   height: 100%;
   top: 0;

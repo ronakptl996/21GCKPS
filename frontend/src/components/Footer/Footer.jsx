@@ -83,6 +83,10 @@ const Footer = () => {
           </ul>
         </div>
       </section>
+      <div className="footer-copyright">
+        Copyright © 2024 21GCKPS. All right reserved. Made with ❤️ by Calm
+        Coders.
+      </div>
     </footer>
   );
 };

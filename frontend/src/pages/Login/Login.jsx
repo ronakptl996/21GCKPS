@@ -111,23 +111,9 @@ const Login = () => {
                 error={touched.email && errors.email ? true : false}
                 helperText={touched.email && errors.email}
               />
-              {/* <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Password *"
-                type="password"
-                variant="outlined"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                style={{ marginTop: "10px" }}
-                error={touched.password && errors.password ? true : false}
-                helperText={touched.password && errors.password}
-              /> */}
               <FormControl
                 fullWidth
-                sx={{ my: 1 }}
+                sx={{ my: 1.5 }}
                 variant="outlined"
                 error={touched.password && Boolean(errors.password)}
               >
@@ -166,7 +152,7 @@ const Login = () => {
                 </p>
                 <Button
                   fullWidth
-                  style={{ background: "#a7732b", marginTop: "10px" }}
+                  style={{ background: "#a7732b", marginTop: "20px" }}
                   variant="contained"
                   onClick={handleSubmit}
                 >

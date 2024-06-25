@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import { setIsLoggedIn, setShowNavbar } from "../../features/auth/authSlice";
 import { useDropdownContext } from "../../context/DropdownContext";
 import CloseIcon from "@mui/icons-material/Close";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Navbar = () => {
   const { isOpen, toggleDropdown, closeDropdown } = useDropdownContext();
@@ -27,7 +29,7 @@ const Navbar = () => {
   const Hamburger = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="52"
+      width="40"
       height="24"
       viewBox="0 0 52 24"
     >
@@ -39,7 +41,7 @@ const Navbar = () => {
           height="4"
           rx="2"
           transform="translate(304 47)"
-          fill="#574c4c"
+          fill="#000"
         />
         <rect
           id="Rectangle_5"
@@ -118,9 +120,11 @@ const Navbar = () => {
           )}
           <div className="navbar-item-wrapper">
             <ul>
-              <li className="navbar-item">
-                <NavLink to="/">Home</NavLink>
-              </li>
+              {isAuth && (
+                <li className="navbar-item">
+                  <NavLink to="/">Home</NavLink>
+                </li>
+              )}
               <li className="navbar-item">
                 <NavLink to="/about">About Us</NavLink>
               </li>
@@ -321,30 +325,44 @@ const Navbar = () => {
                   <li className="navbar-item">
                     <NavLink to="/privacy-policy">Privacy Policy</NavLink>
                   </li>
-                  <li>
+                  <li className="li-btn">
                     <NavLink to="/login">
                       <Button
-                        style={{ background: "rgb(233 135 0)" }}
+                        className="login-btn"
+                        style={{
+                          background: "rgb(233 135 0)",
+                          marginLeft: "30px",
+                          padding: "6px 40px",
+                          fontWeight: "600",
+                          letterSpacing: "1px",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
                         size="small"
                         variant="contained"
                       >
-                        {/* <FontAwesomeIcon
-                          icon="fa-regular fa-user"
-                          style={{ color: "#ffffff" }}
-                        />{" "} */}
+                        <LoginIcon style={{ marginRight: "15px" }} />
                         Login
                       </Button>
                     </NavLink>
                   </li>
-                  <li>
+                  <li className="li-btn">
                     <NavLink to="/register">
                       <Button
                         size="small"
+                        className="register-btn"
                         style={{
+                          background: "#f3f3f3",
                           border: "1px solid rgb(233 135 0)",
                           color: "rgb(233 135 0)",
+                          padding: "6px 50px",
+                          fontWeight: "600",
+                          letterSpacing: "1px",
+                          display: "flex",
+                          justifyContent: "center",
                         }}
                       >
+                        <PersonIcon style={{ marginRight: "15px" }} />
                         Register
                       </Button>
                     </NavLink>

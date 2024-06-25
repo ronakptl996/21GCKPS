@@ -1,14 +1,17 @@
 .footer-wrapper {
-  padding: 80px 150px;
+  padding: 60px 150px;
   background: #000;
   color: #fff;
   z-index: 999;
   position: relative;
+  /* border-top: 1px solid #4c4c4c; */
+  border-top-style: double;
+  border-color: #4c4c4c;
 }
 
 .footer-wrapper .footer-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1.3fr 1fr 1fr;
 }
 
 .footer-inner .footer-social-wrapper,
@@ -27,7 +30,8 @@
 .footer-social-wrapper .office-address {
   font-family: "Roboto";
   margin: 15px 0;
-  color: #ffffffd9;
+  color: #979797;
+  line-height: 1.6em;
 }
 
 .footer-social-wrapper .social-icons-wrapper {
@@ -42,7 +46,7 @@
   padding: 10px;
   border: 1px solid;
   border-radius: 50%;
-  margin: 0 5px;
+  margin: 0 7px;
   cursor: pointer;
 }
 
@@ -54,24 +58,34 @@
 .footer-contact-wrapper ul li {
   display: flex;
   align-items: center;
-  color: #ffffffd9;
+  color: #979797;
 }
 
 .footer-contact-wrapper ul li p {
   margin-right: 10px;
-  color: #ffffffd9;
 }
 
 .footer-contact-wrapper ul li a,
 .footer-pages-wrapper ul li a {
   text-decoration: none;
   color: #000;
-  color: #ffffffd9;
+  color: #979797;
+}
+
+.footer-social-wrapper .social-icons-wrapper svg {
+  color: #979797;
 }
 
 .footer-contact-wrapper ul li a:hover,
 .footer-pages-wrapper ul li a:hover {
   text-decoration: underline;
+}
+
+.footer-copyright {
+  text-align: center;
+  border-top: 1px solid grey;
+  padding: 25px 0 0;
+  color: #979797;
 }
 
 @media (min-width: 1000px) and (max-width: 1150px) {

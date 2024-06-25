@@ -143,7 +143,7 @@
 
 @media screen and (max-width: 960px) {
   .landing-page-inner {
-    padding: 100px 200px;
+    padding: 100px;
     flex-direction: column;
   }
 
@@ -157,7 +157,7 @@
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 770px) {
   .landing-page-inner {
     padding: 100px;
     flex-direction: column;

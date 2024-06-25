@@ -24,6 +24,7 @@ span {
 span > a,
 p.forgot-password > a {
   color: #a7732b;
+  text-decoration: none;
 }
 
 p.forgot-password {
@@ -33,21 +34,32 @@ p.forgot-password {
 
 span.register-link {
   display: block;
-  margin: 15px 0 10px 0;
+  margin: 20px 0 10px 0;
 }
 
-@media (min-width: 320px) and (max-width: 625px) {
-  .login {
-    width: 90% !important;
+/* .landing-page::before {
+  content: "";
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 10%;
+  background: red;
+  opacity: 0.8;
+  z-index: -1;
+} */
+
+@media (min-width: 320px) and (max-width: 770px) {
+  .landing-page-inner .landing-first {
+    display: none;
+  }
+  .landing-form .form-header p {
+    display: none;
+  }
+  .landing-second .form-header h2 {
+    font-size: 38px;
   }
   .form-header {
-    padding: 10px !important;
-    margin-bottom: 30px;
-  }
-  .form-header h2 {
-    font-size: 20px !important;
-  }
-  .form-header p {
-    line-height: 1.1rem;
+    padding: 30px 0 !important;
   }
 }
