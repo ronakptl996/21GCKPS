@@ -3,6 +3,7 @@
   height: 30rem;
   padding: 150px 100px;
   background-image: url("../../assets/images/about-banner.jpeg");
+  background-size: cover;
   display: grid;
 }
 
@@ -77,11 +78,10 @@
 
 .about-info-mission {
   display: flex;
-  align-items: center;
 }
 
 .about-info-mission .mission-img {
-  margin: 2rem;
+  margin: 1rem 2rem 0 0;
 }
 
 .about-info-mission .mission-img img {
@@ -135,7 +135,7 @@
   }
   .about-hero-header {
     margin: 50px 0;
-    width: 90%;
+    width: 60%;
   }
   .about-hero-header h1 {
     font-size: 40px;
@@ -152,28 +152,50 @@
   .about-info-section .about-info-one h2 {
     font-size: 2rem;
     line-height: 2.5rem;
+    text-align: center;
   }
   .about-info-mission .mission-img {
     margin: 0 1rem 0 0;
+  }
+  .about-hero-section::after {
+    background: linear-gradient(
+      127deg,
+      rgb(0, 0, 0) 43%,
+      rgba(255, 255, 255, 0) 87%
+    );
   }
 }
 
-/* @media screen and (max-width: 800px) {
+@media screen and (max-width: 600px) {
   .about-hero-section {
-    padding: 30px;
-    background-position: center;
+    background-position: right;
+  }
+  .about-hero-header {
+    width: 90%;
   }
   .about-info-section {
-    padding: 50px;
+    padding: 50px 20px;
   }
-  .about-info-section .about-info-two {
-    width: 100%;
-  }
-  .about-info-section .about-info-one h2 {
-    font-size: 2rem;
-    line-height: 2.5rem;
+  .about-info-mission {
+    flex-direction: column;
+    border: 1px solid #000000b8;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 50px 0;
   }
   .about-info-mission .mission-img {
-    margin: 0 1rem 0 0;
+    text-align: center;
+    margin: 0;
+    padding: 10px 0;
   }
-} */
+  .about-info-mission-inner-desc {
+    text-align: center;
+  }
+  .about-hero-section::after {
+    background: linear-gradient(
+      127deg,
+      rgb(0, 0, 0) 63%,
+      rgba(255, 255, 255, 0) 87%
+    );
+  }
+}

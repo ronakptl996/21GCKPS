@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./index.css";
 import visionImg from "../../assets/images/vision.png";
 import missionImg from "../../assets/images/mission-icon.png";
 import sharedVision from "../../assets/images/shared-vision.png";
+import { useDispatch } from "react-redux";
+import { fetchLoggedInUserDetails } from "../../features/auth/authSlice";
 
 const About = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchLoggedInUserDetails());
+  }, []);
   return (
     <section className="about">
       <section className="about-hero-section">

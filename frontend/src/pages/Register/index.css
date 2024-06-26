@@ -103,3 +103,30 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Production CSS */
+.css-1v4ccyo,
+.css-i44wyl,
+.css-fvipm8,
+.css-1bn53lx {
+  margin: 2px;
+}
+
+.donation-image-wrapper .css-1hw9j7s {
+  width: 98%;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  box-shadow: none;
+  height: 96%;
+  margin: 2px;
+  text-transform: capitalize;
+}
+
+.register-form .css-1bn53lx.Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.23);
+}
+
+.register-form .css-1ald77x.Mui-error {
+  color: rgba(0, 0, 0, 0.6);
+}

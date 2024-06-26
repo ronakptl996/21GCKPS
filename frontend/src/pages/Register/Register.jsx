@@ -290,7 +290,7 @@ const Register = () => {
               />
               <TextField
                 id="outlined-basic"
-                label="Secondname"
+                label="Lastname"
                 variant="outlined"
                 value={headOfFamily.secondname}
                 onChange={(e) =>
@@ -385,6 +385,8 @@ const Register = () => {
                 {/* <DatePicker label="Choose your DOB" /> */}
                 <DatePicker
                   label="Choose your DOB"
+                  disableFuture
+                  format="DD/MM/YYYY"
                   value={headOfFamily.dob} // Set the value prop to the 'dob' property in your state
                   onChange={handleDateChange} // Pass the handleDateChange function
                   renderInput={(params) => (
@@ -499,7 +501,7 @@ const Register = () => {
               />
               <TextField
                 id="outlined-basic"
-                label="Secondname"
+                label="Lastname"
                 variant="outlined"
                 value={wifeDetails.secondname}
                 onChange={(e) =>
@@ -581,6 +583,8 @@ const Register = () => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Choose your DOB"
+                  disableFuture
+                  format="DD/MM/YYYY"
                   value={wifeDetails.dob}
                   onChange={(date) => {
                     setWifeDetails((prevState) => ({
@@ -679,7 +683,7 @@ const Register = () => {
                         />
                         <TextField
                           id={`outlined-basic-${index}`}
-                          label="Secondname"
+                          label="Lastname"
                           variant="outlined"
                           value={son.secondname}
                           onChange={(e) =>
@@ -766,6 +770,8 @@ const Register = () => {
                           <DatePicker
                             label="Choose your DOB"
                             value={son.dob}
+                            disableFuture
+                            format="DD/MM/YYYY"
                             onChange={(date) =>
                               handleSonDetailChange(
                                 index,
@@ -877,7 +883,7 @@ const Register = () => {
                         />
                         <TextField
                           id={`outlined-basic-${index}`}
-                          label="Secondname"
+                          label="Lastname"
                           variant="outlined"
                           value={daughter.secondname}
                           onChange={(e) =>
@@ -964,6 +970,8 @@ const Register = () => {
                           <DatePicker
                             label="Choose your DOB"
                             value={daughter.dob}
+                            disableFuture
+                            format="DD/MM/YYYY"
                             onChange={(date) =>
                               handleDaughterDetailChange(
                                 index,
