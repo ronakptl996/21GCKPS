@@ -40,7 +40,7 @@ const CommitteeTable = () => {
   }, [committeeDetails]);
 
   return (
-    <div className="table-wrapper">
+    <div className="table-wrapper" key="Committee Table">
       {/* <h1>MUI Table</h1> */}
       <Paper>
         <TableContainer>
@@ -64,9 +64,11 @@ const CommitteeTable = () => {
                             let value = row[column.id];
 
                             return column.name == "Sr.No." ? (
-                              <TableCell key={value}>{index + 1}</TableCell>
+                              <TableCell key={column.id + index}>
+                                {index + 1}
+                              </TableCell>
                             ) : column.name == "Image" ? (
-                              <TableCell key={value}>
+                              <TableCell key={column.id + index}>
                                 <img
                                   src={`${
                                     import.meta.env.VITE_BACKEND_URL
@@ -76,7 +78,9 @@ const CommitteeTable = () => {
                                 />
                               </TableCell>
                             ) : (
-                              <TableCell key={value}>{value}</TableCell>
+                              <TableCell key={column.id + index}>
+                                {value}
+                              </TableCell>
                             );
                           })}
                       </TableRow>

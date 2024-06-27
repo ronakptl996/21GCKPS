@@ -9,7 +9,7 @@ const Committee = ({ header }) => {
       <HeroSectionHeader heading={header} />
       <section className="committee-wrapper">
         <div className="committee-card-wrapper">
-          <CommitteeTable />
+          <CommitteeTable key={header} />
         </div>
       </section>
     </section>
