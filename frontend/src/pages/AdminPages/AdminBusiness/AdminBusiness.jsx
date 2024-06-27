@@ -14,7 +14,9 @@ const AdminBusiness = () => {
 
   const fetchAllBusinessDetails = async () => {
     try {
-      const response = await fetch("/api/admin/business");
+      const response = await fetch("/api/admin/business", {
+        credentials: "include",
+      });
       if (response.ok) {
         const result = await response.json();
         setallBusinessDetails(result.data[0]);
@@ -43,6 +45,7 @@ const AdminBusiness = () => {
       try {
         const response = await fetch(`/api/admin/business/delete/${id}`, {
           method: "DELETE",
+          credentials: "include",
         });
 
         if (response.ok) {

@@ -59,6 +59,7 @@ const AdminAddJobPosting = () => {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(modalForm),
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -108,6 +109,7 @@ const AdminAddJobPosting = () => {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ jobId: id }),
+          credentials: "include",
         });
 
         let data = await response.json();
@@ -127,7 +129,7 @@ const AdminAddJobPosting = () => {
 
   const fetchJobDetails = async () => {
     try {
-      const response = await fetch("/api/job");
+      const response = await fetch("/api/job", { credentials: "include" });
       const data = await response.json();
       if (data.success) {
         setJobData(data.data);

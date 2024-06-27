@@ -50,7 +50,8 @@ const AdminHome = () => {
   const getVillageWiseMenWomenCount = async (villageName) => {
     try {
       const response = await fetch(
-        `/api/admin/village-wise-men-women/${villageName}`
+        `/api/admin/village-wise-men-women/${villageName}`,
+        { credentials: "include" }
       );
 
       if (response.ok) {
@@ -71,7 +72,8 @@ const AdminHome = () => {
   const getMatrimonialMenWomenCount = async (villageName) => {
     try {
       const response = await fetch(
-        `/api/admin/matrimonial-men-women-count/${villageName}`
+        `/api/admin/matrimonial-men-women-count/${villageName}`,
+        { credentials: "include" }
       );
 
       if (response.ok) {
@@ -91,7 +93,9 @@ const AdminHome = () => {
   // ^Get Statistics
   const getStatistics = async () => {
     try {
-      const response = await fetch(`/api/admin/statictics`);
+      const response = await fetch(`/api/admin/statictics`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();

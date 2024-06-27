@@ -16,7 +16,9 @@ const MyBusiness = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/business/my-business");
+      const response = await fetch(`/api/business/my-business`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const result = await response.json();
@@ -40,10 +42,11 @@ const MyBusiness = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/business/my-business/edit", {
+      const response = await fetch(`/api/business/my-business/edit`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(modalForm),
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -90,9 +93,10 @@ const MyBusiness = () => {
       formData.append("changedImageFor", changedImageFor);
       formData.append("businessId", businessId);
 
-      const response = await fetch("/api/business/my-business/update-image", {
+      const response = await fetch(`/api/business/my-business/update-image`, {
         method: "PATCH",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {

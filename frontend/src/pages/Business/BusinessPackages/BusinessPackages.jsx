@@ -147,9 +147,10 @@ const BusinessPackeages = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/business/add", {
+      const response = await fetch(`/api/business/add`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {

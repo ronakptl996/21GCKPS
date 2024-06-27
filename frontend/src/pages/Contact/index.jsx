@@ -30,12 +30,13 @@ const Contact = () => {
 
   const submitForm = async (data, resetForm) => {
     try {
-      const result = await fetch("/api/help", {
+      const result = await fetch(`/api/help`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       const response = await result.json();

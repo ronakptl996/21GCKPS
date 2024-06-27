@@ -78,9 +78,10 @@ const AdminCommittee = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/admin/add-committee", {
+      const response = await fetch(`/api/admin/add-committee`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -115,10 +116,11 @@ const AdminCommittee = () => {
 
     if (result.isConfirmed) {
       try {
-        let response = await fetch("/api/admin/delete-committee", {
+        let response = await fetch(`/api/admin/delete-committee`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId: id }),
+          credentials: "include",
         });
 
         if (response.ok) {
@@ -140,7 +142,9 @@ const AdminCommittee = () => {
 
   const fetchCommitteeDetails = async () => {
     try {
-      const response = await fetch("/api/admin/committee");
+      const response = await fetch(`/api/admin/committee`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -176,10 +180,11 @@ const AdminCommittee = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/admin/edit-committee", {
+      const response = await fetch(`/api/admin/edit-committee`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -242,9 +247,10 @@ const AdminCommittee = () => {
     formData.append("userId", modalForm.userId);
 
     try {
-      const response = await fetch("/api/admin/edit-committee-avatar", {
+      const response = await fetch(`/api/admin/edit-committee-avatar`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {

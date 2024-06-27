@@ -200,10 +200,11 @@ const DetailMatrimonialProfile = () => {
   // Edit Matrimonial Profile
   const handleEditProfile = async () => {
     try {
-      let response = await fetch("/api/matrimonial/edit", {
+      let response = await fetch(`/api/matrimonial/edit`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(modalForm),
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -245,9 +246,10 @@ const DetailMatrimonialProfile = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/matrimonial/edit-avatar", {
+      const response = await fetch(`/api/matrimonial/edit-avatar`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -269,7 +271,9 @@ const DetailMatrimonialProfile = () => {
 
   const fetchProfile = async (id) => {
     try {
-      const response = await fetch(`/api/matrimonial/${id}`);
+      const response = await fetch(`/api/matrimonial/${id}`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();

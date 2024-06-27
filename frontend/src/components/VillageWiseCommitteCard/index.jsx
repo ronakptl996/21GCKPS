@@ -17,6 +17,7 @@ const VillageWiseCommiteeMemberCard = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ village: villageName }),
+        credentials: 'include',
       });
 
       const data = await response.json();

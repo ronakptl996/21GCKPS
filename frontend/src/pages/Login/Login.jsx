@@ -51,12 +51,13 @@ const Login = () => {
   const handleLogin = async (data) => {
     try {
       dispatch(setLoading(true));
-      let result = await fetch("/api/users/login", {
+      let result = await fetch(`/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
       let response = await result.json();
 

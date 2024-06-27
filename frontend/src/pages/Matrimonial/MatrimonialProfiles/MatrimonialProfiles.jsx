@@ -37,7 +37,9 @@ const MatrimonialProfile = () => {
 
   const fetchMatrimonialProfiles = async () => {
     try {
-      const data = await fetch(`/api/matrimonial?page=${page}&limit=10`);
+      const data = await fetch(`/api/matrimonial?page=${page}&limit=10`, {
+        credentials: "include",
+      });
       const response = await data.json();
       setProfiles(response.data.matrimonialDetails);
       setTotalProfile(response.data.totalProfiles);
@@ -69,7 +71,8 @@ const MatrimonialProfile = () => {
       }
       try {
         const response = await fetch(
-          `/api/matrimonial/profiles?gender=${searchOption.gender}&age=${searchOption.age}&village=${searchOption.villageName}`
+          `/api/matrimonial/profiles?gender=${searchOption.gender}&age=${searchOption.age}&village=${searchOption.villageName}`,
+          { credentials: "include" }
         );
 
         let data = await response.json();

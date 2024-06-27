@@ -76,9 +76,10 @@ const AdminDonation = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/admin/add-donation", {
+      const response = await fetch(`/api/admin/add-donation`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -103,7 +104,9 @@ const AdminDonation = () => {
   // Get Donation Data
   const fetchDetails = async () => {
     try {
-      const response = await fetch("/api/admin/donation");
+      const response = await fetch(`/api/admin/donation`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -151,10 +154,11 @@ const AdminDonation = () => {
     };
     try {
       dispatch(setLoading(true));
-      let response = await fetch("/api/admin/edit-donation", {
+      let response = await fetch(`/api/admin/edit-donation`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -211,9 +215,10 @@ const AdminDonation = () => {
     formData.append("donationId", modalForm.donationId);
 
     try {
-      const response = await fetch("/api/admin/edit-donation-image", {
+      const response = await fetch(`/api/admin/edit-donation-image`, {
         method: "PATCH",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -246,10 +251,11 @@ const AdminDonation = () => {
 
     if (result.isConfirmed) {
       try {
-        let response = await fetch("/api/admin/delete-donation", {
+        let response = await fetch(`/api/admin/delete-donation`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ donationId }),
+          credentials: "include",
         });
 
         if (response.ok) {

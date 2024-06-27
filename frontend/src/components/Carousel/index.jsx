@@ -30,7 +30,9 @@ const Carousel = () => {
 
   const fetchVillageData = async () => {
     try {
-      const response = await fetch("/api/users/village");
+      const response = await fetch(`/api/users/village`, {
+        credentials: "include",
+      });
       const data = await response.json();
 
       if (data && data.success) {

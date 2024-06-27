@@ -231,9 +231,10 @@ const Register = () => {
         });
       });
 
-      const response = await fetch("/api/users/register", {
+      const response = await fetch(`/api/users/register`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const data = await response.json();

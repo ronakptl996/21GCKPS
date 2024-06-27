@@ -16,7 +16,7 @@ const JobSeeker = () => {
 
   const fetchJobData = async () => {
     try {
-      const response = await fetch("/api/job");
+      const response = await fetch(`/api/job`, { credentials: "include" });
       const data = await response.json();
       console.log(data.data);
       if (data.success) {

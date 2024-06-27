@@ -15,7 +15,9 @@ const DonationInfo = () => {
 
   const fetchDonationId = async () => {
     try {
-      const response = await fetch(`/api/admin/donation/${id}`);
+      const response = await fetch(`/api/admin/donation/${id}`, {
+        credentials: "include",
+      });
       const data = await response.json();
       if (data.success) {
         setDonationData(data.data);
@@ -35,11 +37,12 @@ const DonationInfo = () => {
       const amount = (donationData?.price / donationData?.totalQty) * donateQty;
       // const data = { amount: amount };
 
-      const response = await fetch("/api/donation/payment/checkout", {
+      const response = await fetch(`/api/donation/payment/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           donationId: id,
           amount,

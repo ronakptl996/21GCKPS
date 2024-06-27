@@ -3,14 +3,15 @@ import { toast } from "react-toastify";
 import "./index.css";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
 import DonationCard from "../../components/DonationCard";
-import { Link } from "react-router-dom";
 
 const DonationPage = () => {
   const [donationDetails, setDonationDetails] = useState([]);
 
   const fetchDonationDetails = async () => {
     try {
-      const response = await fetch("/api/admin/donation");
+      const response = await fetch(`/api/admin/donation`, {
+        credentials: "include",
+      });
       const data = await response.json();
       if (data.success) {
         setDonationDetails(data.data);

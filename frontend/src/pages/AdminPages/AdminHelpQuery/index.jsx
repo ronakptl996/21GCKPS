@@ -7,7 +7,7 @@ const AdminHelp = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/help");
+      const response = await fetch(`/api/help`, { credentials: "include" });
 
       if (response.ok) {
         const result = await response.json();
@@ -35,12 +35,13 @@ const AdminHelp = () => {
     }
 
     try {
-      const response = await fetch("/api/help/status", {
+      const response = await fetch(`/api/help/status`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       if (response.ok) {

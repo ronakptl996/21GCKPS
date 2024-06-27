@@ -9,7 +9,9 @@ const Business = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/business/valid");
+      const response = await fetch(`/api/business/valid`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();

@@ -154,6 +154,7 @@ const Profile = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
         });
 
         if (response.ok) {
@@ -194,7 +195,9 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch(`/api/users/profile/${id}`);
+      const response = await fetch(`/api/users/profile/${id}`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -256,6 +259,7 @@ const Profile = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -301,9 +305,10 @@ const Profile = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/users/update-image", {
+      const response = await fetch(`/api/users/update-image`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -391,9 +396,10 @@ const Profile = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch("/api/users/profile/add-new-son-daughter", {
+      const response = await fetch(`/api/users/profile/add-new-son-daughter`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {

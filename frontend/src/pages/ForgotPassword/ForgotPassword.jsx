@@ -26,6 +26,7 @@ const ForgotPassword = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -61,6 +62,7 @@ const ForgotPassword = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ forgotId, otp }),
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -102,6 +104,7 @@ const ForgotPassword = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ newPassword, contact }),
+        credentials: "include",
       });
 
       const data = await response.json();

@@ -47,6 +47,7 @@ export function fetchLoggedInUserDetails() {
             Authorization: accessToken,
             "Content-Type": "application/json",
           },
+          credentials: "include",
         });
 
         let data = await response.json();
