@@ -62,14 +62,17 @@ const AdminFestival = () => {
   const handleForm = async (formData, resetForm) => {
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/admin/add-festival`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/add-festival`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         toast.error("Error while add festival details");
@@ -93,9 +96,12 @@ const AdminFestival = () => {
   // Fetch Festival Details
   const fetchFestivalData = async () => {
     try {
-      const response = await fetch(`/api/admin/festival`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/festival`,
+        {
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
       setFestivalsData(data.data);
@@ -129,12 +135,15 @@ const AdminFestival = () => {
 
     try {
       dispatch(setLoading(true));
-      let response = await fetch(`/api/admin/edit-festival`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-        credentials: "include",
-      });
+      let response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/edit-festival`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+          credentials: "include",
+        }
+      );
 
       let data = await response.json();
       if (data.success) {
@@ -173,12 +182,15 @@ const AdminFestival = () => {
 
     if (result.isConfirmed) {
       try {
-        let response = await fetch(`/api/admin/delete-festival`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ festivalId: id }),
-          credentials: "include",
-        });
+        let response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/admin/delete-festival`,
+          {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ festivalId: id }),
+            credentials: "include",
+          }
+        );
 
         let data = await response.json();
         if (data.success) {

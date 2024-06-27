@@ -193,11 +193,14 @@ const CreateMatrimonialProfile = () => {
     formData.append("matrimonialImage", matrimonialImage);
 
     try {
-      let response = await fetch(`/api/add-matrimonial`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      let response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/add-matrimonial`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       let data = await response.json();
       console.log(data);

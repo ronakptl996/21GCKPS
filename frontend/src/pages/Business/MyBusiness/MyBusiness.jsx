@@ -16,9 +16,12 @@ const MyBusiness = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/business/my-business`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/business/my-business`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
@@ -42,12 +45,15 @@ const MyBusiness = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/business/my-business/edit`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(modalForm),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/business/my-business/edit`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(modalForm),
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
@@ -93,11 +99,16 @@ const MyBusiness = () => {
       formData.append("changedImageFor", changedImageFor);
       formData.append("businessId", businessId);
 
-      const response = await fetch(`/api/business/my-business/update-image`, {
-        method: "PATCH",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/business/my-business/update-image`,
+        {
+          method: "PATCH",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();

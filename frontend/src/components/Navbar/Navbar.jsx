@@ -68,13 +68,16 @@ const Navbar = () => {
   const handleLogout = async () => {
     console.log("logout");
     try {
-      let response = await fetch("/api/users/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      let response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
 

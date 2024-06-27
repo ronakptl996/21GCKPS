@@ -14,7 +14,9 @@ const PaymentSuccess = () => {
   const fetchDonorByPaymentId = async () => {
     try {
       const response = await fetch(
-        `/api/donor/${searchParams.get("reference")}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/donor/${searchParams.get(
+          "reference"
+        )}`,
         { credentials: "include" }
       );
       const data = await response.json();

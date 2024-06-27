@@ -46,14 +46,17 @@ const JobPoster = () => {
   const handleForm = async (formData, resetForm) => {
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/job/add-job`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/job/add-job`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
       if (data.success) {

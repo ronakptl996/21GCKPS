@@ -11,9 +11,12 @@ const EventDetails = () => {
 
   const fetchFestivalDetails = async () => {
     try {
-      const response = await fetch(`/api/admin/festival/${id}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/festival/${id}`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       console.log(data);
       if (data.success) {

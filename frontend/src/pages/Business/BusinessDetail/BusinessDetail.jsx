@@ -27,9 +27,12 @@ const BusinessDetail = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/business/${businessID}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/business/${businessID}`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

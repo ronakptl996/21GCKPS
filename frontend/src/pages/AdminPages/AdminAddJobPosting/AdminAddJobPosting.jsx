@@ -55,12 +55,15 @@ const AdminAddJobPosting = () => {
   // Edit
   const handleEdit = async () => {
     try {
-      const response = await fetch("/api/job/update-job", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(modalForm),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/job/update-job`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(modalForm),
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -105,12 +108,15 @@ const AdminAddJobPosting = () => {
 
     if (result.isConfirmed) {
       try {
-        let response = await fetch("/api/job/delete-job", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ jobId: id }),
-          credentials: "include",
-        });
+        let response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/job/delete-job`,
+          {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ jobId: id }),
+            credentials: "include",
+          }
+        );
 
         let data = await response.json();
         if (data.success) {
@@ -129,7 +135,10 @@ const AdminAddJobPosting = () => {
 
   const fetchJobDetails = async () => {
     try {
-      const response = await fetch("/api/job", { credentials: "include" });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/job`,
+        { credentials: "include" }
+      );
       const data = await response.json();
       if (data.success) {
         setJobData(data.data);

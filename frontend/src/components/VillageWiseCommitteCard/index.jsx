@@ -11,14 +11,17 @@ const VillageWiseCommiteeMemberCard = () => {
     if (!villageName) return;
 
     try {
-      const response = await fetch("/api/users/committe-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ village: villageName }),
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/committe-data`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ village: villageName }),
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
 

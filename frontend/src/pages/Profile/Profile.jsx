@@ -144,18 +144,21 @@ const Profile = () => {
     if (result.isConfirmed) {
       try {
         dispatch(setLoading(true));
-        const response = await fetch(`/api/users/delete-son-daughter`, {
-          method: "DELETE",
-          body: JSON.stringify({
-            childId,
-            familyId: id,
-            deleteDetail,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/users/delete-son-daughter`,
+          {
+            method: "DELETE",
+            body: JSON.stringify({
+              childId,
+              familyId: id,
+              deleteDetail,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -195,9 +198,12 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch(`/api/users/profile/${id}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/profile/${id}`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -248,19 +254,22 @@ const Profile = () => {
   const handleEditProfile = async () => {
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/users/profile/update/${id}`, {
-        method: "POST",
-        body: JSON.stringify({
-          headOfFamily,
-          wifeDetails,
-          sonDetails,
-          daughterDetails,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/profile/update/${id}`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            headOfFamily,
+            wifeDetails,
+            sonDetails,
+            daughterDetails,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -305,11 +314,14 @@ const Profile = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/users/update-image`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/update-image`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -396,11 +408,16 @@ const Profile = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/users/profile/add-new-son-daughter`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/users/profile/add-new-son-daughter`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

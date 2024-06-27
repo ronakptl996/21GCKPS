@@ -147,11 +147,14 @@ const BusinessPackeages = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/business/add`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/business/add`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();

@@ -9,9 +9,12 @@ const DonationPage = () => {
 
   const fetchDonationDetails = async () => {
     try {
-      const response = await fetch(`/api/admin/donation`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/donation`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       if (data.success) {
         setDonationDetails(data.data);

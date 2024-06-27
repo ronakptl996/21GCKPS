@@ -16,7 +16,9 @@ const villageWiseFamilyDetails = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `/api/users/village/${villageName}?page=${page}&limit=10`,
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/users/village/${villageName}?page=${page}&limit=10`,
         { credentials: "include" }
       );
       const data = await response.json();

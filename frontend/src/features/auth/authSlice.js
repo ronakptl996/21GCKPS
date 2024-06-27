@@ -42,13 +42,16 @@ export function fetchLoggedInUserDetails() {
       dispatch(setLoading(true));
       let accessToken = getCookie("accessToken");
       try {
-        let response = await fetch("/api/users", {
-          headers: {
-            Authorization: accessToken,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        let response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/users`,
+          {
+            headers: {
+              Authorization: accessToken,
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
         let data = await response.json();
         if (data && data.success) {

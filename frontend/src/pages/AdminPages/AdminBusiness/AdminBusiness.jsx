@@ -14,9 +14,12 @@ const AdminBusiness = () => {
 
   const fetchAllBusinessDetails = async () => {
     try {
-      const response = await fetch("/api/admin/business", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/business`,
+        {
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         const result = await response.json();
         setallBusinessDetails(result.data[0]);
@@ -43,10 +46,13 @@ const AdminBusiness = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(`/api/admin/business/delete/${id}`, {
-          method: "DELETE",
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/admin/business/delete/${id}`,
+          {
+            method: "DELETE",
+            credentials: "include",
+          }
+        );
 
         if (response.ok) {
           const result = await response.json();

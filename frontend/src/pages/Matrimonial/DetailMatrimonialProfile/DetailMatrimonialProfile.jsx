@@ -200,12 +200,15 @@ const DetailMatrimonialProfile = () => {
   // Edit Matrimonial Profile
   const handleEditProfile = async () => {
     try {
-      let response = await fetch(`/api/matrimonial/edit`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(modalForm),
-        credentials: "include",
-      });
+      let response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/matrimonial/edit`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(modalForm),
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -246,11 +249,14 @@ const DetailMatrimonialProfile = () => {
 
     try {
       dispatch(setLoading(true));
-      const response = await fetch(`/api/matrimonial/edit-avatar`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/matrimonial/edit-avatar`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -271,9 +277,12 @@ const DetailMatrimonialProfile = () => {
 
   const fetchProfile = async (id) => {
     try {
-      const response = await fetch(`/api/matrimonial/${id}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/matrimonial/${id}`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

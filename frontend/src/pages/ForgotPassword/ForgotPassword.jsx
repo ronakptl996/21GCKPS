@@ -21,13 +21,16 @@ const ForgotPassword = () => {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/users/${phone}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/${phone}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -56,14 +59,17 @@ const ForgotPassword = () => {
         return;
       }
 
-      const response = await fetch(`/api/users/verify-otp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ forgotId, otp }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/verify-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ forgotId, otp }),
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
 
@@ -98,14 +104,17 @@ const ForgotPassword = () => {
         return;
       }
 
-      const response = await fetch(`/api/users/forgot-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ newPassword, contact }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/forgot-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ newPassword, contact }),
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
 

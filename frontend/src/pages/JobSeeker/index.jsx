@@ -16,7 +16,10 @@ const JobSeeker = () => {
 
   const fetchJobData = async () => {
     try {
-      const response = await fetch(`/api/job`, { credentials: "include" });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/job`,
+        { credentials: "include" }
+      );
       const data = await response.json();
       console.log(data.data);
       if (data.success) {

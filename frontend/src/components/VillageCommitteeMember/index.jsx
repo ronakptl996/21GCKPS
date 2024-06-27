@@ -31,7 +31,7 @@ const VillageWiseCommitteeMemberDetails = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/users/committe-data", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/committe-data`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

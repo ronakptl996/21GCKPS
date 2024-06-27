@@ -216,11 +216,14 @@ const Register = () => {
         });
       });
 
-      const response = await fetch(`/api/users/register`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/register`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
       console.log(data);

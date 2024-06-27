@@ -9,9 +9,12 @@ const Business = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/business/valid`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/business/valid`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

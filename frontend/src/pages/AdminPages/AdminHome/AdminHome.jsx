@@ -50,7 +50,9 @@ const AdminHome = () => {
   const getVillageWiseMenWomenCount = async (villageName) => {
     try {
       const response = await fetch(
-        `/api/admin/village-wise-men-women/${villageName}`,
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/admin/village-wise-men-women/${villageName}`,
         { credentials: "include" }
       );
 
@@ -72,7 +74,9 @@ const AdminHome = () => {
   const getMatrimonialMenWomenCount = async (villageName) => {
     try {
       const response = await fetch(
-        `/api/admin/matrimonial-men-women-count/${villageName}`,
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/admin/matrimonial-men-women-count/${villageName}`,
         { credentials: "include" }
       );
 
@@ -93,9 +97,12 @@ const AdminHome = () => {
   // ^Get Statistics
   const getStatistics = async () => {
     try {
-      const response = await fetch(`/api/admin/statictics`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/statictics`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

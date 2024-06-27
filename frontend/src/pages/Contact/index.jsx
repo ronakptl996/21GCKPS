@@ -30,14 +30,17 @@ const Contact = () => {
 
   const submitForm = async (data, resetForm) => {
     try {
-      const result = await fetch(`/api/help`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+      const result = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/help`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          credentials: "include",
+        }
+      );
 
       const response = await result.json();
       if (result.ok && response.success) {
