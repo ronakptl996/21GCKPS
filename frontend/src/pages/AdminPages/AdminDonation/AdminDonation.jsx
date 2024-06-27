@@ -14,7 +14,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ImageIcon from "@mui/icons-material/Image";
 import Swal from "sweetalert2";
-import { validateImageType } from "../../../helper/global";
+import {
+  handleImageFileValidation,
+  validateImageType,
+} from "../../../helper/global";
 import { donationValidationSchema } from "../../../schemas";
 
 const AdminDonation = () => {
@@ -445,7 +448,11 @@ const AdminDonation = () => {
                 type="file"
                 name="donationImage"
                 hidden
-                onChange={(e) => setDonationImage(e.target.files[0])}
+                onChange={(e) => {
+                  handleImageFileValidation(e, (file) =>
+                    setDonationImage(file)
+                  );
+                }}
               />
             </Button>
             {donationImage && (

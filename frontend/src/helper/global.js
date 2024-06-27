@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const dobFormat = (date) => {
   const birthdate = new Date(date);
 
@@ -42,4 +44,22 @@ export const validateImageType = (file) => {
     "image/webp",
   ];
   return allowedImageTypes.includes(file.type);
+};
+
+// image validation
+export const handleImageFileValidation = (event, setAvatarFunction) => {
+  const file = event.target.files[0];
+  if (!file) {
+    toast.error("No file selected");
+    return;
+  }
+
+  // Validate image type
+  if (!validateImageType(file)) {
+    toast.error(
+      "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
+    );
+    return;
+  }
+  setAvatarFunction(file);
 };

@@ -137,3 +137,10 @@
     margin: 4px 0 !important;
   }
 }
+
+/* Production CSS */
+.donation-image-wrapper .css-1hw9j7s:hover {
+  text-decoration: none;
+  background-color: transparent;
+  box-shadow: none;
+}

@@ -15,7 +15,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
-import { validateImageType } from "../../helper/global";
+import {
+  handleImageFileValidation,
+  validateImageType,
+} from "../../helper/global";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -75,24 +78,6 @@ const Register = () => {
       daughterAvatar: "",
     },
   ]);
-
-  // avatar image validation
-  const handleFileChange = (event, setAvatarFunction) => {
-    const file = event.target.files[0];
-    if (!file) {
-      toast.error("No file selected");
-      return;
-    }
-
-    // Validate image type
-    if (!validateImageType(file)) {
-      toast.error(
-        "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed."
-      );
-      return;
-    }
-    setAvatarFunction(file);
-  };
 
   const handleSonDetailChange = (index, field, value) => {
     setSonDetails((prevSonDetails) => {
@@ -442,7 +427,7 @@ const Register = () => {
                     hidden
                     name="headOfFamilyAvatar"
                     onChange={(e) =>
-                      handleFileChange(e, (file) =>
+                      handleImageFileValidation(e, (file) =>
                         setHeadOfFamily({
                           ...headOfFamily,
                           headOfFamilyAvatar: file,
@@ -604,11 +589,10 @@ const Register = () => {
                     hidden
                     name="wifeAvatar"
                     onChange={(e) =>
-                      handleFileChange(e, (file) =>
+                      handleImageFileValidation(e, (file) =>
                         setWifeDetails({ ...wifeDetails, wifeAvatar: file })
                       )
                     }
-                    // onChange={(e) => setAvatar(e.target.files[0])}
                   />
                 </Button>
                 {wifeDetails.wifeAvatar && (
@@ -648,8 +632,10 @@ const Register = () => {
                         <label>Son {index > 0 && index + 1}</label>
                         {index > 0 && (
                           <Button
+                            size="small"
                             onClick={() => deleteSonDetailHandler(index)}
                             variant="outlined"
+                            color="error"
                           >
                             Delete Son
                           </Button>
@@ -791,7 +777,7 @@ const Register = () => {
                               hidden
                               name="sonAvatar"
                               onChange={(e) =>
-                                handleFileChange(e, (file) =>
+                                handleImageFileValidation(e, (file) =>
                                   handleSonDetailChange(
                                     index,
                                     "sonAvatar",
@@ -848,8 +834,10 @@ const Register = () => {
                         <label>Daughter {index > 0 && index + 1}</label>
                         {index > 0 && (
                           <Button
+                            size="small"
                             onClick={() => deleteDaughterDetailHandler(index)}
                             variant="outlined"
+                            color="error"
                           >
                             Delete Daughter
                           </Button>
@@ -991,7 +979,7 @@ const Register = () => {
                               hidden
                               name="daughterAvatar"
                               onChange={(e) =>
-                                handleFileChange(e, (file) =>
+                                handleImageFileValidation(e, (file) =>
                                   handleDaughterDetailChange(
                                     index,
                                     "daughterAvatar",
@@ -999,7 +987,6 @@ const Register = () => {
                                   )
                                 )
                               }
-                              // onChange={(e) => setAvatar(e.target.files[0])}
                             />
                           </Button>
                           {daughterDetails[index].daughterAvatar && (

@@ -22,7 +22,10 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../../features/auth/authSlice";
-import { validateImageType } from "../../../helper/global";
+import {
+  handleImageFileValidation,
+  validateImageType,
+} from "../../../helper/global";
 import { committeeValidationSchema } from "../../../schemas";
 
 const AdminCommittee = () => {
@@ -477,7 +480,9 @@ const AdminCommittee = () => {
                   type="file"
                   hidden
                   name="avatar"
-                  onChange={(e) => setAvatar(e.target.files[0])}
+                  onChange={(e) => {
+                    handleImageFileValidation(e, (file) => setAvatar(file));
+                  }}
                 />
               </Button>
               {avatar && (
