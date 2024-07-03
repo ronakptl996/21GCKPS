@@ -62,7 +62,7 @@ const verifyPayment = asyncHandler(async (req, res) => {
 
   if (isAuthentic) {
     res.redirect(
-      `http://localhost:5173/paymentsuccess?reference=${razorpay_payment_id}`
+      `https://21gckps.com/paymentsuccess?reference=${razorpay_payment_id}`
     );
 
     const donation = await Donation.findById(id);
