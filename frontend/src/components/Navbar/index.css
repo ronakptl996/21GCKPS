@@ -39,18 +39,12 @@ nav {
   align-items: center;
 }
 
-.navbar-item-wrapper ul li {
+.navbar-item-wrapper ul > li {
   position: relative;
   cursor: pointer;
   list-style: none;
   font-family: "Poppins";
   margin: 0 10px;
-}
-
-/* for logout & mobile responsive for li in dropdown */
-.navbar-item-wrapper ul li.logout-btn,
-li.openNav-li-dropdown {
-  margin-left: 10px;
 }
 
 .navbar-item-wrapper ul li > a {
