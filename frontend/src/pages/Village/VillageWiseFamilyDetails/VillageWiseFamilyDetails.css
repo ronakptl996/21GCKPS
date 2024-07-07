@@ -88,6 +88,10 @@
   color: rgba(233, 136, 0, 0.89);
 }
 
+.villageWiseCommiteeMemberCard {
+  margin-bottom: 60px;
+}
+
 .villageWiseCommiteeMember-header h1,
 .villageWiseFamily-header h1 {
   font-family: "Roboto-Bold";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,9 +107,11 @@ const Navbar = () => {
   return (
     <nav>
       <div className="container">
-        <div className="logo">
-          <img className="logo-img" src={Logo} alt="Logo" />
-        </div>
+        <Link to="/">
+          <div className="logo">
+            <img className="logo-img" src={Logo} alt="Logo" />
+          </div>
+        </Link>
         <div className="menu-icon" onClick={handleShowNavbar}>
           <Hamburger />
         </div>

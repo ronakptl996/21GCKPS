@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./VillageWiseFamilyDetails.css";
 import { Link, useParams } from "react-router-dom";
 import CallIcon from "@mui/icons-material/Call";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { Pagination, Stack } from "@mui/material";
-import VillageWiseCommiteeMemberCard from "../../../components/VillageWiseCommitteCard";
+import { Grid, Pagination, Stack, TextField } from "@mui/material";
 import { toast } from "react-toastify";
+import VillageWiseCommiteeMemberCard from "../../../components/VillageWiseCommitteCard";
+import { debounce } from "../../../helper/global";
 
 const villageWiseFamilyDetails = () => {
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const [totalFamilyProfile, setTotalFamilyProfile] = useState();
   const [villageFamilyData, setVillageFamilyData] = useState([]);
   const { villageName } = useParams();
@@ -16,7 +18,7 @@ const villageWiseFamilyDetails = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `/api/users/village/${villageName}?page=${page}&limit=10`,
+        `/api/users/village/${villageName}?page=${page}&limit=10&searchQuery=${searchQuery}`,
         { credentials: "include" }
       );
       const data = await response.json();
@@ -30,14 +32,22 @@ const villageWiseFamilyDetails = () => {
     }
   };
 
+  const debouncedFetchData = debounce(fetchData, 500);
+
+  const handleSearch = (e) => {
+    setPage(1);
+    const { value } = e.target;
+    setSearchQuery(value);
+  };
+
   useEffect(() => {
-    fetchData();
-  }, [page]);
+    debouncedFetchData();
+  }, [page, searchQuery]);
 
   return (
     <section className="villageWiseFamilyDetails">
       {/* Village Committe Member Card */}
-      <div className="villageWiseCommiteeMember">
+      <div className="villageWiseCommiteeMemberCard">
         <div className="villageWiseCommiteeMember-header">
           <h1>
             {villageName.slice(0, 1).toUpperCase()}
@@ -50,12 +60,23 @@ const villageWiseFamilyDetails = () => {
       </div>
 
       {/* Village Family Card */}
-      <div className="villageWiseFamily-header">
-        <h1>
-          All {villageName.slice(0, 1).toUpperCase()}
-          {villageName.slice(1)} Family
-        </h1>
-      </div>
+      <Grid container spacing={2} className="villageWiseFamily-header">
+        <Grid item xs={8}>
+          <h1>
+            All {villageName.slice(0, 1).toUpperCase()}
+            {villageName.slice(1)} Family
+          </h1>
+        </Grid>
+        <Grid item xs={4}>
+          <TextField
+            id="outlined-basic"
+            label="Search by Head of family name"
+            variant="outlined"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </Grid>
+      </Grid>
       {villageFamilyData && villageFamilyData?.length > 0 && (
         <div className="villageWiseFamilyDetails-wrapper">
           {villageFamilyData?.map((family) => (

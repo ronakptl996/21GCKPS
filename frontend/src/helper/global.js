@@ -63,3 +63,11 @@ export const handleImageFileValidation = (event, setAvatarFunction) => {
   }
   setAvatarFunction(file);
 };
+
+let timeout;
+export const debounce = (func, wait) => {
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
