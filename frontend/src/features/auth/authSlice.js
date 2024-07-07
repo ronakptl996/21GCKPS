@@ -6,6 +6,7 @@ const initialState = {
   loggedInUserDetails: {},
   isLoading: true,
   showNavbar: false,
+  villageWiseData: [],
 };
 
 export const authSlice = createSlice({
@@ -25,6 +26,9 @@ export const authSlice = createSlice({
     setShowNavbar: (state, action) => {
       state.showNavbar = Boolean(action.payload);
     },
+    setVillageWiseData: (state, action) => {
+      state.villageWiseData = action.payload;
+    },
   },
 });
 
@@ -33,6 +37,7 @@ export const {
   setLoggedInUserDetails,
   setLoading,
   setShowNavbar,
+  setVillageWiseData,
 } = authSlice.actions;
 export default authSlice.reducer;
 
@@ -64,6 +69,26 @@ export function fetchLoggedInUserDetails() {
       } catch (error) {
         console.log(`FetchLoggedInUserDetailsThunk Error ${error}`);
         dispatch(setLoading(false));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function fetchVillageData() {
+  return async function fetchVillageDataThunk(dispatch, getState) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/village`,
+        {
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+
+      if (data && data.success) {
+        dispatch(setVillageWiseData(data.data));
       }
     } catch (error) {
       console.log(error);

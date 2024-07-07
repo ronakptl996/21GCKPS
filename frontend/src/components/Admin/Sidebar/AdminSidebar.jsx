@@ -13,6 +13,9 @@ const AdminSidebar = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/admin/village">All Villages</NavLink>
+          </li>
+          <li>
             <NavLink to="/admin/committee">Add Committee Member</NavLink>
           </li>
           <li>

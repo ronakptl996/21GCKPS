@@ -110,9 +110,11 @@ const Navbar = () => {
   return (
     <nav>
       <div className="container">
-        <div className="logo">
-          <img className="logo-img" src={Logo} alt="Logo" />
-        </div>
+        <NavLink to="/">
+          <div className="logo">
+            <img className="logo-img" src={Logo} alt="Logo" />
+          </div>
+        </NavLink>
         <div className="menu-icon" onClick={handleShowNavbar}>
           <Hamburger />
         </div>
@@ -316,10 +318,6 @@ const Navbar = () => {
                       variant="contained"
                       onClick={handleLogout}
                     >
-                      {/* <FontAwesomeIcon
-                        icon="fa-regular fa-user"
-                        style={{ color: "#ffffff" }}
-                      />{" "} */}
                       Logout
                     </Button>
                   </li>

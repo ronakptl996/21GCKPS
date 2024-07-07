@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
+import { useDispatch, useSelector } from "react-redux";
 import ImageCarousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { fetchVillageData } from "../../features/auth/authSlice";
 
 const Carousel = () => {
-  const [villageWiseData, setVillageWiseData] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { villageWiseData } = useSelector((store) => store.auth);
 
   const responsive = {
     superLargeDesktop: {
@@ -28,21 +32,21 @@ const Carousel = () => {
     },
   };
 
-  const fetchVillageData = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/village`, {
-        credentials: "include",
-      });
-      const data = await response.json();
+  // const fetchVillageData = async () => {
+  //   try {
+  //     const response = await fetch(`/api/users/village`, {
+  //       credentials: "include",
+  //     });
+  //     const data = await response.json();
 
-      if (data && data.success) {
-        setVillageWiseData(data.data);
-      }
-    } catch (error) {}
-  };
+  //     if (data && data.success) {
+  //       setVillageWiseData(data.data);
+  //     }
+  //   } catch (error) {}
+  // };
 
   useEffect(() => {
-    fetchVillageData();
+    dispatch(fetchVillageData());
   }, []);
 
   return (

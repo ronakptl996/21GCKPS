@@ -57,6 +57,7 @@ import Profile from "./pages/Profile/Profile";
 import VillageWiseFamilyDetails from "./pages/Village/VillageWiseFamilyDetails/VillageWiseFamilyDetails";
 import AdminBusiness from "./pages/AdminPages/AdminBusiness/AdminBusiness";
 import AdminHelp from "./pages/AdminPages/AdminHelpQuery";
+import AdminAllVillage from "./pages/AdminPages/AdminAllVillage/AdminAllVillage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -320,7 +321,7 @@ const router = createBrowserRouter(
         <Route path="job-posting" element={<AdminAddJobPosting />} />
         <Route path="business" element={<AdminBusiness />} />
         <Route path="help" element={<AdminHelp />} />
-        {/* /admin/contact */}
+        <Route path="village" element={<AdminAllVillage />} />
       </Route>
     </>
   )
