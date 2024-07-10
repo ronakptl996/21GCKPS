@@ -58,6 +58,7 @@ import VillageWiseFamilyDetails from "./pages/Village/VillageWiseFamilyDetails/V
 import AdminBusiness from "./pages/AdminPages/AdminBusiness/AdminBusiness";
 import AdminHelp from "./pages/AdminPages/AdminHelpQuery";
 import AdminAllVillage from "./pages/AdminPages/AdminAllVillage/AdminAllVillage.jsx";
+import VillageUserProfile from "./pages/VillageUserProfile/VillageUserProfile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -103,7 +104,7 @@ const router = createBrowserRouter(
               path=":id"
               element={
                 <ProtectedRoute>
-                  <Profile />
+                  <VillageUserProfile />
                 </ProtectedRoute>
               }
             />

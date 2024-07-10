@@ -1,0 +1,105 @@
+.villageUserProfile-wrapper {
+  padding: 100px 150px;
+}
+
+.villageUserProfile-wrapper .userProfile {
+  /* border: 1px solid red; */
+  margin-bottom: 20px;
+}
+
+.userProfile .profile-header {
+  font-size: 22px;
+  font-family: "Roboto-Bold";
+  margin-left: 25px;
+}
+
+.userProfile .userInfo-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.userProfile .userInfo-wrapper .userAvatar {
+  padding: 20px;
+  height: 250px;
+}
+
+.userAvatar img {
+  object-fit: cover;
+  border-radius: 50%;
+  width: 200px;
+  height: 100%;
+  object-position: top;
+}
+
+.userInfo-wrapper .userInfo {
+  padding: 20px 0;
+}
+
+.userInfo h3 {
+  margin-bottom: 10px;
+  font-family: "Poppins";
+  font-size: 18px;
+}
+
+.villageUserProfile-wrapper .userInfo ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.userInfo ul li {
+  list-style: none;
+  display: flex;
+  margin: 10px 0;
+}
+
+.userInfo ul li p.village {
+  text-transform: capitalize;
+}
+
+.userInfo ul li svg {
+  color: #363636;
+}
+
+.userInfo ul li p {
+  margin-left: 10px;
+  color: #000000e8;
+  font-family: "Poppins";
+}
+
+@media screen and (max-width: 900px) {
+  .villageUserProfile-wrapper {
+    padding: 100px 50px;
+  }
+  .userProfile .userInfo-wrapper .userAvatar {
+    height: 200px;
+  }
+  .userAvatar img {
+    width: 165px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .userProfile .userInfo-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .userProfile .userInfo-wrapper .userAvatar {
+    height: 250px;
+    margin: auto;
+  }
+  .userAvatar img {
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .villageUserProfile-wrapper {
+    padding: 50px 20px;
+  }
+  .userProfile .profile-header {
+    text-align: center;
+    margin-left: 0;
+  }
+  .userInfo h3 {
+    text-align: center;
+  }
+}
