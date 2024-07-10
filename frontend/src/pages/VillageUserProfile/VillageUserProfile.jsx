@@ -72,9 +72,12 @@ const VillageUserProfile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch(`/api/users/profile/${id}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/profile/${id}`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
