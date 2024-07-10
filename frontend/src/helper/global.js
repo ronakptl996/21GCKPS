@@ -71,3 +71,13 @@ export const debounce = (func, wait) => {
     timeout = setTimeout(() => func(...args), wait);
   };
 };
+
+export const formattedDate = (dateString) => {
+  const dateObject = new Date(dateString);
+  return dateObject.toLocaleDateString("en-US", {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};

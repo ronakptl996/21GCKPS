@@ -878,7 +878,7 @@ const DetailMatrimonialProfile = () => {
                     <div>
                       <img src={CityImage} alt="city image" />
                       <span>
-                        <span style={{ fontSize: "13px" }}>City</span>{" "}
+                        <span style={{ fontSize: "13px" }}>Home</span>{" "}
                         <strong>{user?.address}</strong>
                       </span>
                     </div>
