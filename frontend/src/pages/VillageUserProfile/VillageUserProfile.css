@@ -1,10 +1,15 @@
 .villageUserProfile-wrapper {
-  padding: 100px 150px;
+  padding: 100px;
 }
 
 .villageUserProfile-wrapper .userProfile {
-  /* border: 1px solid red; */
+  padding: 30px 20px;
   margin-bottom: 20px;
+  box-shadow: 2px 2px 60px 0px rgba(0, 0, 0, 0.2);
+  border-left: 5px solid #e1b43d;
+  margin: auto;
+  margin-bottom: 60px;
+  width: 80%;
 }
 
 .userProfile .profile-header {
@@ -20,28 +25,33 @@
 
 .userProfile .userInfo-wrapper .userAvatar {
   padding: 20px;
-  height: 250px;
+  display: grid;
+  place-items: center;
 }
 
 .userAvatar img {
   object-fit: cover;
   border-radius: 50%;
   width: 200px;
-  height: 100%;
-  object-position: top;
+  height: 200px;
+  border: 1px solid #e1b43d;
+  object-position: center;
 }
 
 .userInfo-wrapper .userInfo {
-  padding: 20px 0;
+  padding: 20px;
 }
 
 .userInfo h3 {
   margin-bottom: 10px;
   font-family: "Poppins";
-  font-size: 18px;
+  font-size: 20px;
+  text-transform: uppercase;
 }
 
 .villageUserProfile-wrapper .userInfo ul {
+  border-top: 1px solid #36363659;
+  padding-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -50,6 +60,14 @@
   list-style: none;
   display: flex;
   margin: 10px 0;
+}
+
+.userInfo ul li svg {
+  background: #e1b43d;
+  padding: 5px;
+  font-size: 25px;
+  color: #fff !important;
+  border-radius: 8px;
 }
 
 .userInfo ul li p.village {
@@ -66,14 +84,21 @@
   font-family: "Poppins";
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1150px) {
   .villageUserProfile-wrapper {
     padding: 100px 50px;
   }
-  .userProfile .userInfo-wrapper .userAvatar {
-    height: 200px;
+  .villageUserProfile-wrapper .userProfile {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .villageUserProfile-wrapper .userProfile {
+    width: 100%;
   }
   .userAvatar img {
+    height: 165px;
     width: 165px;
   }
 }
@@ -81,13 +106,6 @@
 @media screen and (max-width: 750px) {
   .userProfile .userInfo-wrapper {
     grid-template-columns: 1fr;
-  }
-  .userProfile .userInfo-wrapper .userAvatar {
-    height: 250px;
-    margin: auto;
-  }
-  .userAvatar img {
-    width: 200px;
   }
 }
 
@@ -99,7 +117,13 @@
     text-align: center;
     margin-left: 0;
   }
+  .userInfo-wrapper .userInfo {
+    padding: 20px 0;
+  }
   .userInfo h3 {
     text-align: center;
+  }
+  .userInfo ul li p {
+    font-size: 15px;
   }
 }
