@@ -37,6 +37,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { formattedDate } from "../../helper/global";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -729,10 +730,7 @@ const BusinessTable = ({
                   </TableCell>
                   <TableCell align="right">{item.businessContact}</TableCell>
                   <TableCell align="right">
-                    {new Date(item.expiryDate).toLocaleString("en-IN", {
-                      timeZone: "Asia/Kolkata",
-                      dateStyle: "full",
-                    })}
+                    {formattedDate(item.expiryDate)}
                   </TableCell>
                   {pathname !== "/my-business" && (
                     <TableCell align="right">{item.creatorFullName}</TableCell>
