@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./VillageUserProfile.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import HomeIcon from "@mui/icons-material/Home";
 import EmailIcon from "@mui/icons-material/Email";
 import CallIcon from "@mui/icons-material/Call";
@@ -10,6 +12,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
 import CakeIcon from "@mui/icons-material/Cake";
 import { formattedDate } from "../../helper/global";
+import { Button } from "@mui/material";
 
 const VillageUserProfile = () => {
   const [headOfFamily, setHeadOfFamily] = useState({
@@ -70,6 +73,8 @@ const VillageUserProfile = () => {
   const { id, villageName } = useParams();
   const navigate = useNavigate();
 
+  const { loggedInUserDetails } = useSelector((store) => store.auth);
+
   const fetchProfile = async () => {
     try {
       const response = await fetch(
@@ -124,12 +129,63 @@ const VillageUserProfile = () => {
     }
   };
 
+  const handleUserDelete = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`/api/admin/delete-user`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ userId: id }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            toast.success(data.message);
+            navigate(`/village/${villageName}`);
+          } else {
+            toast.error(data.message);
+          }
+        }
+      } catch (error) {
+        console.log({ error });
+        toast.error("Something went wrong!");
+      }
+    }
+  };
+
   useEffect(() => {
     fetchProfile();
   }, []);
 
   return (
     <section className="villageUserProfile-wrapper">
+      {loggedInUserDetails &&
+        loggedInUserDetails.decoded.isAdmin === "true" && (
+          <section className="villageProfile-header-btn">
+            <Button
+              variant="contained"
+              color="error"
+              size="small"
+              onClick={handleUserDelete}
+            >
+              Delete
+            </Button>
+          </section>
+        )}
       {headOfFamily && (
         <section className="userProfile">
           <h2 className="profile-header">Head of Family</h2>
