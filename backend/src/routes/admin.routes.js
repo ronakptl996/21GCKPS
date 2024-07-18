@@ -26,6 +26,7 @@ import {
 } from "../controllers/adminController/donation-controller.js";
 import {
   adminStatictics,
+  deleteUserProfile,
   getMatrimonialMenWomenCount,
   getVillageWiseMenWomenCount,
 } from "../controllers/adminController/family.controllers.js";
@@ -36,6 +37,9 @@ import {
 
 const router = Router();
 // router.route("/").get(verifyJwtAdmin);
+
+// Delete User Profile
+router.route("/delete-user").delete(verifyJwtAdmin, deleteUserProfile);
 
 // Committee Route
 router

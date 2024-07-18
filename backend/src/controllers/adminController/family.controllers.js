@@ -146,8 +146,31 @@ const adminStatictics = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Error fetching statistics");
   }
 });
+
+const deleteUserProfile = asyncHandler(async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      throw new ApiError(400, "UserId is required!");
+    }
+
+    const userData = await Family.findByIdAndDelete(userId);
+
+    if (!userData) {
+      throw new ApiError(404, "User not found!");
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, userData, "User deleted successfully!"));
+  } catch (error) {
+    throw new ApiError(500, "Something went wrong!");
+  }
+});
 export {
   getVillageWiseMenWomenCount,
   getMatrimonialMenWomenCount,
   adminStatictics,
+  deleteUserProfile,
 };

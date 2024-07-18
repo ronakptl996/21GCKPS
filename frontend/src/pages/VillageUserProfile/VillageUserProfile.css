@@ -2,6 +2,14 @@
   padding: 100px;
 }
 
+.villageProfile-header-btn {
+  margin-bottom: 20px;
+}
+.villageProfile-header-btn button {
+  margin-left: auto;
+  display: block;
+}
+
 .villageUserProfile-wrapper .userProfile {
   padding: 30px 20px;
   margin-bottom: 20px;
