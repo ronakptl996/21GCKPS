@@ -3,6 +3,7 @@ import "./VillageUserProfile.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import DefaultImage from "../../assets/default-avatar.jpg";
 import Swal from "sweetalert2";
 import HomeIcon from "@mui/icons-material/Home";
 import EmailIcon from "@mui/icons-material/Email";
@@ -253,12 +254,16 @@ const VillageUserProfile = () => {
           <h2 className="profile-header">Wife Details</h2>
           <div className="userInfo-wrapper">
             <div className="userAvatar">
-              <img
-                src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
-                  wifeDetails.wifeAvatar
-                }`}
-                alt={wifeDetails.firstname}
-              />
+              {wifeDetails.wifeAvatar ? (
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
+                    wifeDetails.wifeAvatar
+                  }`}
+                  alt={wifeDetails.firstname}
+                />
+              ) : (
+                <img src={DefaultImage} alt="Default Image" />
+              )}
             </div>
             <div className="userInfo">
               <h3>
@@ -307,12 +312,16 @@ const VillageUserProfile = () => {
           {sonDetails.map((son) => (
             <div className="userInfo-wrapper" key={son._id}>
               <div className="userAvatar">
-                <img
-                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
-                    son.sonAvatar
-                  }`}
-                  alt={son.firstname}
-                />
+                {son.sonAvatar ? (
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
+                      son.sonAvatar
+                    }`}
+                    alt={son.firstname}
+                  />
+                ) : (
+                  <img src={DefaultImage} alt="Default Image" />
+                )}
               </div>
               <div className="userInfo">
                 <h3>
@@ -362,12 +371,16 @@ const VillageUserProfile = () => {
           {daughterDetails.map((daughter) => (
             <div className="userInfo-wrapper" key={daughter._id}>
               <div className="userAvatar">
-                <img
-                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
-                    daughter.daughterAvatar
-                  }`}
-                  alt={daughter.firstname}
-                />
+                {daughter.daughterAvatar ? (
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
+                      daughter.daughterAvatar
+                    }`}
+                    alt={daughter.firstname}
+                  />
+                ) : (
+                  <img src={DefaultImage} alt="Default Image" />
+                )}
               </div>
               <div className="userInfo">
                 <h3>

@@ -31,9 +31,27 @@ const generateAccessAndRefereshTokens = async (userId) => {
 };
 
 const registerFamily = asyncHandler(async (req, res) => {
-  const { password, headOfFamily, wifeDetails, sonDetails, daughterDetails } =
-    req.body;
+  const { password, headOfFamily } = req.body;
 
+  const wifeDetails = req.body?.wifeDetails.filter(
+    (wife) => wife.surname && wife.firstname && wife.secondname
+  );
+
+  const sonDetails = req.body?.sonDetails.filter(
+    (son) => son.surname && son.firstname && son.secondname
+  );
+
+  const daughterDetails = req.body?.daughterDetails.filter(
+    (daughter) => daughter.surname && daughter.firstname && daughter.secondname
+  );
+
+  console.log({
+    password,
+    headOfFamily,
+    wifeDetails,
+    sonDetails,
+    daughterDetails,
+  });
   const existedUser = await Family.findOne({
     "headOfFamily.email": headOfFamily.email,
   });
@@ -62,14 +80,14 @@ const registerFamily = asyncHandler(async (req, res) => {
   });
 
   const filesToUpload = [
-    {
+    headOfFamilyAvatar && {
       file: headOfFamilyAvatar,
       fieldName: "headOfFamilyAvatar",
       fileName: `${uuidv4()}-${
         headOfFamilyAvatar.originalname.split(".")[0]
       }.webp`,
     },
-    {
+    wifeAvatar && {
       file: wifeAvatar,
       fieldName: "wifeAvatar",
       fileName: `${uuidv4()}-${wifeAvatar.originalname.split(".")[0]}.webp`,
@@ -86,42 +104,34 @@ const registerFamily = asyncHandler(async (req, res) => {
     })),
   ];
 
-  // const optimizedResults = await optimizeImagesRegister(filesToUpload);
-  // console.log("optimizedResults >", optimizedResults);
-
+  console.log({ filesToUpload });
   try {
     await Promise.all(
       filesToUpload.map(async (file) => {
-        const optimzedImage = await convertToWebP(
-          file.file.buffer,
-          `family/${file.fileName}`
-        );
-        if (!optimzedImage) {
-          throw new ApiError(500, "Error while OptimzeImage family avatar");
-        } else {
-          if (file.fieldName.includes("headOfFamilyAvatar")) {
-            headOfFamily.headOfFamilyAvatar = file.fileName;
-          } else if (file.fieldName.includes("wifeAvatar")) {
-            wifeDetails.wifeAvatar = file.fileName;
-          } else if (file.fieldName.includes("sonAvatars")) {
-            sonDetails[Number(file.fieldName.split("-")[1])].sonAvatar =
-              file.fileName;
-          } else if (file.fieldName.includes("daughterAvatars")) {
-            daughterDetails[
-              Number(file.fieldName.split("-")[1])
-            ].daughterAvatar = file.fileName;
+        if (file) {
+          const optimzedImage = await convertToWebP(
+            file.file.buffer,
+            `family/${file.fileName}`
+          );
+          if (!optimzedImage) {
+            throw new ApiError(500, "Error while OptimzeImage family avatar");
+          } else {
+            if (file.fieldName.includes("headOfFamilyAvatar")) {
+              headOfFamily.headOfFamilyAvatar = file.fileName;
+            } else if (file.fieldName.includes("wifeAvatar")) {
+              wifeDetails.wifeAvatar = file.fileName;
+            } else if (file.fieldName.includes("sonAvatars")) {
+              sonDetails[Number(file.fieldName.split("-")[1])].sonAvatar =
+                file.fileName;
+            } else if (file.fieldName.includes("daughterAvatars")) {
+              daughterDetails[
+                Number(file.fieldName.split("-")[1])
+              ].daughterAvatar = file.fileName;
+            }
           }
         }
       })
     );
-
-    console.log({
-      password,
-      headOfFamily,
-      wifeDetails,
-      sonDetails,
-      daughterDetails,
-    });
 
     const familyData = await Family.create({
       password,
@@ -130,19 +140,17 @@ const registerFamily = asyncHandler(async (req, res) => {
       sonDetails,
       daughterDetails,
     });
-
     const createdData = await Family.findById(familyData._id).select(
       "-password -refreshToken"
     );
-
     if (!createdData) {
       throw new ApiError(500, "Something went wrong while registering");
     }
-
     return res
       .status(201)
       .json(new ApiResponse(200, createdData, "User registered Successfully"));
   } catch (error) {
+    console.log({ error });
     throw new ApiError(500, "Error while register user");
   }
 });

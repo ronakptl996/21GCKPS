@@ -22,16 +22,16 @@ const familySchema = new Schema(
       headOfFamilyAvatar: { type: String, required: true },
     },
     wifeDetails: {
-      surname: { type: String, required: true },
-      firstname: { type: String, required: true },
-      secondname: { type: String, required: true },
-      proffession: { type: String, required: true },
-      contact: { type: String, required: true },
+      surname: { type: String },
+      firstname: { type: String },
+      secondname: { type: String },
+      proffession: { type: String },
+      contact: { type: String },
       education: { type: String },
       bloodGroup: { type: String },
       dob: { type: String },
       address: { type: String },
-      wifeAvatar: { type: String, required: true },
+      wifeAvatar: { type: String },
     },
     sonDetails: [
       {

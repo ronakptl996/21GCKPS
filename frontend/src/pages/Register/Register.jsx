@@ -15,10 +15,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import HeroSectionHeader from "../../components/HeroSectionHeader/HeroSectionHeader";
-import {
-  handleImageFileValidation,
-  validateImageType,
-} from "../../helper/global";
+import { handleImageFileValidation } from "../../helper/global";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -156,17 +153,25 @@ const Register = () => {
   // Register Data
   const handleSubmit = async () => {
     try {
-      console.log(
-        "headOfFamily",
-        headOfFamily,
-        "wifeDetails",
-        wifeDetails,
-        "sonDetails",
-        sonDetails,
-        "daughterDetails",
-        daughterDetails
-      );
-
+      if (
+        !headOfFamily.surname ||
+        !headOfFamily.firstname ||
+        !headOfFamily.secondname ||
+        !headOfFamily.email ||
+        !headOfFamily.proffession ||
+        !headOfFamily.contact
+      ) {
+        toast.error("Head of family details required!");
+        return;
+      }
+      if (!headOfFamily.headOfFamilyAvatar) {
+        toast.error("Head of family image required!");
+        return;
+      }
+      if (!password) {
+        toast.error("Please Enter Password!");
+        return;
+      }
       // Use FormData to append all avatars
       const formData = new FormData();
 
@@ -178,31 +183,45 @@ const Register = () => {
 
       // Append sonDetails avatars
       sonDetails.forEach((details, index) => {
-        formData.append(`sonAvatars[${index}]`, details.sonAvatar);
+        if (
+          details &&
+          details.firstname &&
+          details.secondname &&
+          details.surname
+        ) {
+          formData.append(`sonAvatars[${index}]`, details.sonAvatar);
+        }
       });
 
       // Append daughterDetails avatars
       daughterDetails.forEach((details, index) => {
-        formData.append(`daughterAvatars[${index}]`, details.daughterAvatar);
+        if (
+          details &&
+          details.firstname &&
+          details.secondname &&
+          details.surname
+        ) {
+          formData.append(`daughterAvatars[${index}]`, details.daughterAvatar);
+        }
       });
 
       formData.append(`password`, password);
       // Append other non-avatar data
       Object.entries(headOfFamily).forEach(([key, value]) => {
-        if (key !== "headOfFamilyAvatar") {
+        if (key !== "headOfFamilyAvatar" && value) {
           formData.append(`headOfFamily[${key}]`, value);
         }
       });
 
       Object.entries(wifeDetails).forEach(([key, value]) => {
-        if (key !== "wifeAvatar") {
+        if (key !== "wifeAvatar" && value) {
           formData.append(`wifeDetails[${key}]`, value);
         }
       });
 
       sonDetails.forEach((details, index) => {
         Object.entries(details).forEach(([key, value]) => {
-          if (key !== "sonAvatar") {
+          if (key !== "sonAvatar" && value) {
             formData.append(`sonDetails[${index}][${key}]`, value);
           }
         });
@@ -210,7 +229,7 @@ const Register = () => {
 
       daughterDetails.forEach((details, index) => {
         Object.entries(details).forEach(([key, value]) => {
-          if (key !== "daughterAvatar") {
+          if (key !== "daughterAvatar" && value) {
             formData.append(`daughterDetails[${index}][${key}]`, value);
           }
         });
@@ -223,7 +242,6 @@ const Register = () => {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (data.statusCode == 401) {
         toast.error(data.message);

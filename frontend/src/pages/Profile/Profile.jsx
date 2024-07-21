@@ -11,6 +11,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import DefaultImage from "../../assets/default-avatar.jpg";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -826,12 +827,16 @@ const Profile = () => {
             <h3>Wife Details</h3>
             <div className="headOfFamily-wrapper">
               <div className="headOfFamily-avatar changeAvatar">
-                <img
-                  src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
-                    wifeDetails.wifeAvatar
-                  }`}
-                  alt={wifeDetails.firstname}
-                />
+                {wifeDetails.wifeAvatar ? (
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
+                      wifeDetails.wifeAvatar
+                    }`}
+                    alt={wifeDetails.firstname}
+                  />
+                ) : (
+                  <img src={DefaultImage} alt="Default Image" />
+                )}
                 <Button variant="outlined" size="small" component="label">
                   Change Image
                   <input
@@ -997,12 +1002,16 @@ const Profile = () => {
                 </div>
                 <div className="headOfFamily-wrapper">
                   <div className="headOfFamily-avatar changeAvatar">
-                    <img
-                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
-                        son.sonAvatar
-                      }`}
-                      alt={son.firstname}
-                    />
+                    {son.sonAvatar ? (
+                      <img
+                        src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
+                          son.sonAvatar
+                        }`}
+                        alt={son.firstname}
+                      />
+                    ) : (
+                      <img src={DefaultImage} alt="Default Image" />
+                    )}
                     <Button variant="outlined" size="small" component="label">
                       Change Image
                       <input
@@ -1186,12 +1195,16 @@ const Profile = () => {
                 </div>
                 <div className="headOfFamily-wrapper" key={daughter.firstname}>
                   <div className="headOfFamily-avatar changeAvatar">
-                    <img
-                      src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
-                        daughter.daughterAvatar
-                      }`}
-                      alt={daughter.firstname}
-                    />
+                    {daughter.daughterAvatar ? (
+                      <img
+                        src={`${import.meta.env.VITE_BACKEND_URL_PROFILE}/${
+                          daughter.daughterAvatar
+                        }`}
+                        alt={daughter.firstname}
+                      />
+                    ) : (
+                      <img src={DefaultImage} alt="Default Image" />
+                    )}
                     <Button variant="outlined" size="small" component="label">
                       Change Image
                       <input
