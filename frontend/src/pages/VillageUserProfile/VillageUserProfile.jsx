@@ -24,7 +24,7 @@ const VillageUserProfile = () => {
     proffession: "",
     contact: "",
     education: "",
-    bloodGroup: "o+",
+    bloodGroup: "",
     dob: "",
     address: "",
     headOfFamilyAvatar: "",
@@ -37,7 +37,7 @@ const VillageUserProfile = () => {
     proffession: "",
     contact: "",
     education: "",
-    bloodGroup: "o+",
+    bloodGroup: "",
     dob: "",
     wifeAvatar: "",
   });
@@ -51,7 +51,7 @@ const VillageUserProfile = () => {
       proffession: "",
       contact: "",
       education: "",
-      bloodGroup: "o+",
+      bloodGroup: "",
       dob: "",
       sonAvatar: "",
     },
@@ -65,7 +65,7 @@ const VillageUserProfile = () => {
       proffession: "",
       contact: "",
       education: "",
-      bloodGroup: "o+",
+      bloodGroup: "",
       dob: "",
       daughterAvatar: "",
     },
@@ -82,8 +82,7 @@ const VillageUserProfile = () => {
         `${import.meta.env.VITE_BACKEND_URL}/api/users/profile/${id}`,
         {
           credentials: "include",
-        }
-      );
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -92,30 +91,32 @@ const VillageUserProfile = () => {
             data.data;
 
           setHeadOfFamily({
-            surname: headOfFamily.surname,
-            firstname: headOfFamily.firstname,
-            secondname: headOfFamily.secondname,
-            email: headOfFamily.email,
-            proffession: headOfFamily.proffession,
-            contact: headOfFamily.contact,
-            education: headOfFamily.education,
-            bloodGroup: headOfFamily.bloodGroup,
-            dob: headOfFamily.dob,
-            address: headOfFamily.address,
-            headOfFamilyAvatar: headOfFamily.headOfFamilyAvatar,
+            surname: headOfFamily?.surname,
+            firstname: headOfFamily?.firstname,
+            secondname: headOfFamily?.secondname,
+            email: headOfFamily?.email,
+            proffession: headOfFamily?.proffession,
+            contact: headOfFamily?.contact,
+            education: headOfFamily?.education,
+            bloodGroup: headOfFamily?.bloodGroup,
+            dob: headOfFamily?.dob,
+            address: headOfFamily?.address,
+            headOfFamilyAvatar: headOfFamily?.headOfFamilyAvatar,
           });
 
-          setWifeDetails({
-            surname: wifeDetails.surname,
-            firstname: wifeDetails.firstname,
-            secondname: wifeDetails.secondname,
-            proffession: wifeDetails.proffession,
-            contact: wifeDetails.contact,
-            education: wifeDetails.education,
-            bloodGroup: wifeDetails.bloodGroup,
-            dob: wifeDetails.dob,
-            wifeAvatar: wifeDetails.wifeAvatar,
-          });
+          if (wifeDetails) {
+            setWifeDetails({
+              surname: wifeDetails?.surname,
+              firstname: wifeDetails?.firstname,
+              secondname: wifeDetails?.secondname,
+              proffession: wifeDetails?.proffession,
+              contact: wifeDetails?.contact,
+              education: wifeDetails?.education,
+              bloodGroup: wifeDetails?.bloodGroup,
+              dob: wifeDetails?.dob,
+              wifeAvatar: wifeDetails?.wifeAvatar,
+            });
+          }
 
           setSonDetails(sonDetails);
           setDaughterDetails(daughterDetails);
@@ -152,8 +153,7 @@ const VillageUserProfile = () => {
             },
             credentials: "include",
             body: JSON.stringify({ userId: id }),
-          }
-        );
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -255,7 +255,7 @@ const VillageUserProfile = () => {
           </div>
         </section>
       )}
-      {wifeDetails && (
+      {wifeDetails && wifeDetails.surname && wifeDetails.firstname && (
         <section className="userProfile">
           <h2 className="profile-header">Wife Details</h2>
           <div className="userInfo-wrapper">

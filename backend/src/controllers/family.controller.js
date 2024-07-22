@@ -32,21 +32,22 @@ const generateAccessAndRefereshTokens = async (userId) => {
 
 const registerFamily = asyncHandler(async (req, res) => {
   const { password, headOfFamily } = req.body;
+  console.log("Wife Details >>", req.body);
   let wifeDetails = req.body?.wifeDetails;
 
   if (
-    !wifeDetails.surname ||
-    !wifeDetails.firstname ||
-    !wifeDetails.secondname
+    !wifeDetails?.surname ||
+    !wifeDetails?.firstname ||
+    !wifeDetails?.secondname
   ) {
     wifeDetails = null;
   }
 
-  const sonDetails = req.body?.sonDetails.filter(
+  const sonDetails = req.body?.sonDetails?.filter(
     (son) => son.surname && son.firstname && son.secondname
   );
 
-  const daughterDetails = req.body?.daughterDetails.filter(
+  const daughterDetails = req.body?.daughterDetails?.filter(
     (daughter) => daughter.surname && daughter.firstname && daughter.secondname
   );
 
