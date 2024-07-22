@@ -159,7 +159,8 @@ const Register = () => {
         !headOfFamily.secondname ||
         !headOfFamily.email ||
         !headOfFamily.proffession ||
-        !headOfFamily.contact
+        !headOfFamily.contact ||
+        !headOfFamily.address
       ) {
         toast.error("Head of family details required!");
         return;
@@ -179,7 +180,9 @@ const Register = () => {
       formData.append("headOfFamilyAvatar", headOfFamily.headOfFamilyAvatar);
 
       // Append wifeDetails avatar
-      formData.append("wifeAvatar", wifeDetails.wifeAvatar);
+      if (wifeDetails.wifeAvatar) {
+        formData.append("wifeAvatar", wifeDetails.wifeAvatar);
+      }
 
       // Append sonDetails avatars
       sonDetails.forEach((details, index) => {
