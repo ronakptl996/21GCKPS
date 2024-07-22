@@ -239,7 +239,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserDetails = asyncHandler(async (req, res) => {
-  let accessToken = req?.headers?.authorization;
+  let accessToken = req?.cookies?.accessToken;
 
   if (!accessToken || accessToken == "null") {
     return res
