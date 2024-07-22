@@ -35,7 +35,7 @@ const Profile = () => {
     proffession: "",
     contact: "",
     education: "",
-    bloodGroup: "o+",
+    bloodGroup: "",
     dob: "",
     address: "",
     headOfFamilyAvatar: "",
@@ -48,7 +48,7 @@ const Profile = () => {
     proffession: "",
     contact: "",
     education: "",
-    bloodGroup: "o+",
+    bloodGroup: "",
     dob: "",
     wifeAvatar: "",
   });
@@ -62,7 +62,7 @@ const Profile = () => {
       proffession: "",
       contact: "",
       education: "",
-      bloodGroup: "o+",
+      bloodGroup: "",
       dob: "",
       sonAvatar: "",
     },
@@ -76,7 +76,7 @@ const Profile = () => {
       proffession: "",
       contact: "",
       education: "",
-      bloodGroup: "o+",
+      bloodGroup: "",
       dob: "",
       daughterAvatar: "",
     },
@@ -216,26 +216,28 @@ const Profile = () => {
             firstname: headOfFamily.firstname,
             secondname: headOfFamily.secondname,
             email: headOfFamily.email,
-            proffession: headOfFamily.proffession,
-            contact: headOfFamily.contact,
-            education: headOfFamily.education,
-            bloodGroup: headOfFamily.bloodGroup,
-            dob: headOfFamily.dob,
-            address: headOfFamily.address,
+            proffession: headOfFamily?.proffession,
+            contact: headOfFamily?.contact,
+            education: headOfFamily?.education,
+            bloodGroup: headOfFamily?.bloodGroup,
+            dob: headOfFamily?.dob,
+            address: headOfFamily?.address,
             headOfFamilyAvatar: headOfFamily.headOfFamilyAvatar,
           });
 
-          setWifeDetails({
-            surname: wifeDetails.surname,
-            firstname: wifeDetails.firstname,
-            secondname: wifeDetails.secondname,
-            proffession: wifeDetails.proffession,
-            contact: wifeDetails.contact,
-            education: wifeDetails.education,
-            bloodGroup: wifeDetails.bloodGroup,
-            dob: wifeDetails.dob,
-            wifeAvatar: wifeDetails.wifeAvatar,
-          });
+          if (wifeDetails) {
+            setWifeDetails({
+              surname: wifeDetails?.surname,
+              firstname: wifeDetails?.firstname,
+              secondname: wifeDetails?.secondname,
+              proffession: wifeDetails?.proffession,
+              contact: wifeDetails?.contact,
+              education: wifeDetails?.education,
+              bloodGroup: wifeDetails?.bloodGroup,
+              dob: wifeDetails?.dob,
+              wifeAvatar: wifeDetails?.wifeAvatar,
+            });
+          }
 
           setSonDetails(sonDetails);
           setDaughterDetails(daughterDetails);
@@ -373,20 +375,19 @@ const Profile = () => {
       profession,
     } = modalForm;
     // console.log("userID:::", userId);
+
+    if (!avatar) {
+      toast.error(
+        `Upload ${modalType === "sonDetails" ? "Son " : "Daughter "} image`
+      );
+      return;
+    }
     if (
-      [
-        firstname,
-        secondname,
-        surname,
-        avatar,
-        bloodGroup,
-        contact,
-        education,
-        dob,
-        profession,
-      ].some((field) => field == "" || field == {})
+      [firstname, secondname, surname, education, dob, profession].some(
+        (field) => field == "" || field == {}
+      )
     ) {
-      toast.error("Please, fill the details");
+      toast.error("All details are required!");
       return;
     }
 
@@ -396,8 +397,6 @@ const Profile = () => {
     formData.append("firstname", firstname);
     formData.append("secondname", secondname);
     formData.append("surname", surname);
-    formData.append("bloodGroup", bloodGroup);
-    formData.append("contact", contact);
     formData.append("education", education);
     formData.append("dob", dob);
     formData.append("proffession", profession);
@@ -405,6 +404,13 @@ const Profile = () => {
       "addDetailsTo",
       modalType === "sonDetails" ? "son" : "daughter"
     );
+
+    if (bloodGroup && bloodGroup) {
+      formData.append("bloodGroup", bloodGroup);
+    }
+    if (contact) {
+      formData.append("contact", contact);
+    }
 
     try {
       dispatch(setLoading(true));
@@ -516,7 +522,7 @@ const Profile = () => {
           <TextField
             margin="dense"
             name="contact"
-            label="Contact *"
+            label="Contact"
             type="number"
             fullWidth
             variant="standard"
@@ -554,6 +560,7 @@ const Profile = () => {
           >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+                format="DD/MM/YYYY"
                 label="Date of Birth"
                 value={dayjs(modalForm.dob)}
                 onChange={(date) => {
@@ -789,6 +796,7 @@ const Profile = () => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     {/* <DatePicker label="Choose your DOB" /> */}
                     <DatePicker
+                      format="DD/MM/YYYY"
                       label="Choose your DOB"
                       value={dayjs(headOfFamily.dob)} // Set the value prop to the 'dob' property in your state
                       // onChange={handleDateChange} // Pass the handleDateChange function
@@ -953,12 +961,12 @@ const Profile = () => {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={wifeDetails.bloodGroup}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setWifeDetails((prevState) => ({
                           ...prevState,
                           bloodGroup: e.target.value,
-                        }))
-                      }
+                        }));
+                      }}
                       label="Blood Group"
                     >
                       <MenuItem value="o+">O+</MenuItem>
@@ -975,6 +983,7 @@ const Profile = () => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     {/* <DatePicker label="Choose your DOB" /> */}
                     <DatePicker
+                      format="DD/MM/YYYY"
                       label="Choose your DOB"
                       value={dayjs(wifeDetails.dob)} // Set the value prop to the 'dob' property in your state
                       onChange={(date) => {
@@ -1012,6 +1021,7 @@ const Profile = () => {
                     onClick={() =>
                       deleteSonDaughterDetailHandler(son._id, "sonDetails")
                     }
+                    color="error"
                     variant="outlined"
                   >
                     Delete Son
@@ -1159,6 +1169,7 @@ const Profile = () => {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/* <DatePicker label="Choose your DOB" /> */}
                         <DatePicker
+                          format="DD/MM/YYYY"
                           label="Choose your DOB"
                           value={dayjs(son.dob)} // Set the value prop to the 'dob' property in your state
                           onChange={(date) =>
@@ -1206,6 +1217,7 @@ const Profile = () => {
                       )
                     }
                     variant="outlined"
+                    color="error"
                   >
                     Delete Daughter
                   </Button>
@@ -1352,6 +1364,7 @@ const Profile = () => {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/* <DatePicker label="Choose your DOB" /> */}
                         <DatePicker
+                          format="DD/MM/YYYY"
                           label="Choose your DOB"
                           value={dayjs(daughter.dob)} // Set the value prop to the 'dob' property in your state
                           onChange={(date) =>

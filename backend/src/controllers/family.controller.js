@@ -32,10 +32,15 @@ const generateAccessAndRefereshTokens = async (userId) => {
 
 const registerFamily = asyncHandler(async (req, res) => {
   const { password, headOfFamily } = req.body;
+  let wifeDetails = req.body?.wifeDetails;
 
-  const wifeDetails = req.body?.wifeDetails.filter(
-    (wife) => wife.surname && wife.firstname && wife.secondname
-  );
+  if (
+    !wifeDetails.surname ||
+    !wifeDetails.firstname ||
+    !wifeDetails.secondname
+  ) {
+    wifeDetails = null;
+  }
 
   const sonDetails = req.body?.sonDetails.filter(
     (son) => son.surname && son.firstname && son.secondname
@@ -234,7 +239,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserDetails = asyncHandler(async (req, res) => {
-  let accessToken = req?.cookies?.accessToken;
+  let accessToken = req?.headers?.authorization;
 
   if (!accessToken || accessToken == "null") {
     return res
