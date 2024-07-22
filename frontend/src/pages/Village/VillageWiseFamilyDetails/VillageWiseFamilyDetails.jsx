@@ -5,8 +5,8 @@ import CallIcon from "@mui/icons-material/Call";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Grid, Pagination, Stack, TextField } from "@mui/material";
 import { toast } from "react-toastify";
-import VillageWiseCommiteeMemberCard from "../../../components/VillageWiseCommitteCard";
 import { debounce } from "../../../helper/global";
+import VillageWiseCommiteeMemberCard from "../../../components/VillageWiseCommitteCard";
 
 const villageWiseFamilyDetails = () => {
   const [page, setPage] = useState(1);
@@ -20,7 +20,7 @@ const villageWiseFamilyDetails = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_BACKEND_URL
-        }/api/users/village/${villageName}?page=${page}&limit=10`,
+        }/api/users/village/${villageName}?page=${page}&limit=10&searchQuery=${searchQuery}`,
         { credentials: "include" }
       );
       const data = await response.json();
