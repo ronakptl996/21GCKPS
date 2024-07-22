@@ -36,18 +36,18 @@ const registerFamily = asyncHandler(async (req, res) => {
   let wifeDetails = req.body?.wifeDetails;
 
   if (
-    !wifeDetails.surname ||
-    !wifeDetails.firstname ||
-    !wifeDetails.secondname
+    !wifeDetails?.surname ||
+    !wifeDetails?.firstname ||
+    !wifeDetails?.secondname
   ) {
     wifeDetails = null;
   }
 
-  const sonDetails = req.body?.sonDetails.filter(
+  const sonDetails = req.body?.sonDetails?.filter(
     (son) => son.surname && son.firstname && son.secondname
   );
 
-  const daughterDetails = req.body?.daughterDetails.filter(
+  const daughterDetails = req.body?.daughterDetails?.filter(
     (daughter) => daughter.surname && daughter.firstname && daughter.secondname
   );
 
@@ -197,13 +197,14 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const option = {
     httpOnly: true,
-    // secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
   };
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken)
-    .cookie("refreshToken", refreshToken)
+    .cookie("accessToken", accessToken, option)
+    .cookie("refreshToken", refreshToken, option)
     .json(
       new ApiResponse(
         200,
@@ -239,7 +240,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserDetails = asyncHandler(async (req, res) => {
-  let accessToken = req?.headers?.authorization;
+  let accessToken = req?.cookies?.accessToken;
 
   if (!accessToken || accessToken == "null") {
     return res
