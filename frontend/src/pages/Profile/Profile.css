@@ -45,6 +45,22 @@
   margin: 10px 0;
 }
 
+/* DATE PICKER */
+.headOfFamily-input-wrapper
+  .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error
+  .MuiOutlinedInput-notchedOutline,
+.MuiDialog-root
+  .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #0000003b;
+}
+
+.headOfFamily-input-wrapper
+  .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-error,
+.MuiDialog-root .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-error {
+  color: rgba(0, 0, 0, 0.6);
+}
+
 .changeAvatar button {
   padding: 8px 12px;
   border: none;

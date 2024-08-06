@@ -92,7 +92,7 @@ const Profile = () => {
     contact: "",
     education: "",
     bloodGroup: "",
-    dob: "00",
+    dob: "",
     avatar: "",
   });
 
@@ -353,7 +353,7 @@ const Profile = () => {
       contact: "",
       education: "",
       bloodGroup: "",
-      dob: "00",
+      dob: "",
       avatar: "",
     });
   };
@@ -798,7 +798,7 @@ const Profile = () => {
                     <DatePicker
                       format="DD/MM/YYYY"
                       label="Choose your DOB"
-                      value={dayjs(headOfFamily.dob)} // Set the value prop to the 'dob' property in your state
+                      value={headOfFamily.dob ? dayjs(headOfFamily.dob) : ""} // Set the value prop to the 'dob' property in your state
                       // onChange={handleDateChange} // Pass the handleDateChange function
                       onChange={(date) => {
                         setHeadOfFamily((prevState) => ({
@@ -985,7 +985,7 @@ const Profile = () => {
                     <DatePicker
                       format="DD/MM/YYYY"
                       label="Choose your DOB"
-                      value={dayjs(wifeDetails.dob)} // Set the value prop to the 'dob' property in your state
+                      value={wifeDetails.dob ? dayjs(wifeDetails.dob) : ""} // Set the value prop to the 'dob' property in your state
                       onChange={(date) => {
                         setWifeDetails((prevState) => ({
                           ...prevState,
