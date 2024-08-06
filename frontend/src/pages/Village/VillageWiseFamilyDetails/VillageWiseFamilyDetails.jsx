@@ -7,6 +7,7 @@ import { Grid, Pagination, Stack, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import { debounce } from "../../../helper/global";
 import VillageWiseCommiteeMemberCard from "../../../components/VillageWiseCommitteCard";
+import NoData from "../../../assets/images/no-data.jpg";
 
 const villageWiseFamilyDetails = () => {
   const [page, setPage] = useState(1);
@@ -115,10 +116,7 @@ const villageWiseFamilyDetails = () => {
 
       {villageFamilyData?.length == 0 && (
         <div className="no-data-found">
-          <img
-            src="../../../src/assets/images/no-data.jpg"
-            alt="No data found"
-          />
+          <img src={NoData} alt="No data found" />
           <h3>Empty family details!</h3>
         </div>
       )}
