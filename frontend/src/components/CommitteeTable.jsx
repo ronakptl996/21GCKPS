@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import NoDataImage from "../assets/images/no-data.jpg";
 
 const CommitteeTable = () => {
   const { committeeDetails } = useSelector((store) => store.admin);
@@ -38,6 +39,15 @@ const CommitteeTable = () => {
   useEffect(() => {
     rowchange(committeeDetails);
   }, [committeeDetails]);
+
+  if (committeeDetails && committeeDetails?.length === 0) {
+    return (
+      <div className="no-data-found">
+        <img src={NoDataImage} alt="No data found" />
+        <h3>No data found!</h3>
+      </div>
+    );
+  }
 
   return (
     <div className="table-wrapper" key="Committee Table">

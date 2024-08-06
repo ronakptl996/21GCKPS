@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import NoData from "../../assets/images/no-data.jpg";
 
 const VillageWiseCommiteeMemberCard = () => {
   const [committeeMemberData, setCommitteeMemberData] = useState([]);
@@ -63,10 +64,7 @@ const VillageWiseCommiteeMemberCard = () => {
       )}
       {committeeMemberData.length == 0 && (
         <div className="no-data-found">
-          <img
-            src="../../../src/assets/images/no-data.jpg"
-            alt="No data found"
-          />
+          <img src={NoData} alt="No data found" />
           <h3>No data found!</h3>
         </div>
       )}
