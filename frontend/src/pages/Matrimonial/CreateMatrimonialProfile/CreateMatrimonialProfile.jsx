@@ -27,7 +27,6 @@ import { validateImageType } from "../../../helper/global";
 import { matrimonialSchema } from "../../../schemas";
 
 const CreateMatrimonialProfile = () => {
-  const [defaultDate, setDefaultDate] = useState(dayjs());
   const [matrimonialImage, setMatrimonialImage] = useState("");
 
   const initialValues = {
@@ -45,11 +44,11 @@ const CreateMatrimonialProfile = () => {
       facebookUserName: "",
       instagramUserName: "",
       contact: "",
-      bloodGroup: "o+",
+      bloodGroup: "",
       address: "",
       interest: [],
       hobby: [],
-      dob: defaultDate,
+      dob: "",
       yourSelf: "",
       maternalUncle: "",
       mamaVillageName: "",
@@ -214,10 +213,6 @@ const CreateMatrimonialProfile = () => {
       toast.error("Something went wrong!");
     }
   };
-
-  useEffect(() => {
-    setDefaultDate(dayjs());
-  }, []);
 
   return (
     <>
@@ -594,9 +589,9 @@ const CreateMatrimonialProfile = () => {
                 />
               </div>
               <div className="register-input-wrapper">
-                <div>
+                <div className="interest-hobby-wrapper">
                   <TextField
-                    label="Interest"
+                    label="Type your interest and press enter"
                     name="interestInputValue"
                     value={values.interestInputValue}
                     onChange={handleChange}
